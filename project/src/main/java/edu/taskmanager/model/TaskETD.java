@@ -143,7 +143,7 @@ public class TaskETD {
         return Objects.hash(id, title, description, dueDate, priority, status, project, tags, subtasks, createdAt, updatedAt);
     }
 
-    // Для удобства можно добавить toString
+    // Для удобства можно добавить toString (исправить на builder)
     @Override
     public String toString() {
         return "TaskETD{" +
@@ -182,3 +182,4 @@ public class TaskETD {
         System.out.println(task);
     }
 }
+
