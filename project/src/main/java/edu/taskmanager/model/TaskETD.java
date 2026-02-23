@@ -1,5 +1,6 @@
+
 import java.time.LocalDateTime;
-import java.util.Arrays; 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -8,8 +9,8 @@ public class TaskETD {
     private String title;
     private String description;
     private LocalDateTime dueDate;
-    private String priority; 
-    private String status;   
+    private String priority;
+    private String status;
     private String project;
     private List<String> tags;
     private List<TaskETD> subtasks;
@@ -182,4 +183,3 @@ public class TaskETD {
         System.out.println(task);
     }
 }
-
