@@ -143,22 +143,24 @@ public class TaskETD {
         return Objects.hash(id, title, description, dueDate, priority, status, project, tags, subtasks, createdAt, updatedAt);
     }
 
-    // Для удобства можно добавить toString (исправить на builder)
     @Override
-    public String toString() {
-        return "TaskETD{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", dueDate=" + dueDate +
-                ", priority='" + priority + '\'' +
-                ", status='" + status + '\'' +
-                ", project='" + project + '\'' +
-                ", tags=" + tags +
-                ", subtasks=" + subtasks +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
+      // метод toStringBuilder
+    public String toStringBuilder() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("TaskETD {")
+               .append("\n  id=").append(id)
+               .append(",\n  title='").append(title).append('\'')
+               .append(",\n  description='").append(description).append('\'')
+               .append(",\n  dueDate=").append(dueDate)
+               .append(",\n  priority='").append(priority).append('\'')
+               .append(",\n  status='").append(status).append('\'')
+               .append(",\n  project='").append(project).append('\'')
+               .append(",\n  tags=").append(tags)
+               .append(",\n  subtasks=").append(subtasks)
+               .append(",\n  createdAt=").append(createdAt)
+               .append(",\n  updatedAt=").append(updatedAt)
+               .append("\n}");
+        return builder.toString();
     }
 
     // Метод main для тестирования
@@ -178,8 +180,9 @@ public class TaskETD {
             LocalDateTime.now()
         );
 
-        // Вывод объекта на экран
-        System.out.println(task);
+        // Вывод объекта на экран с использованием toStringBuilder
+        System.out.println(task.toStringBuilder());
     }
 }
+
 
