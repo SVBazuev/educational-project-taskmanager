@@ -1,4 +1,6 @@
 package edu.taskmanager.model;
+import edu.taskmanager.util.PriorityETD;
+
 import java.time.LocalDateTime;
 import java.util.Arrays; 
 import java.util.List;
@@ -9,7 +11,7 @@ public class TaskETD {
     private String title;
     private String description;
     private LocalDateTime dueDate;
-    private String priority; 
+    private PriorityETD priority; // Изменяем тип с String на PriorityETD
     private String status;   
     private String project;
     private List<String> tags;
@@ -69,11 +71,11 @@ public class TaskETD {
         this.dueDate = dueDate;
     }
 
-    public String getPriority() {
+    public PriorityETD getPriority() {
         return priority;
     }
 
-    public void setPriority(String priority) {
+    public void setPriority(PriorityETD priority) {
         this.priority = priority;
     }
 
@@ -185,6 +187,7 @@ public class TaskETD {
         System.out.println(task.toStringBuilder());
     }
 }
+
 
 
 
