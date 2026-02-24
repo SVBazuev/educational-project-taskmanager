@@ -1,4 +1,6 @@
 package edu.taskmanager.builder;
+import edu.taskmanager.util.PriorityETD;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Arrays;
@@ -8,7 +10,7 @@ public class TaskBuilderETD {
     private String title;
     private String description;
     private LocalDateTime dueDate;
-    private String priority;
+    private PriorityETD priority; // Изменяем тип с String на PriorityETD
     private String status;
     private String project;
     private List<String> tags;
@@ -41,7 +43,7 @@ public class TaskBuilderETD {
     }
 
     // Метод для установки priority
-    public TaskBuilderETD setPriority(String priority) {
+    public TaskBuilderETD setPriority(PriorityETD priority) {
         this.priority = priority;
         return this;
     }
@@ -127,7 +129,7 @@ public class TaskBuilderETD {
                 .setTitle("Example Task")
                 .setDescription("This is an example task.")
                 .setDueDate(LocalDateTime.now().plusDays(2))
-                .setPriority("High")
+                .setPriority(PriorityETD.HIGH)
                 .setStatus("Open")
                 .setProject("Project X")
                 .setTags(Arrays.asList("example", "task"))
@@ -139,4 +141,5 @@ public class TaskBuilderETD {
         System.out.println(task.toStringBuilder());
     }
 }
+
 
