@@ -4,7 +4,7 @@ public class User {
     private String passwordHash;
     private String role;
 
-    // TODO: конструкторы, геттеры, сеттеры.
+    //конструктор
 
     public User() {
     }
@@ -13,6 +13,40 @@ public class User {
         this.id = id;
         this.username = username;
         this.passwordHash = passwordHash;
+        this.role = role;
+    }
+
+    // геттеры, сеттеры
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    public void setRole(String role) {
         this.role = role;
     }
 }
