@@ -1,3 +1,4 @@
+package edu.taskmanager.util;
 
 /**
  * Перечисление уровней приоритета задач.
@@ -8,3 +9,4 @@ public enum Priority {
     MEDIUM,   // Средний приоритет
     LOW       // Низкий приоритет
 }
+
