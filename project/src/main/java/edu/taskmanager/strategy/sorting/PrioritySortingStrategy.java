@@ -1,3 +1,6 @@
+package edu.taskmanager.model;
+import edu.taskmanager.model.Task;
+import edu.taskmanager.util.Priority;
 import java.util.Comparator;
 import java.util.List;
 
@@ -9,7 +12,8 @@ public class PrioritySortingStrategy implements TaskSortingStrategy {
     @Override
     public List<Task> sort(List<Task> tasks) {
         // Используем компаратор для сортировки по приоритету
-        tasks.sort(Comparator.comparing(task -> task.getPriority().ordinal()));
+    tasks.sort(Comparator.comparing(task -> task.getPriority().ordinal()).reversed());
         return tasks;
     }
 }
+
