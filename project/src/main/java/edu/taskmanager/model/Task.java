@@ -1,14 +1,15 @@
+package edu.taskmanager.model;
+import edu.taskmanager.util.Priority;
 import java.time.LocalDateTime;
 import java.util.Arrays; 
 import java.util.List;
 import java.util.Objects;
-
 public class Task {
     private Long id;
     private String title;
     private String description;
     private LocalDateTime dueDate;
-    private String priority; 
+    private Priority priority; 
     private String status;   
     private String project;
     private List<String> tags;
@@ -68,11 +69,11 @@ public class Task {
         this.dueDate = dueDate;
     }
 
-    public String getPriority() {
+    public Priority getPriority() {
         return priority;
     }
 
-    public void setPriority(String priority) {
+    public void setPriority(Priority priority) {
         this.priority = priority;
     }
 
@@ -183,3 +184,4 @@ public class Task {
         System.out.println(task.toStringBuilder());
     }
 }
+
