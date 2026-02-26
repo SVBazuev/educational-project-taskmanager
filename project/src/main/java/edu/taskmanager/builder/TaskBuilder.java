@@ -129,7 +129,7 @@ public class TaskBuilder {
                 .setTitle("Example Task")
                 .setDescription("This is an example task.")
                 .setDueDate(LocalDateTime.now().plusDays(2))
-                .setPriority("High")
+                .setPriority(Priority.HIGH)
                 .setStatus("Open")
                 .setProject("Project X")
                 .setTags(Arrays.asList("example", "task"))
@@ -141,4 +141,5 @@ public class TaskBuilder {
         System.out.println(task.toStringBuilder());
     }
 }
+
 
