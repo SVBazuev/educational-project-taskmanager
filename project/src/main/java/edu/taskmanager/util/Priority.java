@@ -1,10 +1,11 @@
-
+package edu.taskmanager.util;
 /**
  * Перечисление уровней приоритета задач.
  */
-public enum Priority {
-    CRITICAL, // Критический приоритет
-    HIGH,     // Высокий приоритет
+public enum Priority {   
+    LOW ,      // Низкий приоритет
     MEDIUM,   // Средний приоритет
-    LOW       // Низкий приоритет
+    HIGH,     // Высокий приоритет
+    CRITICAL // Критический приоритет
 }
+
