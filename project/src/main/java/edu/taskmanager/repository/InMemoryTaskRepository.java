@@ -20,7 +20,7 @@ public class InMemoryTaskRepository implements TaskRepository{
     @Override
     public Task save(Task task) {
         // TODO: если у задачи нет id, сгенерировать новый.
-        if (task.getId)
+
         // TODO: сохранить в storage, вернуть задачу с установленным id.
         return null;
     }
