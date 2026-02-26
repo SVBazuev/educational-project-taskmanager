@@ -4,15 +4,15 @@ package edu.taskmanager.repository;
 import java.util.List;
 import java.util.Optional;
 
-import edu.taskmanager.model.TaskETD;
+import edu.taskmanager.model.Task;
 
 /**
  * Репозиторий для хранения и извлечения задач.
  */
 public interface TaskRepository {
-    TaskETD save(TaskETD task);
-    Optional<TaskETD> findById(Long id);
-    List<TaskETD> findAll();
+    Task save(Task task);
+    Optional<Task> findById(Long id);
+    List<Task> findAll();
     void deleteById(Long id);
-    List<TaskETD> findSubtasksByParentId(Long parentId); // для прокси
+    List<Task> findSubtasksByParentId(Long parentId); // для прокси
 }
