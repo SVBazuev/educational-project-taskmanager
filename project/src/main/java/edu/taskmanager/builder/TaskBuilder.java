@@ -1,4 +1,5 @@
 package edu.taskmanager.builder;
+
 import edu.taskmanager.model.Task;
 import edu.taskmanager.util.Priority;
 import java.time.LocalDateTime;
@@ -141,5 +142,3 @@ public class TaskBuilder {
         System.out.println(task.toStringBuilder());
     }
 }
-
-

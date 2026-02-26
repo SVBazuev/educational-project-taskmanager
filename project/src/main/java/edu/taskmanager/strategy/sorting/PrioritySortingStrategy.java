@@ -1,4 +1,5 @@
-package edu.taskmanager.model;
+package edu.taskmanager.strategy.sorting;
+
 import edu.taskmanager.model.Task;
 import edu.taskmanager.util.Priority;
 import java.util.Comparator;
@@ -16,4 +17,3 @@ public class PrioritySortingStrategy implements TaskSortingStrategy {
         return tasks;
     }
 }
-
