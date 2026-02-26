@@ -1,3 +1,6 @@
+package edu.taskmanager.builder;
+import edu.taskmanager.model.Task;
+import edu.taskmanager.util.Priority;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Arrays;
@@ -138,3 +141,4 @@ public class TaskBuilder {
         System.out.println(task.toStringBuilder());
     }
 }
+
