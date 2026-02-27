@@ -94,7 +94,7 @@ public class TaskBuilder {
             throw new IllegalArgumentException("Due date is required.");
         }
         // Подстроить под priority
-        if (priority == null || priority.isEmpty()) {
+        if (priority == null ) {
             throw new IllegalArgumentException("Priority is required.");
         }
         if (status == null || status.isEmpty()) {
@@ -143,4 +143,5 @@ public class TaskBuilder {
         System.out.println(task.toStringBuilder());
     }
 }
+
 
