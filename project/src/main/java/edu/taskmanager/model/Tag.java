@@ -1,3 +1,5 @@
+package edu.taskmanager.model;
+
 import java.util.Objects;
 
 public class Tag {
