@@ -13,7 +13,8 @@ public class PrioritySortingStrategy implements TaskSortingStrategy {
     @Override
     public List<Task> sort(List<Task> tasks) {
         // Используем компаратор для сортировки по приоритету
-    tasks.sort(Comparator.comparing(task -> task.getPriority().ordinal()).reversed());
+    tasks.sort(Comparator.comparing((Task task) -> task.getPriority().ordinal()).reversed());
         return tasks;
     }
 }
+
