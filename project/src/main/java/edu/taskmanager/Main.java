@@ -11,7 +11,23 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
+// Создаем объект Task
+        Task task0 = new Task(
+            1L,
+            "Test Task",
+            "This is a test task.",
+            LocalDateTime.now().plusDays(1),
+            Priority.HIGH,
+            "Open",
+            "Project A",
+            Arrays.asList("tag1", "tag2"), // Используем Arrays.asList
+            null,
+            LocalDateTime.now(),
+            LocalDateTime.now()
+        );
 
+        // Вывод объекта на экран с использованием toStringBuilder
+        System.out.println(task0.toStringBuilder());
         //Создание задач с помощью TaskBuilder
         Task task = new TaskBuilder()
                 .setTitle("Важная задача")
