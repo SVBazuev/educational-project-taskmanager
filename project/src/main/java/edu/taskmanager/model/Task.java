@@ -171,7 +171,7 @@ public class Task {
             "Test Task",
             "This is a test task.",
             LocalDateTime.now().plusDays(1),
-            "High",
+            Priority.HIGH,
             "Open",
             "Project A",
             Arrays.asList("tag1", "tag2"), // Используем Arrays.asList
@@ -184,5 +184,6 @@ public class Task {
         System.out.println(task.toStringBuilder());
     }
 }
+
 
 
