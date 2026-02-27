@@ -5,10 +5,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProjectBuilder {
+    private Long id;
     private String name;
     private String description;
     private List<Project> tasks = new ArrayList<>();
 
+
+    public ProjectBuilder setId(Long id) {
+        this.id = id;
+        return this;
+
+    }
     public ProjectBuilder setName(String name) {
         this.name = name;
         return this;
@@ -29,13 +36,12 @@ public class ProjectBuilder {
         if (name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("Project name is required");
         }
-        return new Project(name, description, new ArrayList<>(tasks));
     }
 
     // Метод build() для создания объекта Project
     public Project build() {
         validate();
-        return new Project(name, description, new ArrayList<>(tasks));
+        return new Project(id, name, description, new ArrayList<>(tasks));
     }
 
     // Метод Main() для тестирования
@@ -43,12 +49,14 @@ public class ProjectBuilder {
 
         // Создаем подзадачу
         Project subTask = new ProjectBuilder()
+                .setId(1L)
                 .setName("Subtask 1")
                 .setDescription("First subtask")
                 .build();
 
         // Создаем основной проект
         Project mainProject = new ProjectBuilder()
+                .setId(2L)
                 .setName("Main project")
                 .setDescription("Main project description")
                 .addTask(subTask)
