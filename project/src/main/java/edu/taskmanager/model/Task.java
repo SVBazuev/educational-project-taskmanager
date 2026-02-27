@@ -21,7 +21,7 @@ public class Task {
     public Task() {
     }
 
-    public Task(Long id, String title, String description, LocalDateTime dueDate, String priority, String status,
+    public Task(Long id, String title, String description, LocalDateTime dueDate, Priority priority, String status,
                    String project, List<String> tags, List<Task> subtasks, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
@@ -184,4 +184,5 @@ public class Task {
         System.out.println(task.toStringBuilder());
     }
 }
+
 
