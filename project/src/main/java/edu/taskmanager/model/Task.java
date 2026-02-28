@@ -147,7 +147,6 @@ public class Task {
         public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("Task {")
-<<<<<<< Updated upstream
                .append("\n  id=").append(id)
                .append(",\n  title='").append(title).append('\'')
                .append(",\n  description='").append(description).append('\'')
@@ -161,23 +160,6 @@ public class Task {
                .append(",\n  updatedAt=").append(updatedAt)
                .append("\n}");
         return builder.toString();}
-=======
-            .append("\n  id=").append(id)
-            .append(",\n  title='").append(title).append('\'')
-            .append(",\n  description='").append(description).append('\'')
-            .append(",\n  dueDate=").append(dueDate)
-            .append(",\n  priority='").append(priority).append('\'')
-            .append(",\n  status='").append(status).append('\'')
-            .append(",\n  project='").append(project).append('\'')
-            .append(",\n  tags=").append(tags)
-            .append(",\n  subtasks=").append(subtasks)
-            .append(",\n  createdAt=").append(createdAt)
-            .append(",\n  updatedAt=").append(updatedAt)
-            .append("\n}");
-        return builder.toString();
-    }
-
->>>>>>> Stashed changes
     // Метод main для тестирования
     public static void main(String[] args) {
         // Создаем объект Task
@@ -197,10 +179,3 @@ public class Task {
         System.out.println(task.toString());
     }
 }
-<<<<<<< Updated upstream
-
-
-
-
-=======
->>>>>>> Stashed changes
