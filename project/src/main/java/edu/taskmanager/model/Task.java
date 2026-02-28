@@ -143,9 +143,8 @@ public class Task {
     public int hashCode() {
         return Objects.hash(id, title, description, dueDate, priority, status, project, tags, subtasks, createdAt, updatedAt);
     }
-
-    // Новый метод toString
-    public String toString() {
+    @Override
+        public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("Task {")
                .append("\n  id=").append(id)
@@ -160,9 +159,7 @@ public class Task {
                .append(",\n  createdAt=").append(createdAt)
                .append(",\n  updatedAt=").append(updatedAt)
                .append("\n}");
-        return builder.toString();
-    }
-
+        return builder.toString();}
     // Метод main для тестирования
     public static void main(String[] args) {
         // Создаем объект Task
@@ -177,10 +174,8 @@ public class Task {
             Arrays.asList("tag1", "tag2"), // Используем Arrays.asList
             null,
             LocalDateTime.now(),
-            LocalDateTime.now()
-        );
-
-        // Вывод объекта на экран с использованием toString
+            LocalDateTime.now()    );
+        // Вывод объекта на экран с использованием toStringBuilder
         System.out.println(task.toString());
     }
 }
