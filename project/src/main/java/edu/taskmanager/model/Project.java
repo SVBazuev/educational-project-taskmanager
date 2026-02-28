@@ -82,25 +82,28 @@ public class Project {
     }
 
     // toString для ввода
+    @Override
     public String toString() {
-        return "Project_SIS{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", tasks=" + tasks +
-                '}';
+        StringBuilder builder = new StringBuilder();
+        builder.append("Project {")
+                .append("\n id=").append(id)
+                .append("\n name").append(name).append('\'')
+                .append("\n description").append(description).append('\'')
+                .append("\n tasks").append(tasks)
+                .append("\n}");
+        return builder.toString();
     }
 
     // Метод main для тестирования
     public static void main(String[] args) {
         Project mainProject = new Project(
                 1L,
-                "Main Project",
-                "Root project",
-                null
+                ": Main Project",
+                ": Root project",
+                new ArrayList<Project>()
         );
-        Project task1 = new Project(2L, "Task 1", "First task", null);
-        Project task2 = new Project(3L, "Task 2", "Second task", null);
+        Project task1 = new Project(2L, ": Task 1", ": First task", null);
+        Project task2 = new Project(3L, ": Task 2", ": Second task", null);
 
         // Добавляем задачи Task 1 и Task 2
         mainProject.addTask(task1);
