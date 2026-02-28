@@ -144,7 +144,7 @@ public class Task {
         return Objects.hash(id, title, description, dueDate, priority, status, project, tags, subtasks, createdAt, updatedAt);
     }
     @Override
-public String toString() {
+        public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("Task {")
                .append("\n  id=").append(id)
