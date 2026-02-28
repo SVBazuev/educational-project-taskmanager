@@ -144,8 +144,8 @@ public class Task {
         return Objects.hash(id, title, description, dueDate, priority, status, project, tags, subtasks, createdAt, updatedAt);
     }
 
-    // Новый метод toStringBuilder
-    public String toStringBuilder() {
+    // Новый метод toString
+    public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("Task {")
                .append("\n  id=").append(id)
@@ -180,10 +180,11 @@ public class Task {
             LocalDateTime.now()
         );
 
-        // Вывод объекта на экран с использованием toStringBuilder
-        System.out.println(task.toStringBuilder());
+        // Вывод объекта на экран с использованием toString
+        System.out.println(task.toString());
     }
 }
+
 
 
 
