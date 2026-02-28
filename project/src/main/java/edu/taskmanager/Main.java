@@ -29,8 +29,8 @@ public class Main {
             LocalDateTime.now()
         );
 
-        // Вывод объекта на экран с использованием toStringBuilder
-        System.out.println(task0.toStringBuilder());
+        // Вывод объекта на экран с использованием toString
+        System.out.println(task0.toString());
         //Создание задач с помощью TaskBuilder
         Task task = new TaskBuilder()
                 .setTitle("Важная задача")
@@ -44,7 +44,7 @@ public class Main {
                 .setUpdatedAt(LocalDateTime.now())
                 .build();
 
-        System.out.println(task.toStringBuilder());
+        System.out.println(task.toString());
 
         ////Создание задач с помощью ProjectBuilder
         Project task1 = new Project();

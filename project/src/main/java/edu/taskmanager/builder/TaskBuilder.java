@@ -140,7 +140,7 @@ public class TaskBuilder {
                 .build();
 
         // Вывод объекта на экран
-        System.out.println(task.toStringBuilder());
+        System.out.println(task.toString());
     }
 }
 
