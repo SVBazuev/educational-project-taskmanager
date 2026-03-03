@@ -1,14 +1,17 @@
 package edu.taskmanager.builder;
 
+
+import java.util.List;
+import java.util.ArrayList;
+import java.time.LocalDateTime;
+
+
 import edu.taskmanager.model.Project;
 import edu.taskmanager.model.Tag;
 import edu.taskmanager.model.Task;
 import edu.taskmanager.util.Priority;
 import edu.taskmanager.util.TaskStatus;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Построитель для объекта Task.

@@ -1,8 +1,0 @@
-d:\GitHub\educational-project-taskmanager\project\src\main\java\edu\taskmanager\builder\TaskBuilder.java
-d:\GitHub\educational-project-taskmanager\project\src\main\java\edu\taskmanager\Main.java
-d:\GitHub\educational-project-taskmanager\project\src\main\java\edu\taskmanager\model\Project.java
-d:\GitHub\educational-project-taskmanager\project\src\main\java\edu\taskmanager\model\Task.java
-d:\GitHub\educational-project-taskmanager\project\src\main\java\edu\taskmanager\repository\InMemoryTaskRepository.java
-d:\GitHub\educational-project-taskmanager\project\src\main\java\edu\taskmanager\repository\TaskRepository.java
-d:\GitHub\educational-project-taskmanager\project\src\main\java\edu\taskmanager\strategy\sorting\PrioritySortingStrategy.java
-d:\GitHub\educational-project-taskmanager\project\src\main\java\edu\taskmanager\util\Priority.java
