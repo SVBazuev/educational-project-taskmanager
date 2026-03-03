@@ -1,18 +1,15 @@
 package edu.taskmanager;
 
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.*;
-
-
 import edu.taskmanager.builder.TaskBuilder;
 import edu.taskmanager.model.*;
 import edu.taskmanager.repository.*;
 import edu.taskmanager.util.Priority;
 import edu.taskmanager.util.TaskStatus;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.*;
 
 /**
  * Консольное приложение для управления задачами, проектами, тегами и пользователями.
