@@ -4,115 +4,195 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Класс представляет проект — группу задач.
+ * Поля:
+ * - id
+ * - name
+ * - description
+ * - tasks: список задач, входящих в проект
+ */
 public class Project {
     private Long id;
     private String name;
     private String description;
-    private List<Project> tasks;
+    private List<Task> tasks;
 
-    // Конструкторы
+    /**
+     * Конструктор по умолчанию. Инициализирует список задач.
+     */
     public Project() {
         this.tasks = new ArrayList<>();
     }
-    public Project(Long id, String name, String description, List<Project> tasks) {
+
+    /**
+     * Конструктор с названием.
+     *
+     * @param name название проекта
+     */
+    public Project(String name) {
+        this();
+        this.name = name;
+    }
+
+    /**
+     * Конструктор со всеми полями для .
+     *
+     * @param id          идентификатор
+     * @param name        название
+     * @param description описание
+     * @param tasks       список задач
+     */
+    public Project(Long id, String name, String description, List<Task> tasks) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.tasks = tasks;
+        this.tasks = tasks != null ? tasks : new ArrayList<>();
     }
 
-    // Геттеры и сеттеры
-    public Long getId() {
-        return id;
+    /**
+     * Конструктор копирования.
+     * Основное предназначение заполнение поля id,
+     * после сохранения в репозитории.
+     *
+     * @param other       экземпляр Project
+     */
+    public Project(Project other) {
+        this.name = other.name;
+        this.description = other.description;
+        this.tasks = other.tasks != null ? other.tasks : new ArrayList<>();
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    // --- Геттеры ---
 
-    public String getName() {
-        return name;
-    }
+    public Long getId() { return id; }
+    public String getName() { return name; }
+    public String getDescription() { return description; }
+    public List<Task> getTasks() { return tasks; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    // --- Cеттеры ---
 
-    public String getDescription() {
-        return description;
-    }
+    public void setId(Long id) { this.id = id; }
+
+    public void setName(String name) { this.name = name; }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public List<Project> getTasks() {
-        return tasks;
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks != null ? tasks : new ArrayList<>();
     }
 
-    public void setTasks(List<Project> tasks) {
-        this.tasks = tasks;
+    // Метод withId, использующий конструктор копирования
+    public Project withId(Long newId) {
+        Project copy = new Project(this);
+        copy.id = newId;
+        return copy;
     }
 
+    // --- Вспомогательные методы для управления задачами ---
 
-    // addTask и removeTask
-    public void addTask(Project task) {
-        if (task != null) {
+    /**
+     * Добавляет задачу в проект. Если задача уже принадлежит другому проекту,
+     * её связь с тем проектом будет заменена на текущий.
+     *
+     * @param task задача для добавления
+     */
+    public void addTask(Task task) {
+        if (task != null && !tasks.contains(task)) {
             tasks.add(task);
+            task.setProject(this);
         }
     }
 
-    public void removeTask(Project task) {
-        tasks.remove(task);
+    /**
+     * Удаляет задачу из проекта. У задачи сбрасывается ссылка на проект.
+     *
+     * @param task задача для удаления
+     */
+    public void removeTask(Task task) {
+        if (tasks.remove(task)) {
+            if (task.getProject() == this) {
+                task.setProject(null);
+            }
+        }
     }
 
-    // equals и hashCode
+    /**
+     * Удаляет все задачи из проекта. У всех задач сбрасывается ссылка на проект.
+     */
+    public void clearTasks() {
+        for (Task task : tasks) {
+            if (task.getProject() == this) {
+                task.setProject(null);
+            }
+        }
+        tasks.clear();
+    }
+
+    // --- equals, hashCode, toString ---
+
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Project)) return false;
-        Project project = (Project) obj;
-        return Objects.equals(id, project.id) && Objects.equals(name, project.name) &&
-                Objects.equals(description, project.description) && Objects.equals(tasks, project.tasks);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Project project = (Project) o;
+        return id != null && Objects.equals(id, project.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, tasks);
+        return id != null ? Objects.hash(id) : super.hashCode();
     }
 
-    // toString для ввода
+    @Override
     public String toString() {
-        return "Project_SIS{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", tasks=" + tasks +
-                '}';
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("Project{")
+            .append("id=").append(id)
+            .append(", name='").append(name).append('\'')
+            .append(", description='").append(description).append('\'')
+            .append(", tasksCount=")
+            .append((tasks != null ? tasks.size() : 0))
+            .append('}');
+
+        return builder.toString();
     }
 
-    // Метод main для тестирования
-    public static void main(String[] args) {
-        Project mainProject = new Project(
-                1L,
-                "Main Project",
-                "Root project",
-                null
-        );
-        Project task1 = new Project(2L, "Task 1", "First task", null);
-        Project task2 = new Project(3L, "Task 2", "Second task", null);
+    public static class ProjectBuilder {
+        private String name;
+        private String description;
+        private List<Task> tasks = new ArrayList<>();
 
-        // Добавляем задачи Task 1 и Task 2
-        mainProject.addTask(task1);
-        mainProject.addTask(task2);
+        public ProjectBuilder setName(String name) {
+            this.name = name;
+            return this;
+        }
 
-        System.out.println("После добавления задач: ");
-        System.out.println(mainProject);
+        public ProjectBuilder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
 
-        // Удаляем задачу Task 1
-        mainProject.removeTask(task1);
+        public ProjectBuilder addTask(Task task) {
+            this.tasks.add(task);
+            return this;
+        }
 
-        System.out.println("\nПосле удаления Task 1: ");
-        System.out.println(mainProject);
+        public Project build() {
+            if (name == null || name.trim().isEmpty()) {
+                throw new IllegalStateException(
+                    "Название проекта (name) не может быть пустым"
+                );
+            }
+            Project project = new Project();
+            project.setName(name);
+            project.setDescription(description);
+            project.setTasks(tasks);
+
+            return project;
+        }
     }
 }

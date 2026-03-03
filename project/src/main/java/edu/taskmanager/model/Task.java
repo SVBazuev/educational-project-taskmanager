@@ -1,206 +1,260 @@
 package edu.taskmanager.model;
-import edu.taskmanager.util.Priority;
-import java.time.LocalDateTime;
-import java.util.Arrays;
+
+
 import java.util.List;
 import java.util.Objects;
+import java.util.ArrayList;
+import java.time.LocalDateTime;
+
+
+import edu.taskmanager.util.Priority;
+import edu.taskmanager.util.TaskStatus;
+
+
+
+/**
+ * Класс представляет задачу в системе.
+ * Поля:
+ * - id: уникальный идентификатор
+ * - title: название задачи
+ * - description: описание (может быть null)
+ * - dueDate: срок выполнения
+ * - priority: приоритет (enum Priority)
+ * - status: статус (enum TaskStatus)
+ * - project: проект, к которому относится задача (может быть null)
+ * - tags: список тегов
+ * - subtasks: список подзадач (других объектов Task)
+ * - createdAt: дата создания
+ * - updatedAt: дата последнего обновления
+ * - parentId: идентификатор родительской задачи (если текущая задача является подзадачей)
+ */
 public class Task {
     private Long id;
     private String title;
     private String description;
     private LocalDateTime dueDate;
     private Priority priority;
-    private String status;
-    private String project;
-    private List<String> tags;
+    private TaskStatus status;
+    private Project project;
+    private List<Tag> tags;
     private List<Task> subtasks;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Long parentId;
 
-    // Конструкторы
+
+    /**
+     * Конструктор по умолчанию. Инициализирует коллекции.
+     */
     public Task() {
+        this.tags = new ArrayList<>();
+        this.subtasks = new ArrayList<>();
     }
 
-    public Task(Long id, String title, String description, LocalDateTime dueDate, Priority priority, String status,
-                   String project, List<String> tags, List<Task> subtasks, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
+    /**
+     * Конструктор с основными полями. Остальные поля остаются со значениями по умолчанию.
+     *
+     * @param title    название задачи (обязательное)
+     * @param dueDate  срок выполнения
+     * @param priority приоритет
+     * @param status   статус
+     */
+    public Task(String title, LocalDateTime dueDate, Priority priority, TaskStatus status) {
+        this();
         this.title = title;
-        this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
         this.status = status;
-        this.project = project;
-        this.tags = tags;
-        this.subtasks = subtasks;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
-    // Геттеры и сеттеры
-    public Long getId() {
-        return id;
+    // Конструктор копирования
+    public Task(Task other) {
+        this.id = other.id;
+        this.title = other.title;
+        this.description = other.description;
+        this.dueDate = other.dueDate;
+        this.priority = other.priority;
+        this.status = other.status;
+        this.project = other.project;
+        this.tags = other.tags;
+        this.subtasks = other.subtasks;
+        this.createdAt = other.createdAt;
+        this.updatedAt = other.updatedAt;
+        this.parentId = other.parentId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    // --- Геттеры ---
 
-    public String getTitle() {
-        return title;
-    }
+    public Long getId() { return id; }
+    public String getTitle() { return title; }
+    public String getDescription() { return description; }
+    public LocalDateTime getDueDate() { return dueDate; }
+    public Priority getPriority() { return priority; }
+    public TaskStatus getStatus() { return status; }
+    public Project getProject() { return project; }
+    public List<Tag> getTags() { return tags; }
+    public List<Task> getSubtasks() { return subtasks; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public Long getParentId() { return parentId; }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    // --- Cеттеры ---
 
-    public String getDescription() {
-        return description;
-    }
+    public void setId(Long id) { this.id = id; }
+
+    public void setTitle(String title) { this.title = title; }
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public LocalDateTime getDueDate() {
-        return dueDate;
     }
 
     public void setDueDate(LocalDateTime dueDate) {
         this.dueDate = dueDate;
     }
 
-    public Priority getPriority() {
-        return priority;
-    }
-
     public void setPriority(Priority priority) {
         this.priority = priority;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
+    public void setStatus(TaskStatus status) {
         this.status = status;
     }
 
-    public String getProject() {
-        return project;
-    }
-
-    public void setProject(String project) {
+    public void setProject(Project project) {
         this.project = project;
     }
 
-    public List<String> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<String> tags) {
-        this.tags = tags;
-    }
-
-    public List<Task> getSubtasks() {
-        return subtasks;
+    public void setTags(List<Tag> tags) {
+        this.tags = tags != null ? tags : new ArrayList<>();
     }
 
     public void setSubtasks(List<Task> subtasks) {
-        this.subtasks = subtasks;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+        this.subtasks = subtasks != null ? subtasks : new ArrayList<>();
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    // equals и hashCode
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
+    }
+
+    // --- Вспомогательные методы для работы с коллекциями ---
+
+    /**
+     * Добавляет тег к задаче.
+     *
+     * @param tag тег для добавления
+     */
+    public void addTag(Tag tag) {
+        if (tag != null && !tags.contains(tag)) {
+            tags.add(tag);
+        }
+    }
+
+    /**
+     * Удаляет тег из задачи.
+     *
+     * @param tag тег для удаления
+     */
+    public void removeTag(Tag tag) {
+        tags.remove(tag);
+    }
+
+    /**
+     * Добавляет подзадачу. Устанавливает у подзадачи parentId
+     * равный идентификатору текущей задачи,
+     * если у текущей задачи уже есть id.
+     * В противном случае parentId остаётся null (его можно будет
+     * установить позже при сохранении родителя).
+     *
+     * @param subtask подзадача для добавления
+     */
+    public void addSubtask(Task subtask) {
+        if (subtask != null && !subtasks.contains(subtask)) {
+            subtasks.add(subtask);
+            // Если у текущей задачи уже есть id,
+            if (this.id != null) {
+                // связываем подзадачу с родителем
+                subtask.setParentId(this.id);
+            }
+        }
+    }
+
+    /**
+     * Удаляет подзадачу.
+     *
+     * @param subtask подзадача для удаления
+     */
+    public void removeSubtask(Task subtask) {
+        if (subtasks.remove(subtask)) {
+            subtask.setParentId(null);
+        }
+    }
+
+    // Метод withId, использующий конструктор копирования
+    public Task withId(Long newId) {
+        Task copy = new Task(this);
+        copy.id = newId;
+        return copy;
+    }
+
+    // --- equals, hashCode, toString ---
+
+    /**
+     * Сравнение задач по идентификатору.
+     * Если идентификатор не задан (null), задачи считаются разными,
+     * если только это не один и тот же объект.
+     *
+     * @param o объект для сравнения
+     * @return true, если идентификаторы равны и не null,
+     * либо если это один и тот же объект
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return Objects.equals(id, task.id) && Objects.equals(title, task.title) &&
-               Objects.equals(description, task.description) && Objects.equals(dueDate, task.dueDate) &&
-               Objects.equals(priority, task.priority) && Objects.equals(status, task.status) &&
-               Objects.equals(project, task.project) && Objects.equals(tags, task.tags) &&
-               Objects.equals(subtasks, task.subtasks) && Objects.equals(createdAt, task.createdAt) &&
-               Objects.equals(updatedAt, task.updatedAt);
+        return id != null && Objects.equals(id, task.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, dueDate, priority, status, project, tags, subtasks, createdAt, updatedAt);
+        return id != null ? Objects.hash(id) : super.hashCode();
     }
+
+    /**
+     * Возвращает строковое представление задачи.
+     * Во избежание рекурсии подзадачи не выводятся подробно,
+     * указывается только их количество.
+     *
+     * @return строковое представление
+     */
     @Override
-        public String toString() {
+    public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("Task {")
-<<<<<<< Updated upstream
-               .append("\n  id=").append(id)
-               .append(",\n  title='").append(title).append('\'')
-               .append(",\n  description='").append(description).append('\'')
-               .append(",\n  dueDate=").append(dueDate)
-               .append(",\n  priority='").append(priority).append('\'')
-               .append(",\n  status='").append(status).append('\'')
-               .append(",\n  project='").append(project).append('\'')
-               .append(",\n  tags=").append(tags)
-               .append(",\n  subtasks=").append(subtasks)
-               .append(",\n  createdAt=").append(createdAt)
-               .append(",\n  updatedAt=").append(updatedAt)
-               .append("\n}");
-        return builder.toString();}
-=======
-            .append("\n  id=").append(id)
-            .append(",\n  title='").append(title).append('\'')
-            .append(",\n  description='").append(description).append('\'')
-            .append(",\n  dueDate=").append(dueDate)
-            .append(",\n  priority='").append(priority).append('\'')
-            .append(",\n  status='").append(status).append('\'')
-            .append(",\n  project='").append(project).append('\'')
-            .append(",\n  tags=").append(tags)
-            .append(",\n  subtasks=").append(subtasks)
-            .append(",\n  createdAt=").append(createdAt)
-            .append(",\n  updatedAt=").append(updatedAt)
-            .append("\n}");
+
+        builder.append("Task{")
+            .append("id=").append(id)
+            .append(", title='").append(title).append('\'')
+            .append(", description='").append(description).append('\'')
+            .append(", dueDate=").append(dueDate)
+            .append(", priority=").append(priority)
+            .append(", status=").append(status)
+            .append(", project=").append((project != null ? project.getName() : "null"))
+            .append(", tags=").append(tags.size())
+            .append(", subtasks=").append(subtasks.size())
+            .append(", createdAt=").append(createdAt)
+            .append(", updatedAt=").append(updatedAt)
+            .append(", parentId=").append(parentId)
+            .append('}');
+
         return builder.toString();
     }
 
->>>>>>> Stashed changes
-    // Метод main для тестирования
-    public static void main(String[] args) {
-        // Создаем объект Task
-        Task task = new Task(
-            1L,
-            "Test Task",
-            "This is a test task.",
-            LocalDateTime.now().plusDays(1),
-            Priority.HIGH,
-            "Open",
-            "Project A",
-            Arrays.asList("tag1", "tag2"), // Используем Arrays.asList
-            null,
-            LocalDateTime.now(),
-            LocalDateTime.now()    );
-        // Вывод объекта на экран с использованием toStringBuilder
-        System.out.println(task.toString());
-    }
 }
-<<<<<<< Updated upstream
-
-
-
-
-=======
->>>>>>> Stashed changes

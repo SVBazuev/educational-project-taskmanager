@@ -10,19 +10,41 @@ import java.util.concurrent.atomic.AtomicLong;
 
 
 import edu.taskmanager.model.Task;
-// import edu.taskmanager.repository.TaskRepository;
 
 
-public class InMemoryTaskRepository implements TaskRepository{
+/**
+ * Реализация репозитория в оперативной памяти
+ * с использованием потокобезопасных коллекций.
+ * Хранит задачи в ConcurrentHashMap, где ключ — идентификатор задачи.
+ * Для генерации идентификаторов используется AtomicLong.
+ */
+public class InMemoryTaskRepository implements TaskRepository {
+
+    /**
+     * Хранилище задач: id -> Task
+     */
     private final Map<Long, Task> storage = new ConcurrentHashMap<>();
+
+    /**
+     * Генератор уникальных идентификаторов для новых задач.
+     * Начинается с 1.
+     */
     private final AtomicLong idGenerator = new AtomicLong(1);
 
     @Override
     public Task save(Task task) {
-        // TODO: если у задачи нет id, сгенерировать новый.
-
-        // TODO: сохранить в storage, вернуть задачу с установленным id.
-        return null;
+        // Если задача новая (id == null), генерируем id и сохраняем
+        if (task.getId() == null) {
+            long newId = idGenerator.getAndIncrement();
+            // Создаём копию задачи с установленным id, чтобы не изменять исходный объект
+            Task taskWithId = task.withId(newId); // предполагаем наличие метода withId
+            storage.put(newId, taskWithId);
+            return taskWithId;
+        } else {
+            // Задача с существующим id — обновляем (перезаписываем)
+            storage.put(task.getId(), task);
+            return task;
+        }
     }
 
     @Override
@@ -42,9 +64,10 @@ public class InMemoryTaskRepository implements TaskRepository{
 
     @Override
     public List<Task> findSubtasksByParentId(Long parentId) {
-        // TODO: пройти по всем задачам и выбрать те, у которых parentId совпадает.
-        // В модели Task пока нет поля parentId, нужно добавить или искать по-другому.
-        // Для упрощения можно хранить подзадачи внутри родительской задачи и здесь возвращать их.
-        return null;
+        // TODO: реализовать поиск подзадач.
+        // В текущей модели подзадачи хранятся внутри родительской задачи как поле subtasks.
+        // Для поиска всех подзадач по parentId потребуется либо индекс, либо перебор всех задач.
+        // В целях упрощения на ранних этапах можно возвращать пустой список.
+        return new ArrayList<>();
     }
 }
