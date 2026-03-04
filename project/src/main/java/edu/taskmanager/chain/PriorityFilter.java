@@ -1,24 +1,34 @@
 package edu.taskmanager.chain;
 
+
 import edu.taskmanager.model.Task;
 import edu.taskmanager.util.Priority;
-import java.util.List;
-import java.util.stream.Collectors;
+
 
 /**
- * Фильтр задач по приоритету.
+ * Фильтр, пропускающий задачи только с заданным приоритетом.
  */
 public class PriorityFilter implements TaskFilter {
-    private final Priority priority;
+    private final Priority requiredPriority;
+    private TaskFilter next;
 
-    public PriorityFilter(Priority priority) {
-        this.priority = priority;
+    public PriorityFilter(Priority requiredPriority) {
+        this.requiredPriority = requiredPriority;
     }
 
     @Override
-    public List<Task> apply(List<Task> tasks) {
-        return tasks.stream()
-                .filter(task -> task.getPriority() == priority)
-                .collect(Collectors.toList());
+    public boolean filter(Task task) {
+        boolean priorityMatches = task.getPriority() == requiredPriority;
+
+        if (!priorityMatches) { return false; }
+
+        if (next != null) { return next.filter(task); }
+
+        return true;
+    }
+
+    @Override
+    public void setNext(TaskFilter next) {
+        this.next = next;
     }
 }

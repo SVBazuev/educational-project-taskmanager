@@ -11,7 +11,6 @@ import edu.taskmanager.util.Priority;
 import edu.taskmanager.util.TaskStatus;
 
 
-
 /**
  * Класс представляет задачу в системе.
  * Поля:
@@ -33,11 +32,13 @@ public class Task {
     private String title;
     private String description;
     private LocalDateTime dueDate;
+    private User creator;
     private Priority priority;
     private TaskStatus status;
     private Project project;
     private List<Tag> tags;
     private List<Task> subtasks;
+    private List<User> contractors;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Long parentId;
@@ -49,6 +50,7 @@ public class Task {
     public Task() {
         this.tags = new ArrayList<>();
         this.subtasks = new ArrayList<>();
+        this.contractors = new ArrayList<>();
     }
 
     /**
@@ -59,25 +61,30 @@ public class Task {
      * @param priority приоритет
      * @param status   статус
      */
-    public Task(String title, LocalDateTime dueDate, Priority priority, TaskStatus status) {
+    public Task(
+            String title, LocalDateTime dueDate,
+            User creator,
+            Priority priority, TaskStatus status) {
         this();
         this.title = title;
         this.dueDate = dueDate;
+        this.creator = creator;
         this.priority = priority;
         this.status = status;
     }
 
     // Конструктор копирования
     public Task(Task other) {
-        this.id = other.id;
         this.title = other.title;
         this.description = other.description;
         this.dueDate = other.dueDate;
+        this.creator = other.creator;
         this.priority = other.priority;
         this.status = other.status;
         this.project = other.project;
         this.tags = other.tags;
         this.subtasks = other.subtasks;
+        this.contractors = other.contractors;
         this.createdAt = other.createdAt;
         this.updatedAt = other.updatedAt;
         this.parentId = other.parentId;
@@ -89,11 +96,13 @@ public class Task {
     public String getTitle() { return title; }
     public String getDescription() { return description; }
     public LocalDateTime getDueDate() { return dueDate; }
+    public User getCreator() { return creator; }
     public Priority getPriority() { return priority; }
     public TaskStatus getStatus() { return status; }
     public Project getProject() { return project; }
     public List<Tag> getTags() { return tags; }
     public List<Task> getSubtasks() { return subtasks; }
+    public List<User> getContractors() { return contractors; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public Long getParentId() { return parentId; }
@@ -110,6 +119,10 @@ public class Task {
 
     public void setDueDate(LocalDateTime dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
     }
 
     public void setPriority(Priority priority) {
@@ -130,6 +143,10 @@ public class Task {
 
     public void setSubtasks(List<Task> subtasks) {
         this.subtasks = subtasks != null ? subtasks : new ArrayList<>();
+    }
+
+    public void setContractors(List<User> contractors) {
+        this.contractors = contractors != null ? contractors : new ArrayList<>();
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
@@ -197,6 +214,26 @@ public class Task {
         }
     }
 
+    /**
+     * Добавляет исполнителя к задаче.
+     *
+     * @param tag тег для добавления
+     */
+    public void addСontractor(User user) {
+        if (user != null && !contractors.contains(user)) {
+            contractors.add(user);
+        }
+    }
+
+    /**
+     * Удаляет тег из задачи.
+     *
+     * @param tag тег для удаления
+     */
+    public void removeContractor(User user) {
+        contractors.remove(user);
+    }
+
     // Метод withId, использующий конструктор копирования
     public Task withId(Long newId) {
         Task copy = new Task(this);
@@ -244,11 +281,14 @@ public class Task {
             .append(", title='").append(title).append('\'')
             .append(", description='").append(description).append('\'')
             .append(", dueDate=").append(dueDate)
+            .append(", creator=").append(creator)
             .append(", priority=").append(priority)
             .append(", status=").append(status)
             .append(", project=").append((project != null ? project.getName() : "null"))
             .append(", tags=").append(tags.size())
             .append(", subtasks=").append(subtasks.size())
+            //TODO выводить список логинов через joined
+            .append(", contractors=").append(contractors.size())
             .append(", createdAt=").append(createdAt)
             .append(", updatedAt=").append(updatedAt)
             .append(", parentId=").append(parentId)
