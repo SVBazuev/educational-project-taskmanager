@@ -19,31 +19,19 @@ public class InMemoryTagRepository implements TagRepository {
 
     @Override
     public Tag save(Tag tag) {
-        // Проверяем, не существует ли уже тег с таким именем (если это новый тег)
-        if (tag.getId() == null) {
-            // Проверим по nameToId, есть ли уже такое имя
-            Long existingId = nameToId.get(tag.getName());
-            if (existingId != null) {
-                // Возвращаем существующий тег (не создаём новый)
-                return storage.get(existingId);
-            }
-            // Создаём новый
-            long newId = idGenerator.getAndIncrement();
-            Tag tagWithId = tag.withId(newId);
-            storage.put(newId, tagWithId);
-            nameToId.put(tagWithId.getName(), newId);
-            return tagWithId;
-        } else {
-            // Обновление существующего
-            Tag old = storage.get(tag.getId());
-            if (old != null && !old.getName().equals(tag.getName())) {
-                // Имя изменилось – нужно обновить индекс
-                nameToId.remove(old.getName());
-                nameToId.put(tag.getName(), tag.getId());
-            }
-            storage.put(tag.getId(), tag);
-            return tag;
+        // Проверим по nameToId, есть ли уже такое имя
+        Long existingId = nameToId.get(tag.getName());
+        if (existingId != null) {
+            // Возвращаем существующий тег (не создаём новый)
+            return storage.get(existingId);
         }
+        // Создаём новый
+        long newId = idGenerator.getAndIncrement();
+        Tag tagWithId = tag.withId(newId);
+        storage.put(newId, tagWithId);
+        nameToId.put(tagWithId.getName(), newId);
+        
+        return tagWithId;
     }
 
     @Override
