@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class ConsoleApplication {
     private final CommandRegistry registry = new CommandRegistry();
     private final CommandParser parser = new CommandParser();
-    private final Scanner scanner = new Scanner(System.in, "CP866");
+    private final Scanner scanner = new Scanner(System.in);
     private boolean running = true;
 
     public void start() {
