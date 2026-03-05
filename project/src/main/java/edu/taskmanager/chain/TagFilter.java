@@ -1,9 +1,9 @@
 package edu.taskmanager.chain;
 
 
-
 import edu.taskmanager.model.Tag;
 import edu.taskmanager.model.Task;
+
 
 /**
  * Фильтр, пропускающий задачи, содержащие заданный тег.

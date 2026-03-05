@@ -31,4 +31,5 @@ public class StatusFilter implements TaskFilter {
     public void setNext(TaskFilter next) {
         this.next = next;
     }
+
 }
