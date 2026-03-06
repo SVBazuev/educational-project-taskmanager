@@ -91,7 +91,7 @@ public abstract class TaskDecorator {
     }
 
     /**
-     * Получаем обернутую задачу
+     * Получаем сам Task из обертки
      */
     public Task getWrappedTask() {
         return wrappedTask;
