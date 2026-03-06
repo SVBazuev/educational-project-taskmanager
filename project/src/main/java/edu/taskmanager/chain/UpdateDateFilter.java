@@ -6,29 +6,29 @@ import java.time.LocalDateTime;
 
 
 /**
- * Фильтр, пропускающий задачи по дате обновления задачи.
- * Поля from и to представляют собой временные метки LocalDateTime,
+ * Фильтр, пропускающий задачи по дате последнего обновления задачи.
+ * Поля startDate и endDate представляют собой временные метки LocalDateTime,
  * которые определяют диапазон дат для фильтрации задач.
- * 1. from - начальная дата диапазона, задачи, созданные раньше этой даты будут отфильтрованы.
- * 2. to - конечная дата диапазона, задачи, созданные раньше этой даты будут отфильтрованы.
+ * 1. startDate - начальная дата диапазона. Задачи, обновленные раньше этой даты будут отфильтрованы.
+ * 2. endDate - конечная дата диапазона. Задачи, обновленные позже этой даты будут отфильтрованы.
  */
 public class UpdateDateFilter implements TaskFilter {
-    private final LocalDateTime from;
-    private final LocalDateTime to;
+    private final LocalDateTime startDate;
+    private final LocalDateTime endDate;
     private TaskFilter next;
 
-    public UpdateDateFilter(LocalDateTime from, LocalDateTime to) {
-        this.from = from;
-        this.to = to;
+    public UpdateDateFilter(LocalDateTime startDate, LocalDateTime endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     @Override
     public boolean filter(Task task) {
       LocalDateTime updateDate = task.getUpdatedAt();
 
-      if (from != null && updateDate.isBefore(from)) { return false; }
+      if (startDate != null && updateDate.isBefore(startDate)) { return false; }
 
-      if (to != null && updateDate.isAfter(to)) { return false; }
+      if (endDate != null && updateDate.isAfter(endDate)) { return false; }
 
       if (next != null) { return next.filter(task); }
 

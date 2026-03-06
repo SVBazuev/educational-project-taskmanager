@@ -7,28 +7,28 @@ import java.time.LocalDateTime;
 
 /**
  * Фильтр, пропускающий задачи по дате создания задачи.
- * Поля from и to представляют собой временные метки LocalDateTime,
+ * Поля startDate и endDate представляют собой временные метки LocalDateTime,
  * которые определяют диапазон дат для фильтрации задач.
- * 1. from - начальная дата диапазона, задачи, созданные раньше этой даты будут отфильтрованы.
- * 2. to - конечная дата диапазона, задачи, созданные раньше этой даты будут отфильтрованы.
+ * 1. startDate - начальная дата диапазона. Задачи, созданные раньше этой даты будут отфильтрованы.
+ * 2. endDate - конечная дата диапазона. Задачи, созданные позже этой даты будут отфильтрованы.
  */
 public class CreationDateFilter implements TaskFilter {
-    private final LocalDateTime from;
-    private final LocalDateTime to;
+    private final LocalDateTime startDate;
+    private final LocalDateTime endDate;
     private TaskFilter next;
 
-    public CreationDateFilter(LocalDateTime from, LocalDateTime to) {
-        this.from = from;
-        this.to = to;
+    public CreationDateFilter(LocalDateTime startDate, LocalDateTime endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     @Override
     public boolean filter(Task task) {
         LocalDateTime creationDate = task.getCreatedAt();
 
-        if (from != null && creationDate.isBefore(from)) { return false; }
+        if (startDate != null && creationDate.isBefore(startDate)) { return false; }
 
-        if (to != null && creationDate.isAfter(to)) { return false; }
+        if (endDate != null && creationDate.isAfter(endDate)) { return false; }
 
         if (next != null) { return next.filter(task); }
 
