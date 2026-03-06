@@ -7,12 +7,12 @@ import java.util.List;
 /**
  * Сортировка задач по количеству тегов (от большего к меньшему).
  */
-public class TagsSortingStrategy implements TaskSortingStrategy {
+public class TagsCountSortingStrategy implements TaskSortingStrategy {
 
     @Override
     public List<Task> sort(List<Task> tasks) {
         // Компаратор для сортировки по количеству тегов
-        Comparator<Task> comparator = Comparator.comparing(task -> task.getTags() != null ? task.getTags().size() : 0).reversed();
+        Comparator<Task> comparator = Comparator.comparing((Task task) -> task.getTags() != null ? task.getTags().size() : 0).reversed();
 
         // Выполняем пузырьковую сортировку
         bubbleSort(tasks, comparator);
@@ -42,3 +42,4 @@ public class TagsSortingStrategy implements TaskSortingStrategy {
         }
     }
 }
+
