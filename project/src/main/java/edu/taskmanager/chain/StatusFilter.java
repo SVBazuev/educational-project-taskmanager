@@ -1,24 +1,35 @@
 package edu.taskmanager.chain;
 
+
 import edu.taskmanager.model.Task;
 import edu.taskmanager.util.TaskStatus;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
+/**
+ * Фильтр, пропускающий задачи только с заданным статусом.
+ */
 public class StatusFilter implements TaskFilter {
+    private final TaskStatus requiredStatus;
+    private TaskFilter next;
 
-    private final TaskStatus status;
-
-    public StatusFilter(TaskStatus status) {
-        this.status = status;
+    public StatusFilter(TaskStatus requiredStatus) {
+        this.requiredStatus = requiredStatus;
     }
 
     @Override
-    public List<Task> apply(List<Task> tasks) {
-        return tasks.stream()
-                .filter(task -> task.getStatus() == status)
-                .collect(Collectors.toList());
+    public boolean filter(Task task) {
+        boolean statusMatches = task.getStatus() == requiredStatus;
+
+        if (!statusMatches) { return false; }
+
+        if (next != null) { return next.filter(task); }
+
+        return true;
+    }
+
+    @Override
+    public void setNext(TaskFilter next) {
+        this.next = next;
     }
 
 }
