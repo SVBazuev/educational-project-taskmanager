@@ -1,0 +1,44 @@
+package edu.taskmanager.strategy.sorting;
+
+import edu.taskmanager.model.Task;
+import java.util.Comparator;
+import java.util.List;
+
+/**
+ * Сортировка задач по количеству тегов (от большего к меньшему).
+ */
+public class TagsSortingStrategy implements TaskSortingStrategy {
+
+    @Override
+    public List<Task> sort(List<Task> tasks) {
+        // Компаратор для сортировки по количеству тегов
+        Comparator<Task> comparator = Comparator.comparing(task -> task.getTags() != null ? task.getTags().size() : 0).reversed();
+
+        // Выполняем пузырьковую сортировку
+        bubbleSort(tasks, comparator);
+
+        return tasks;
+    }
+
+    /**
+     * Метод пузырьковой сортировки.
+     */
+    private void bubbleSort(List<Task> tasks, Comparator<Task> comparator) {
+        int n = tasks.size();
+        boolean swapped;
+
+        for (int i = 0; i < n - 1; i++) {
+            swapped = false;
+            for (int j = 0; j < n - i - 1; j++) {
+                if (comparator.compare(tasks.get(j), tasks.get(j + 1)) > 0) {
+                    // Меняем местами задачи
+                    Task temp = tasks.get(j);
+                    tasks.set(j, tasks.get(j + 1));
+                    tasks.set(j + 1, temp);
+                    swapped = true;
+                }
+            }
+            if (!swapped) break; // Если не было обменов, список уже отсортирован
+        }
+    }
+}
