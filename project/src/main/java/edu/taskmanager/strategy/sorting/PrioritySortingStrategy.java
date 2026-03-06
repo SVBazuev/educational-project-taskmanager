@@ -1,29 +1,32 @@
 package edu.taskmanager.strategy.sorting;
 
 import edu.taskmanager.model.Task;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.ListIterator;
 
 /**
- * Сортировка по приоритету (высокий → низкий) с использованием массива и итератора.
+ * Сортировка по приоритету (высокий → низкий) с использованием сортировки вставками.
  */
 public class PrioritySortingStrategy implements TaskSortingStrategy {
 
     @Override
     public List<Task> sort(List<Task> tasks) {
-        // Преобразуем список в массив
-        Task[] taskArray = tasks.toArray(new Task[0]);
+        // Компаратор для сортировки по убыванию приоритета
+        Comparator<Task> comparator = Comparator.comparing((Task task) -> task.getPriority().ordinal()).reversed();
 
-        // Сортируем массив с использованием компаратора
-        Arrays.sort(taskArray, Comparator.comparing((Task task) -> task.getPriority().ordinal()).reversed());
+        // Реализация сортировки вставками
+        for (int i = 1; i < tasks.size(); i++) {
+            Task key = tasks.get(i);
+            int j = i - 1;
 
-        // Обновляем оригинальный список через итератор
-        ListIterator<Task> iterator = tasks.listIterator();
-        for (Task task : taskArray) {
-            iterator.next();
-            iterator.set(task);
+            // Сдвигаем элементы вправо, если они меньше текущего элемента
+            while (j >= 0 && comparator.compare(tasks.get(j), key) > 0) {
+                tasks.set(j + 1, tasks.get(j));
+                j--;
+            }
+
+            // Вставляем текущий элемент на правильное место
+            tasks.set(j + 1, key);
         }
 
         return tasks;
