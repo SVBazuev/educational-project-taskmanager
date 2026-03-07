@@ -5,14 +5,14 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Сортировка по приоритету (высокий → низкий) с использованием пузырьковой сортировки.
+ * Сортировка задач по дате выполнения (от ближайшей к самой далёкой).
  */
-public class PrioritySortingStrategy implements TaskSortingStrategy {
+public class DueDateSortingStrategy implements TaskSortingStrategy {
 
     @Override
     public List<Task> sort(List<Task> tasks) {
-        // Компаратор для сортировки по убыванию приоритета
-        Comparator<Task> comparator = Comparator.comparing((Task task) -> task.getPriority().ordinal()).reversed();
+        // Компаратор для сортировки по дате выполнения
+        Comparator<Task> comparator = Comparator.comparing(Task::getDueDate);
 
         // Выполняем пузырьковую сортировку
         bubbleSort(tasks, comparator);
@@ -23,7 +23,7 @@ public class PrioritySortingStrategy implements TaskSortingStrategy {
     /**
      * Метод пузырьковой сортировки.
      */
-    private static void bubbleSort(List<Task> tasks, Comparator<Task> comparator) {
+    private void bubbleSort(List<Task> tasks, Comparator<Task> comparator) {
         int n = tasks.size();
         boolean swapped;
 
