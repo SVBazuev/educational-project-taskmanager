@@ -8,12 +8,12 @@ import java.time.LocalDateTime;
  * Диапазон включает начальную и конечную даты.
  */
 
-public class DueDateRangeFilter implements TaskFilter {
+public class DueDateFilter implements TaskFilter {
     private final LocalDateTime startDate;
     private final LocalDateTime endDate;
     private TaskFilter next;
 
-    public DueDateRangeFilter(LocalDateTime startDate, LocalDateTime endDate) {
+    public DueDateFilter(LocalDateTime startDate, LocalDateTime endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
     }
