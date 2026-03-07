@@ -1,22 +1,37 @@
 package edu.taskmanager.chain;
 
+
 import edu.taskmanager.model.Tag;
 import edu.taskmanager.model.Task;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
+/**
+ * Фильтр, пропускающий задачи, содержащие заданный тег.
+ */
 public class TagFilter implements TaskFilter {
-    private Tag tag = null;
+    private final Tag requiredTag;
+    private TaskFilter next;
 
-    public void setTag(Tag newTag){
-        this.tag = newTag;
+    public TagFilter(Tag requiredTag) {
+        this.requiredTag = requiredTag;
     }
 
     @Override
-    public List<Task> apply(List<Task> tasks) {
-        return tasks.stream()
-                .filter(task -> task.getTags() != null && task.getTags().contains(tag.getName()))
-                .collect(Collectors.toList());
+    public boolean filter(Task task) {
+        boolean hasTag = (
+            task.getTags() != null
+            && task.getTags().contains(requiredTag)
+        );
+
+        if (!hasTag) { return false; }
+
+        if (next != null) { return next.filter(task); }
+        
+        return true;
+    }
+
+    @Override
+    public void setNext(TaskFilter next) {
+        this.next = next;
     }
 }
