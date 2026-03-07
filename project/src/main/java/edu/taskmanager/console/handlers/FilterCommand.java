@@ -119,7 +119,7 @@ public class FilterCommand implements Command {
             }
         }
         // Фильтр по приоритету
-        if (criteria.containsKey("priority")) {
+       /** if (criteria.containsKey("priority")) {
             try {
                 Priority priority = Priority.valueOf(criteria.get("priorty").toUpperCase());
                 filterChain.addFilter(new PriorityFilter(priority));
@@ -132,7 +132,7 @@ public class FilterCommand implements Command {
             System.out.println("Не задано ни одного корректного критерия фильтрации.");
             return;
         }
-
+        */
         // Получаем все задачи и фильтруем
         List<Task> allTasks = taskRepository.findAll();
         List<Task> filtered = filterChain.apply(allTasks);
