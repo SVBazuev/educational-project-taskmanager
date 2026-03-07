@@ -1,15 +1,28 @@
 package edu.taskmanager.console.handlers;
 
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
-
-import edu.taskmanager.chain.*;
-import edu.taskmanager.model.*;
-import edu.taskmanager.repository.*;
-import edu.taskmanager.util.TaskStatus;
+import edu.taskmanager.chain.CreatorFilter;
+import edu.taskmanager.chain.FilterChain;
+import edu.taskmanager.chain.PriorityFilter;
+import edu.taskmanager.chain.ProjectFilter;
+import edu.taskmanager.chain.StatusFilter;
+import edu.taskmanager.chain.TagFilter;
 import edu.taskmanager.console.Command;
-
+import edu.taskmanager.model.Project;
+import edu.taskmanager.model.Tag;
+import edu.taskmanager.model.Task;
+import edu.taskmanager.model.User;
+import edu.taskmanager.repository.ProjectRepository;
+import edu.taskmanager.repository.TagRepository;
+import edu.taskmanager.repository.TaskRepository;
+import edu.taskmanager.repository.UserRepository;
+import edu.taskmanager.util.Priority;
+import edu.taskmanager.util.TaskStatus;
 
 public class FilterCommand implements Command {
     private final TaskRepository taskRepository;
@@ -105,7 +118,16 @@ public class FilterCommand implements Command {
                 return;
             }
         }
-
+        // Фильтр по приоритету
+        if (criteria.containsKey("priority")) {
+            try {
+                Priority priority = Priority.valueOf(criteria.get("priorty").toUpperCase());
+                filterChain.addFilter(new PriorityFilter(priority));
+            } catch (IllegalArgumentException e) {
+                System.out.println("Неверный приоритет. Допустимые: LOW, MEDIUM, HIGH, CRITICAL.");
+                return;
+            }
+        }
         if (filterChain.isEmpty()) {
             System.out.println("Не задано ни одного корректного критерия фильтрации.");
             return;
@@ -126,6 +148,6 @@ public class FilterCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "filter&ключ=значение... - фильтрация задач (status, tag, project)";
+        return "filter&ключ=значение... - фильтрация задач (status, tag, project,priority)";
     }
 }
