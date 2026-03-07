@@ -1,42 +1,70 @@
 [
   {
     "id": 1,
-    "name": "работа"
+    "name": "model"
   },
   {
     "id": 2,
-    "name": "личное"
+    "name": "repository"
   },
   {
     "id": 3,
-    "name": "учеба"
+    "name": "core"
   },
   {
     "id": 4,
-    "name": "спорт"
+    "name": "util"
   },
   {
     "id": 5,
-    "name": "здоровье"
+    "name": "builder"
   },
   {
     "id": 6,
-    "name": "финансы"
+    "name": "pattern"
   },
   {
     "id": 7,
-    "name": "путешествия"
+    "name": "demo"
   },
   {
     "id": 8,
-    "name": "хобби"
+    "name": "strategy"
   },
   {
     "id": 9,
-    "name": "семья"
+    "name": "service"
   },
   {
     "id": 10,
-    "name": "важное"
+    "name": "chain"
+  },
+  {
+    "id": 11,
+    "name": "proxy"
+  },
+  {
+    "id": 12,
+    "name": "decorator"
+  },
+  {
+    "id": 13,
+    "name": "adapter"
+  },
+  {
+    "id": 14,
+    "name": "integration"
+  },
+  {
+    "id": 15,
+    "name": "testing"
+  },
+  {
+    "id": 16,
+    "name": "final"
+  },
+  {
+    "id": 17,
+    "name": "presentation"
   }
 ]

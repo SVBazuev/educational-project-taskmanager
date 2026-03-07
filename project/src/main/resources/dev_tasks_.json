@@ -21,8 +21,16 @@
       },
       "tags": [
         {
-          "id": 10,
-          "name": "важное"
+          "id": 1,
+          "name": "model"
+        },
+        {
+          "id": 2,
+          "name": "repository"
+        },
+        {
+          "id": 3,
+          "name": "core"
         }
       ],
       "subtasks": [
@@ -47,8 +55,8 @@
           },
           "tags": [
             {
-              "id": 10,
-              "name": "важное"
+              "id": 1,
+              "name": "model"
             }
           ],
           "subtasks": [],
@@ -85,8 +93,8 @@
           },
           "tags": [
             {
-              "id": 10,
-              "name": "важное"
+              "id": 1,
+              "name": "model"
             }
           ],
           "subtasks": [],
@@ -121,7 +129,12 @@
             "description": "Проект по разработке Task Manager MVP",
             "tasks": []
           },
-          "tags": [],
+          "tags": [
+            {
+              "id": 1,
+              "name": "model"
+            }
+          ],
           "subtasks": [],
           "contractors": [
             {
@@ -154,7 +167,12 @@
             "description": "Проект по разработке Task Manager MVP",
             "tasks": []
           },
-          "tags": [],
+          "tags": [
+            {
+              "id": 1,
+              "name": "model"
+            }
+          ],
           "subtasks": [],
           "contractors": [
             {
@@ -187,7 +205,12 @@
             "description": "Проект по разработке Task Manager MVP",
             "tasks": []
           },
-          "tags": [],
+          "tags": [
+            {
+              "id": 4,
+              "name": "util"
+            }
+          ],
           "subtasks": [],
           "contractors": [
             {
@@ -222,8 +245,8 @@
           },
           "tags": [
             {
-              "id": 10,
-              "name": "важное"
+              "id": 2,
+              "name": "repository"
             }
           ],
           "subtasks": [],
@@ -266,8 +289,12 @@
       },
       "tags": [
         {
-          "id": 10,
-          "name": "важное"
+          "id": 5,
+          "name": "builder"
+        },
+        {
+          "id": 6,
+          "name": "pattern"
         }
       ],
       "subtasks": [
@@ -292,8 +319,8 @@
           },
           "tags": [
             {
-              "id": 10,
-              "name": "важное"
+              "id": 5,
+              "name": "builder"
             }
           ],
           "subtasks": [],
@@ -328,7 +355,12 @@
             "description": "Проект по разработке Task Manager MVP",
             "tasks": []
           },
-          "tags": [],
+          "tags": [
+            {
+              "id": 5,
+              "name": "builder"
+            }
+          ],
           "subtasks": [],
           "contractors": [
             {
@@ -361,7 +393,12 @@
             "description": "Проект по разработке Task Manager MVP",
             "tasks": []
           },
-          "tags": [],
+          "tags": [
+            {
+              "id": 7,
+              "name": "demo"
+            }
+          ],
           "subtasks": [],
           "contractors": [
             {
@@ -402,8 +439,12 @@
       },
       "tags": [
         {
-          "id": 10,
-          "name": "важное"
+          "id": 8,
+          "name": "strategy"
+        },
+        {
+          "id": 6,
+          "name": "pattern"
         }
       ],
       "subtasks": [
@@ -426,7 +467,12 @@
             "description": "Проект по разработке Task Manager MVP",
             "tasks": []
           },
-          "tags": [],
+          "tags": [
+            {
+              "id": 8,
+              "name": "strategy"
+            }
+          ],
           "subtasks": [],
           "contractors": [
             {
@@ -459,7 +505,12 @@
             "description": "Проект по разработке Task Manager MVP",
             "tasks": []
           },
-          "tags": [],
+          "tags": [
+            {
+              "id": 8,
+              "name": "strategy"
+            }
+          ],
           "subtasks": [],
           "contractors": [
             {
@@ -492,7 +543,12 @@
             "description": "Проект по разработке Task Manager MVP",
             "tasks": []
           },
-          "tags": [],
+          "tags": [
+            {
+              "id": 8,
+              "name": "strategy"
+            }
+          ],
           "subtasks": [],
           "contractors": [
             {
@@ -527,8 +583,12 @@
           },
           "tags": [
             {
-              "id": 10,
-              "name": "важное"
+              "id": 9,
+              "name": "service"
+            },
+            {
+              "id": 8,
+              "name": "strategy"
             }
           ],
           "subtasks": [],
@@ -572,7 +632,11 @@
       "tags": [
         {
           "id": 10,
-          "name": "важное"
+          "name": "chain"
+        },
+        {
+          "id": 6,
+          "name": "pattern"
         }
       ],
       "subtasks": [
@@ -598,7 +662,7 @@
           "tags": [
             {
               "id": 10,
-              "name": "важное"
+              "name": "chain"
             }
           ],
           "subtasks": [],
@@ -633,7 +697,12 @@
             "description": "Проект по разработке Task Manager MVP",
             "tasks": []
           },
-          "tags": [],
+          "tags": [
+            {
+              "id": 10,
+              "name": "chain"
+            }
+          ],
           "subtasks": [],
           "contractors": [
             {
@@ -666,7 +735,12 @@
             "description": "Проект по разработке Task Manager MVP",
             "tasks": []
           },
-          "tags": [],
+          "tags": [
+            {
+              "id": 10,
+              "name": "chain"
+            }
+          ],
           "subtasks": [],
           "contractors": [
             {
@@ -699,7 +773,12 @@
             "description": "Проект по разработке Task Manager MVP",
             "tasks": []
           },
-          "tags": [],
+          "tags": [
+            {
+              "id": 10,
+              "name": "chain"
+            }
+          ],
           "subtasks": [],
           "contractors": [
             {
@@ -735,7 +814,7 @@
           "tags": [
             {
               "id": 10,
-              "name": "важное"
+              "name": "chain"
             }
           ],
           "subtasks": [],
@@ -778,8 +857,12 @@
       },
       "tags": [
         {
-          "id": 10,
-          "name": "важное"
+          "id": 11,
+          "name": "proxy"
+        },
+        {
+          "id": 6,
+          "name": "pattern"
         }
       ],
       "subtasks": [
@@ -804,8 +887,8 @@
           },
           "tags": [
             {
-              "id": 10,
-              "name": "важное"
+              "id": 9,
+              "name": "service"
             }
           ],
           "subtasks": [],
@@ -842,8 +925,8 @@
           },
           "tags": [
             {
-              "id": 10,
-              "name": "важное"
+              "id": 9,
+              "name": "service"
             }
           ],
           "subtasks": [],
@@ -880,8 +963,8 @@
           },
           "tags": [
             {
-              "id": 10,
-              "name": "важное"
+              "id": 11,
+              "name": "proxy"
             }
           ],
           "subtasks": [],
@@ -916,7 +999,16 @@
             "description": "Проект по разработке Task Manager MVP",
             "tasks": []
           },
-          "tags": [],
+          "tags": [
+            {
+              "id": 9,
+              "name": "service"
+            },
+            {
+              "id": 11,
+              "name": "proxy"
+            }
+          ],
           "subtasks": [],
           "contractors": [
             {
@@ -957,8 +1049,12 @@
       },
       "tags": [
         {
-          "id": 10,
-          "name": "важное"
+          "id": 12,
+          "name": "decorator"
+        },
+        {
+          "id": 6,
+          "name": "pattern"
         }
       ],
       "subtasks": [
@@ -983,8 +1079,8 @@
           },
           "tags": [
             {
-              "id": 10,
-              "name": "важное"
+              "id": 12,
+              "name": "decorator"
             }
           ],
           "subtasks": [],
@@ -1019,7 +1115,12 @@
             "description": "Проект по разработке Task Manager MVP",
             "tasks": []
           },
-          "tags": [],
+          "tags": [
+            {
+              "id": 12,
+              "name": "decorator"
+            }
+          ],
           "subtasks": [],
           "contractors": [
             {
@@ -1052,7 +1153,16 @@
             "description": "Проект по разработке Task Manager MVP",
             "tasks": []
           },
-          "tags": [],
+          "tags": [
+            {
+              "id": 7,
+              "name": "demo"
+            },
+            {
+              "id": 12,
+              "name": "decorator"
+            }
+          ],
           "subtasks": [],
           "contractors": [
             {
@@ -1093,8 +1203,12 @@
       },
       "tags": [
         {
-          "id": 10,
-          "name": "важное"
+          "id": 13,
+          "name": "adapter"
+        },
+        {
+          "id": 6,
+          "name": "pattern"
         }
       ],
       "subtasks": [
@@ -1117,7 +1231,12 @@
             "description": "Проект по разработке Task Manager MVP",
             "tasks": []
           },
-          "tags": [],
+          "tags": [
+            {
+              "id": 13,
+              "name": "adapter"
+            }
+          ],
           "subtasks": [],
           "contractors": [
             {
@@ -1150,7 +1269,12 @@
             "description": "Проект по разработке Task Manager MVP",
             "tasks": []
           },
-          "tags": [],
+          "tags": [
+            {
+              "id": 13,
+              "name": "adapter"
+            }
+          ],
           "subtasks": [],
           "contractors": [
             {
@@ -1183,7 +1307,12 @@
             "description": "Проект по разработке Task Manager MVP",
             "tasks": []
           },
-          "tags": [],
+          "tags": [
+            {
+              "id": 13,
+              "name": "adapter"
+            }
+          ],
           "subtasks": [],
           "contractors": [
             {
@@ -1216,7 +1345,16 @@
             "description": "Проект по разработке Task Manager MVP",
             "tasks": []
           },
-          "tags": [],
+          "tags": [
+            {
+              "id": 9,
+              "name": "service"
+            },
+            {
+              "id": 13,
+              "name": "adapter"
+            }
+          ],
           "subtasks": [],
           "contractors": [
             {
@@ -1255,7 +1393,20 @@
         "description": "Проект по разработке Task Manager MVP",
         "tasks": []
       },
-      "tags": [],
+      "tags": [
+        {
+          "id": 13,
+          "name": "adapter"
+        },
+        {
+          "id": 14,
+          "name": "integration"
+        },
+        {
+          "id": 6,
+          "name": "pattern"
+        }
+      ],
       "subtasks": [
         {
           "id": 38,
@@ -1276,7 +1427,16 @@
             "description": "Проект по разработке Task Manager MVP",
             "tasks": []
           },
-          "tags": [],
+          "tags": [
+            {
+              "id": 13,
+              "name": "adapter"
+            },
+            {
+              "id": 14,
+              "name": "integration"
+            }
+          ],
           "subtasks": [],
           "contractors": [
             {
@@ -1309,7 +1469,16 @@
             "description": "Проект по разработке Task Manager MVP",
             "tasks": []
           },
-          "tags": [],
+          "tags": [
+            {
+              "id": 13,
+              "name": "adapter"
+            },
+            {
+              "id": 14,
+              "name": "integration"
+            }
+          ],
           "subtasks": [],
           "contractors": [
             {
@@ -1342,7 +1511,16 @@
             "description": "Проект по разработке Task Manager MVP",
             "tasks": []
           },
-          "tags": [],
+          "tags": [
+            {
+              "id": 13,
+              "name": "adapter"
+            },
+            {
+              "id": 14,
+              "name": "integration"
+            }
+          ],
           "subtasks": [],
           "contractors": [
             {
@@ -1383,8 +1561,12 @@
       },
       "tags": [
         {
-          "id": 10,
-          "name": "важное"
+          "id": 7,
+          "name": "demo"
+        },
+        {
+          "id": 14,
+          "name": "integration"
         }
       ],
       "subtasks": [
@@ -1409,8 +1591,8 @@
           },
           "tags": [
             {
-              "id": 10,
-              "name": "важное"
+              "id": 7,
+              "name": "demo"
             }
           ],
           "subtasks": [],
@@ -1445,7 +1627,16 @@
             "description": "Проект по разработке Task Manager MVP",
             "tasks": []
           },
-          "tags": [],
+          "tags": [
+            {
+              "id": 5,
+              "name": "builder"
+            },
+            {
+              "id": 7,
+              "name": "demo"
+            }
+          ],
           "subtasks": [],
           "contractors": [
             {
@@ -1478,7 +1669,16 @@
             "description": "Проект по разработке Task Manager MVP",
             "tasks": []
           },
-          "tags": [],
+          "tags": [
+            {
+              "id": 8,
+              "name": "strategy"
+            },
+            {
+              "id": 7,
+              "name": "demo"
+            }
+          ],
           "subtasks": [],
           "contractors": [
             {
@@ -1511,7 +1711,16 @@
             "description": "Проект по разработке Task Manager MVP",
             "tasks": []
           },
-          "tags": [],
+          "tags": [
+            {
+              "id": 10,
+              "name": "chain"
+            },
+            {
+              "id": 7,
+              "name": "demo"
+            }
+          ],
           "subtasks": [],
           "contractors": [
             {
@@ -1544,7 +1753,16 @@
             "description": "Проект по разработке Task Manager MVP",
             "tasks": []
           },
-          "tags": [],
+          "tags": [
+            {
+              "id": 11,
+              "name": "proxy"
+            },
+            {
+              "id": 7,
+              "name": "demo"
+            }
+          ],
           "subtasks": [],
           "contractors": [
             {
@@ -1577,7 +1795,16 @@
             "description": "Проект по разработке Task Manager MVP",
             "tasks": []
           },
-          "tags": [],
+          "tags": [
+            {
+              "id": 12,
+              "name": "decorator"
+            },
+            {
+              "id": 7,
+              "name": "demo"
+            }
+          ],
           "subtasks": [],
           "contractors": [
             {
@@ -1610,7 +1837,16 @@
             "description": "Проект по разработке Task Manager MVP",
             "tasks": []
           },
-          "tags": [],
+          "tags": [
+            {
+              "id": 13,
+              "name": "adapter"
+            },
+            {
+              "id": 7,
+              "name": "demo"
+            }
+          ],
           "subtasks": [],
           "contractors": [
             {
@@ -1651,8 +1887,12 @@
       },
       "tags": [
         {
-          "id": 10,
-          "name": "важное"
+          "id": 15,
+          "name": "testing"
+        },
+        {
+          "id": 16,
+          "name": "final"
         }
       ],
       "subtasks": [
@@ -1677,8 +1917,8 @@
           },
           "tags": [
             {
-              "id": 10,
-              "name": "важное"
+              "id": 15,
+              "name": "testing"
             }
           ],
           "subtasks": [],
@@ -1745,8 +1985,8 @@
           },
           "tags": [
             {
-              "id": 10,
-              "name": "важное"
+              "id": 17,
+              "name": "presentation"
             }
           ],
           "subtasks": [],
