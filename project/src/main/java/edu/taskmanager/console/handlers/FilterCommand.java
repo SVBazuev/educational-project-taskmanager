@@ -1,10 +1,12 @@
 package edu.taskmanager.console.handlers;
 
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 
 import edu.taskmanager.chain.*;
+import edu.taskmanager.console.parser.ArgumentParser;
 import edu.taskmanager.model.*;
 import edu.taskmanager.repository.*;
 import edu.taskmanager.util.TaskStatus;
@@ -30,7 +32,7 @@ public class FilterCommand implements Command {
     public void execute(List<String> args) {
         if (args.isEmpty()) {
             System.out.println("Использование: filter&ключ1=значение1&ключ2=значение2...");
-            System.out.println("Доступные ключи: status, tag, project");
+            System.out.println("Доступные ключи: status, tag, project, user, creationdate");
             return;
         }
 
@@ -106,6 +108,24 @@ public class FilterCommand implements Command {
             }
         }
 
+        // Фильтр пропускающий задачи по дате создания
+        if (criteria.containsKey("creationdate")) {
+            try {
+                Optional<LocalDateTime> creationDate = ArgumentParser.parseDate(criteria.get("creationdate"));
+                if (creationDate.isPresent()) {
+                    LocalDateTime dateCreation = creationDate.orElse(LocalDateTime.now());
+                    filterChain.addFilter(new CreationDateFilter(dateCreation, null));
+                } else {
+                    System.out.println("За данный период не найдено задач");
+                    return;
+                }
+            }
+            catch (NumberFormatException e) {
+                System.out.println("Введен не верный формат даты");
+                return;
+            }
+        }
+
         if (filterChain.isEmpty()) {
             System.out.println("Не задано ни одного корректного критерия фильтрации.");
             return;
@@ -126,6 +146,6 @@ public class FilterCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "filter&ключ=значение... - фильтрация задач (status, tag, project)";
+        return "filter&ключ=значение... - фильтрация задач (status, tag, project, user, creationdate)";
     }
 }
