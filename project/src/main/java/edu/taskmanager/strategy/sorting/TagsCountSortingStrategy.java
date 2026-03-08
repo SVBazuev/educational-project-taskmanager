@@ -5,14 +5,14 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Сортировка по приоритету (высокий → низкий) с использованием пузырьковой сортировки.
+ * Сортировка задач по количеству тегов (от большего к меньшему).
  */
-public class PrioritySortingStrategy implements TaskSortingStrategy {
+public class TagsCountSortingStrategy implements TaskSortingStrategy {
 
     @Override
     public List<Task> sort(List<Task> tasks) {
-        // Компаратор для сортировки по убыванию приоритета
-        Comparator<Task> comparator = Comparator.comparing((Task task) -> task.getPriority().ordinal()).reversed();
+        // Компаратор для сортировки по количеству тегов
+        Comparator<Task> comparator = Comparator.comparing((Task task) -> task.getTags() != null ? task.getTags().size() : 0).reversed();
 
         // Выполняем пузырьковую сортировку
         bubbleSort(tasks, comparator);
@@ -23,7 +23,7 @@ public class PrioritySortingStrategy implements TaskSortingStrategy {
     /**
      * Метод пузырьковой сортировки.
      */
-    private static void bubbleSort(List<Task> tasks, Comparator<Task> comparator) {
+    private void bubbleSort(List<Task> tasks, Comparator<Task> comparator) {
         int n = tasks.size();
         boolean swapped;
 
@@ -42,3 +42,4 @@ public class PrioritySortingStrategy implements TaskSortingStrategy {
         }
     }
 }
+
