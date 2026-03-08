@@ -8,7 +8,7 @@ import java.time.format.DateTimeParseException;
 
 
 public class ArgumentParser {
-    public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     public static LocalDateTime parseDate(String value) {
         try {

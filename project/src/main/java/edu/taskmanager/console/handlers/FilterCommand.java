@@ -121,7 +121,6 @@ public class FilterCommand implements Command {
                     return;
                 }
             }
-
             if (criteria.containsKey("enddate")) {
                 String dateString = criteria.get("enddate");
                 endDate = ArgumentParser.parseDate(dateString);
@@ -130,7 +129,6 @@ public class FilterCommand implements Command {
                     return;
                 }
             }
-
             if (startDate != null || endDate != null) {
                 filterChain.addFilter(new CreationDateFilter(startDate, endDate));
             } else {
@@ -141,24 +139,6 @@ public class FilterCommand implements Command {
             System.out.println("Введен не верный формат даты");
             return;
         }
-
-        // Фильтр пропускающий задачи по дате создания
-//        if (criteria.containsKey("enddate")) {
-//            try {
-//                String dateString = criteria.get("enddate");
-//                LocalDateTime endDate = ArgumentParser.parseDate(dateString);
-//                if (endDate != null){
-//                    filterChain.addFilter(new CreationDateFilter(endDate, null));
-//                } else {
-//                    System.out.println("За данный период не найдено задач");
-//                    return;
-//                }
-//            }
-//            catch (NumberFormatException e) {
-//                System.out.println("Введен не верный формат даты");
-//                return;
-//            }
-//        }
 
         if (filterChain.isEmpty()) {
             System.out.println("Не задано ни одного корректного критерия фильтрации.");
