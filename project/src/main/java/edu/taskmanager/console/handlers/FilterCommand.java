@@ -2,6 +2,7 @@ package edu.taskmanager.console.handlers;
 
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 
@@ -115,19 +116,24 @@ public class FilterCommand implements Command {
         try {
             if (criteria.containsKey("startdate")) {
                 String dateString = criteria.get("startdate");
-                startDate = ArgumentParser.parseDate(dateString);
-                if (startDate == null) {
-                    System.out.println("Неверный формат даты начала");
+                try {
+                    startDate = LocalDateTime.parse(dateString, ArgumentParser.DATE_FORMATTER);
+                } catch (DateTimeParseException e) {
+                    System.out.println("Неверный формат даты начала, используйте формат даты: yyyy-MM-dd HH:mm");
                     return;
                 }
             }
             if (criteria.containsKey("enddate")) {
                 String dateString = criteria.get("enddate");
-                endDate = ArgumentParser.parseDate(dateString);
-                if (endDate == null) {
-                    System.out.println("Неверный формат даты окончания");
+                try {
+                    endDate = LocalDateTime.parse(dateString, ArgumentParser.DATE_FORMATTER);
+                } catch (DateTimeParseException e) {
+                    System.out.println("Неверный формат даты окончания, используйте формат даты: yyyy-MM-dd HH:mm");
                     return;
                 }
+            }
+            if (startDate !=null && endDate!= null&& startDate.isAfter(endDate)) {
+                System.out.println("Дата начала не может быть позже даты окончания");
             }
             if (startDate != null || endDate != null) {
                 filterChain.addFilter(new CreationDateFilter(startDate, endDate));
@@ -135,8 +141,8 @@ public class FilterCommand implements Command {
                 System.out.println("Не заданы даты фильтрации");
                 return;
             }
-        } catch (NumberFormatException e) {
-            System.out.println("Введен не верный формат даты");
+        } catch (Exception e) {
+            System.out.println("Введен не верный формат даты, используйте формат даты: yyyy-MM-dd HH:mm");
             return;
         }
 
