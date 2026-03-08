@@ -58,6 +58,7 @@ public class ConsoleApplication {
         Command update = new UpdateCommand(taskRepo, projectRepo, tagRepo, userRepo);
         Command delete = new DeleteCommand(taskRepo, projectRepo, tagRepo, userRepo);
         Command filter = new FilterCommand(taskRepo, tagRepo, projectRepo, userRepo);
+        Command sorting = new SortingCommand(taskRepo, tagRepo, projectRepo, userRepo);
         Command help = new HelpCommand(registry);
         Command exit = new ExitCommand(() -> running = false);
 
@@ -68,6 +69,7 @@ public class ConsoleApplication {
         registry.register("update", update);
         registry.register("delete", delete);
         registry.register("filter", filter);
+        registry.register("sorting", sorting);
         registry.register("help", help);
         registry.register("exit", exit);
     }

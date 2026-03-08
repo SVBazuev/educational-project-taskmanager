@@ -1,19 +1,24 @@
 package edu.taskmanager.console.handlers;
 
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-
-import edu.taskmanager.model.*;
-import edu.taskmanager.repository.*;
-import edu.taskmanager.util.Priority;
-import edu.taskmanager.console.Command;
-import edu.taskmanager.util.TaskStatus;
 import edu.taskmanager.builder.TaskBuilder;
-
+import edu.taskmanager.console.Command;
+import edu.taskmanager.model.Project;
+import edu.taskmanager.model.Tag;
+import edu.taskmanager.model.Task;
+import edu.taskmanager.model.User;
+import edu.taskmanager.repository.ProjectRepository;
+import edu.taskmanager.repository.TagRepository;
+import edu.taskmanager.repository.TaskRepository;
+import edu.taskmanager.repository.UserRepository;
+import edu.taskmanager.util.Priority;
+import edu.taskmanager.util.TaskStatus;
 
 public class CreateCommand implements Command {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -38,38 +43,51 @@ public class CreateCommand implements Command {
             System.out.println("Не указан тип создаваемого объекта. Используйте: create <task|project|tag|user> ...");
             return;
         }
+        
         String type = args.get(0).toLowerCase();
         List<String> params = args.subList(1, args.size());
+        
+        // Парсим аргументы в карту критериев
+        Map<String, String> criteria = new HashMap<>();
+        for (String arg : params) {
+            String[] kv = arg.split("=", 2);
+            if (kv.length == 2) {
+                criteria.put(kv[0].toLowerCase(), kv[1]);
+            } else {
+                System.out.println("Пропущен некорректный аргумент: " + arg);
+            }
+        }
 
         switch (type) {
-            case "task" -> createTask(params);
-            case "project" -> createProject(params);
-            case "tag" -> createTag(params);
-            case "user" -> createUser(params);
+            case "task" -> createTask(criteria);
+            case "project" -> createProject(criteria);
+            case "tag" -> createTag(criteria);
+            case "user" -> createUser(criteria);
             default -> System.out.println("Неизвестный тип: " + type);
         }
     }
 
-    private void createTask(List<String> params) {
-        // Формат: create task <title> [dueDate] [priority]
-        if (params.isEmpty()) {
-            System.out.println("Использование: create task <title> [dueDate(YYYY-MM-DD HH:MM)] [priority]");
+    private void createTask(Map<String, String> criteria) {
+        if (criteria.isEmpty() || !criteria.containsKey("title")) {
+            System.out.println("Использование: create task title=\"Название задачи\" [dueDate=\"2024-12-31 23:59\"] [priority=\"MEDIUM\"]");
             return;
         }
-        String title = params.get(0);
+        
+        String title = criteria.get("title");
         LocalDateTime dueDate = LocalDateTime.now().plusDays(1);
         Priority priority = Priority.MEDIUM;
 
-        if (params.size() >= 2) {
+        if (criteria.containsKey("dueDate")) {
             try {
-                dueDate = LocalDateTime.parse(params.get(1), DATE_FORMATTER);
+                dueDate = LocalDateTime.parse(criteria.get("dueDate"), DATE_FORMATTER);
             } catch (DateTimeParseException e) {
                 System.out.println("Неверный формат даты. Используйте YYYY-MM-DD HH:MM. Будет установлена дата по умолчанию.");
             }
         }
-        if (params.size() >= 3) {
+        
+        if (criteria.containsKey("priority")) {
             try {
-                priority = Priority.valueOf(params.get(2).toUpperCase());
+                priority = Priority.valueOf(criteria.get("priority").toUpperCase());
             } catch (IllegalArgumentException e) {
                 System.out.println("Неверный приоритет. Допустимые: LOW, MEDIUM, HIGH, CRITICAL. Установлен MEDIUM.");
             }
@@ -86,14 +104,14 @@ public class CreateCommand implements Command {
         System.out.println("Создана задача: " + saved);
     }
 
-    private void createProject(List<String> params) {
-        // Формат: create project <name> [description]
-        if (params.isEmpty()) {
-            System.out.println("Использование: create project <name> [description]");
+    private void createProject(Map<String, String> criteria) {
+        if (criteria.isEmpty() || !criteria.containsKey("name")) {
+            System.out.println("Использование: create project name=\"Название проекта\" [description=\"Описание\"]");
             return;
         }
-        String name = params.get(0);
-        String description = params.size() >= 2 ? params.get(1) : "";
+        
+        String name = criteria.get("name");
+        String description = criteria.getOrDefault("description", "");
 
         Project project = new Project.ProjectBuilder()
                 .setName(name)
@@ -104,27 +122,29 @@ public class CreateCommand implements Command {
         System.out.println("Создан проект: " + saved);
     }
 
-    private void createTag(List<String> params) {
-        // Формат: create tag <name>
-        if (params.isEmpty()) {
-            System.out.println("Использование: create tag <name>");
+    private void createTag(Map<String, String> criteria) {
+        if (criteria.isEmpty() || !criteria.containsKey("name")) {
+            System.out.println("Использование: create tag name=\"Название тега\"");
             return;
         }
-        String name = params.get(0);
+        
+        String name = criteria.get("name");
         Tag tag = new Tag(name);
         Tag saved = tagRepository.save(tag);
         System.out.println("Создан тег: " + saved);
     }
 
-    private void createUser(List<String> params) {
-        // Формат: create user <username> <password> <role>
-        if (params.size() < 3) {
-            System.out.println("Использование: create user <username> <password> <role(ADMIN|USER|GUEST)>");
+    private void createUser(Map<String, String> criteria) {
+        if (criteria.size() < 3 || !criteria.containsKey("username") 
+                || !criteria.containsKey("password") || !criteria.containsKey("role")) {
+            System.out.println("Использование: create user username=\"Имя\" password=\"Пароль\" role=\"ADMIN|USER|GUEST\"");
             return;
         }
-        String username = params.get(0);
-        String password = params.get(1);
-        String roleStr = params.get(2).toUpperCase();
+        
+        String username = criteria.get("username");
+        String password = criteria.get("password");
+        String roleStr = criteria.get("role").toUpperCase();
+        
         User.Role role;
         try {
             role = User.Role.valueOf(roleStr);
@@ -132,6 +152,7 @@ public class CreateCommand implements Command {
             System.out.println("Неверная роль. Допустимые: ADMIN, USER, GUEST.");
             return;
         }
+        
         User user = new User(username, password, role);
         User saved = userRepository.save(user);
         System.out.println("Создан пользователь: " + saved);
