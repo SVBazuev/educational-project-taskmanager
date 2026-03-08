@@ -1,13 +1,13 @@
 package edu.taskmanager.console.handlers;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import edu.taskmanager.builder.TaskBuilder;
+import edu.taskmanager.console.parser.ArgumentParser;
 import edu.taskmanager.console.Command;
 import edu.taskmanager.model.Project;
 import edu.taskmanager.model.Tag;
@@ -21,8 +21,6 @@ import edu.taskmanager.util.Priority;
 import edu.taskmanager.util.TaskStatus;
 
 public class CreateCommand implements Command {
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
     private final TagRepository tagRepository;
@@ -43,10 +41,10 @@ public class CreateCommand implements Command {
             System.out.println("Не указан тип создаваемого объекта. Используйте: create <task|project|tag|user> ...");
             return;
         }
-        
+
         String type = args.get(0).toLowerCase();
         List<String> params = args.subList(1, args.size());
-        
+
         // Парсим аргументы в карту критериев
         Map<String, String> criteria = new HashMap<>();
         for (String arg : params) {
@@ -72,19 +70,22 @@ public class CreateCommand implements Command {
             System.out.println("Использование: create task title=\"Название задачи\" [dueDate=\"2024-12-31 23:59\"] [priority=\"MEDIUM\"]");
             return;
         }
-        
+
         String title = criteria.get("title");
         LocalDateTime dueDate = LocalDateTime.now().plusDays(1);
         Priority priority = Priority.MEDIUM;
 
-        if (criteria.containsKey("dueDate")) {
+        if (criteria.containsKey("duedate")) {
             try {
-                dueDate = LocalDateTime.parse(criteria.get("dueDate"), DATE_FORMATTER);
+                dueDate = LocalDateTime.parse(
+                    criteria.get("duedate"),
+                    ArgumentParser.DATE_FORMATTER
+                );
             } catch (DateTimeParseException e) {
                 System.out.println("Неверный формат даты. Используйте YYYY-MM-DD HH:MM. Будет установлена дата по умолчанию.");
             }
         }
-        
+
         if (criteria.containsKey("priority")) {
             try {
                 priority = Priority.valueOf(criteria.get("priority").toUpperCase());
@@ -109,7 +110,7 @@ public class CreateCommand implements Command {
             System.out.println("Использование: create project name=\"Название проекта\" [description=\"Описание\"]");
             return;
         }
-        
+
         String name = criteria.get("name");
         String description = criteria.getOrDefault("description", "");
 
@@ -127,7 +128,7 @@ public class CreateCommand implements Command {
             System.out.println("Использование: create tag name=\"Название тега\"");
             return;
         }
-        
+
         String name = criteria.get("name");
         Tag tag = new Tag(name);
         Tag saved = tagRepository.save(tag);
@@ -135,16 +136,16 @@ public class CreateCommand implements Command {
     }
 
     private void createUser(Map<String, String> criteria) {
-        if (criteria.size() < 3 || !criteria.containsKey("username") 
+        if (criteria.size() < 3 || !criteria.containsKey("username")
                 || !criteria.containsKey("password") || !criteria.containsKey("role")) {
             System.out.println("Использование: create user username=\"Имя\" password=\"Пароль\" role=\"ADMIN|USER|GUEST\"");
             return;
         }
-        
+
         String username = criteria.get("username");
         String password = criteria.get("password");
         String roleStr = criteria.get("role").toUpperCase();
-        
+
         User.Role role;
         try {
             role = User.Role.valueOf(roleStr);
@@ -152,7 +153,7 @@ public class CreateCommand implements Command {
             System.out.println("Неверная роль. Допустимые: ADMIN, USER, GUEST.");
             return;
         }
-        
+
         User user = new User(username, password, role);
         User saved = userRepository.save(user);
         System.out.println("Создан пользователь: " + saved);
