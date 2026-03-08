@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "username": "svbazuev",
+    "passwordHash": "svbazuev",
+    "role": "USER"
+  },
+  {
+    "id": 2,
+    "username": "ilya",
+    "passwordHash": "ilya",
+    "role": "USER"
+  },
+  {
+    "id": 3,
+    "username": "sergei",
+    "passwordHash": "sergei",
+    "role": "USER"
+  },
+  {
+    "id": 4,
+    "username": "andrey",
+    "passwordHash": "andrey",
+    "role": "USER"
+  },
+  {
+    "id": 5,
+    "username": "nick",
+    "passwordHash": "nick",
+    "role": "USER"
+  },
+  {
+    "id": 6,
+    "username": "timur",
+    "passwordHash": "timur",
+    "role": "USER"
+  },
+  {
+    "id": 7,
+    "username": "admin",
+    "passwordHash": "admin",
+    "role": "ADMIN"
+  },
+  {
+    "id": 8,
+    "username": "guest",
+    "passwordHash": "guest",
+    "role": "GUEST"
+  }
+]
