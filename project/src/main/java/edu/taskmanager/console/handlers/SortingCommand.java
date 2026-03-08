@@ -44,34 +44,29 @@ public class SortingCommand implements Command {
                 System.out.println("Пропущен некорректный аргумент: " + arg);
             }
         }
-
         List<Task> allTasks = taskRepository.findAll();
         List<Task> sortedTasks = new ArrayList<>(allTasks);
 
         if (criteria.containsKey("priority")) {
             sortedTasks = PriorityStatusTitleSort.bubbleSort(sortedTasks,
                     Comparator.comparing(Task::getPriority).reversed());
-        }
-
-        if (criteria.containsKey("status")) {
+        } else if (criteria.containsKey("status")) {
             sortedTasks = PriorityStatusTitleSort.bubbleSort(sortedTasks,
                     Comparator.comparing(Task::getStatus));
-        }
-
-        if (criteria.containsKey("title")) {
+        } else if (criteria.containsKey("title")) {
             sortedTasks = PriorityStatusTitleSort.bubbleSort(sortedTasks,
                     Comparator.comparing(Task::getTitle));
+        } else if (sortedTasks.isEmpty()) {
+            System.out.println("Задачи, удовлетворяющие условиям, не найдены.");
+        } else {
+            System.out.println("Найдено задач: " + sortedTasks.size());
+            sortedTasks.forEach(System.out::println);
         }
-
-
-
-
-
 
     }
 
     @Override
     public String getDescription() {
-        return "";
+        return "sorting&ключ=значение... - сортировки по полям (priority, status, title)";
     }
 }
