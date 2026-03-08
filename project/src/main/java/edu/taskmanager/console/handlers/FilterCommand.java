@@ -32,7 +32,7 @@ public class FilterCommand implements Command {
     public void execute(List<String> args) {
         if (args.isEmpty()) {
             System.out.println("Использование: filter&ключ1=значение1&ключ2=значение2...");
-            System.out.println("Доступные ключи: status, tag, project, user, creationdate");
+            System.out.println("Доступные ключи: status, tag, project, user, startdate, enddate");
             return;
         }
 
@@ -109,22 +109,56 @@ public class FilterCommand implements Command {
         }
 
         // Фильтр пропускающий задачи по дате создания
-        if (criteria.containsKey("creationdate")) {
-            try {
-                Optional<LocalDateTime> creationDate = ArgumentParser.parseDate(criteria.get("creationdate"));
-                if (creationDate.isPresent()) {
-                    LocalDateTime dateCreation = creationDate.orElse(LocalDateTime.now());
-                    filterChain.addFilter(new CreationDateFilter(dateCreation, null));
-                } else {
-                    System.out.println("За данный период не найдено задач");
+        LocalDateTime startDate = null;
+        LocalDateTime endDate =null;
+
+        try {
+            if (criteria.containsKey("startdate")) {
+                String dateString = criteria.get("startdate");
+                startDate = ArgumentParser.parseDate(dateString);
+                if (startDate == null) {
+                    System.out.println("Неверный формат даты начала");
                     return;
                 }
             }
-            catch (NumberFormatException e) {
-                System.out.println("Введен не верный формат даты");
+
+            if (criteria.containsKey("enddate")) {
+                String dateString = criteria.get("enddate");
+                endDate = ArgumentParser.parseDate(dateString);
+                if (endDate == null) {
+                    System.out.println("Неверный формат даты окончания");
+                    return;
+                }
+            }
+
+            if (startDate != null || endDate != null) {
+                filterChain.addFilter(new CreationDateFilter(startDate, endDate));
+            } else {
+                System.out.println("Не заданы даты фильтрации");
                 return;
             }
+        } catch (NumberFormatException e) {
+            System.out.println("Введен не верный формат даты");
+            return;
         }
+
+        // Фильтр пропускающий задачи по дате создания
+//        if (criteria.containsKey("enddate")) {
+//            try {
+//                String dateString = criteria.get("enddate");
+//                LocalDateTime endDate = ArgumentParser.parseDate(dateString);
+//                if (endDate != null){
+//                    filterChain.addFilter(new CreationDateFilter(endDate, null));
+//                } else {
+//                    System.out.println("За данный период не найдено задач");
+//                    return;
+//                }
+//            }
+//            catch (NumberFormatException e) {
+//                System.out.println("Введен не верный формат даты");
+//                return;
+//            }
+//        }
 
         if (filterChain.isEmpty()) {
             System.out.println("Не задано ни одного корректного критерия фильтрации.");
@@ -146,6 +180,6 @@ public class FilterCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "filter&ключ=значение... - фильтрация задач (status, tag, project, user, creationdate)";
+        return "filter&ключ=значение... - фильтрация задач (status, tag, project, user, startdate, enddate)";
     }
 }
