@@ -43,7 +43,7 @@ public class FilterCommand implements Command {
     public void execute(List<String> args) {
         if (args.isEmpty()) {
             System.out.println("Использование: filter&ключ1=значение1&ключ2=значение2...");
-            System.out.println("Доступные ключи: status, tag, project");
+            System.out.println("Доступные ключи: status, tag, project, user, priority");
             return;
         }
 
@@ -118,10 +118,11 @@ public class FilterCommand implements Command {
                 return;
             }
         }
+
         // Фильтр по приоритету
         if (criteria.containsKey("priority")) {
             try {
-                Priority priority = Priority.valueOf(criteria.get("priorty").toUpperCase());
+                Priority priority = Priority.valueOf(criteria.get("priority").toUpperCase());
                 filterChain.addFilter(new PriorityFilter(priority));
             } catch (IllegalArgumentException e) {
                 System.out.println("Неверный приоритет. Допустимые: LOW, MEDIUM, HIGH, CRITICAL.");
@@ -132,7 +133,7 @@ public class FilterCommand implements Command {
             System.out.println("Не задано ни одного корректного критерия фильтрации.");
             return;
         }
-
+        
         // Получаем все задачи и фильтруем
         List<Task> allTasks = taskRepository.findAll();
         List<Task> filtered = filterChain.apply(allTasks);
@@ -148,6 +149,6 @@ public class FilterCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "filter&ключ=значение... - фильтрация задач (status, tag, project,priority)";
+        return "filter&ключ=значение... - фильтрация задач (status, tag, project, user, priority)";
     }
 }
