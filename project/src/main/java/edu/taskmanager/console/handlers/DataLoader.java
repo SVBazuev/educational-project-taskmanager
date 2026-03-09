@@ -60,7 +60,9 @@ public class DataLoader {
                 projectMap.values().forEach(projectRepository::save);
                 tagMap.values().forEach(tagRepository::save);
                 userMap.values().forEach(userRepository::save);
-                data.getTasks().forEach(taskRepository::save);
+                for (Task task : data.getTasks()) {
+                    saveTaskRecursively(task);
+                }
 
             }
             System.out.println("Данные успешно загружены из " + resourcePath);
@@ -68,6 +70,18 @@ public class DataLoader {
             System.out.println("Ошибка при загрузке данных: " + e.getMessage());
         }
 
+    }
+
+    private void saveTaskRecursively(Task task) {
+        taskRepository.save(task);
+        if (task.getSubtasks() != null) {
+            for (Task subtask : task.getSubtasks()) {
+                if (subtask.getParentId() == null && task.getId() != null) {
+                    subtask.setParentId(task.getId());
+                }
+                saveTaskRecursively(subtask);
+            }
+        }
     }
 
     private void collectFromTask(Task task,
