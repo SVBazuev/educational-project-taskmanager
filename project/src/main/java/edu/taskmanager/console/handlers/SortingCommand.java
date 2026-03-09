@@ -7,7 +7,7 @@ import edu.taskmanager.repository.ProjectRepository;
 import edu.taskmanager.repository.TagRepository;
 import edu.taskmanager.repository.TaskRepository;
 import edu.taskmanager.repository.UserRepository;
-import edu.taskmanager.strategy.sorting.BubbleSort;
+import edu.taskmanager.strategy.sorting.ВubbleTaskSortingStrategy;
 
 import java.util.*;
 
@@ -53,6 +53,10 @@ public class SortingCommand implements Command {
         }
 
         List<Task> allTasks = taskRepository.findAll();
+        if (allTasks.isEmpty()) {
+            System.out.println("Нет задач для сортировки");
+            return;
+        }
         List<Task> sortedTasks = new ArrayList<>(allTasks);
 
         switch (type) {
@@ -63,10 +67,11 @@ public class SortingCommand implements Command {
 
     private void bubbleSort(Set<String> criteria, List<Task> sortedTasks) {
 
-        //if (criteria.isEmpty() || !criteria.contains("bubblesort")) {
-        //    System.out.println("Использование: sorting bubbleSort <priority, status, title>=" + criteria);
-        //    return;
-        //}
+        if (criteria.isEmpty()) {
+            System.out.println("Не указаны поля для сортировки. Используйте: title, description, dueDate, creator," +
+                    " priority, status, project, tag, subtasks, contractors, createdAt, updatedAt, parentId");
+            return;
+        }
 
         List<Comparator<Task>> comparators = new ArrayList<>();
 
@@ -75,14 +80,44 @@ public class SortingCommand implements Command {
 
             switch (trimmedField) {
 
+                case "title":
+                    comparators.add(Comparator.comparing(Task::getTitle));
+                    break;
+                case "description":
+                    comparators.add(Comparator.comparing(Task::getDescription));
+                    break;
+                case "dueDate":
+                    comparators.add(Comparator.comparing(Task::getDueDate));
+                    break;
+                case "creator":
+                    comparators.add(Comparator.comparing(task -> task.getCreator().getUsername()));
+                    break;
                 case "priority":
                     comparators.add(Comparator.comparing(Task::getPriority).reversed());
                     break;
                 case "status":
                     comparators.add(Comparator.comparing(Task::getStatus));
                     break;
-                case "title":
-                    comparators.add(Comparator.comparing(Task::getTitle));
+                case "project":
+                    comparators.add(Comparator.comparing(task -> task.getProject().getName()));
+                    break;
+                case "tag":
+                    comparators.add(Comparator.comparing(task -> task.getTags().size()));
+                    break;
+                case "subtasks":
+                    comparators.add(Comparator.comparing(task -> task.getSubtasks().size()));
+                    break;
+                case "contractors":
+                    comparators.add(Comparator.comparing(task -> task.getContractors().size()));
+                    break;
+                case "createdat":
+                    comparators.add(Comparator.comparing(Task::getCreatedAt));
+                    break;
+                case "updatedat":
+                    comparators.add(Comparator.comparing(Task::getUpdatedAt));
+                    break;
+                case "parentid":
+                    comparators.add(Comparator.comparing(Task::getParentId));
                     break;
                 default:
                     System.out.println("Неизвестное поле для сортировки: " + trimmedField);
@@ -95,7 +130,7 @@ public class SortingCommand implements Command {
                 combinedComparator = combinedComparator.thenComparing(comparators.get(i));
             }
 
-            sortedTasks = BubbleSort.bubbleSort(sortedTasks, combinedComparator);
+            sortedTasks = ВubbleTaskSortingStrategy.bubbleSort(sortedTasks, combinedComparator);
 
             System.out.println("Найдено задач: " + sortedTasks.size());
             sortedTasks.forEach(System.out::println);
@@ -104,6 +139,7 @@ public class SortingCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "sorting&тип сортировки&ключ=значение... - сортировки по полям (priority, status, title)";
+        return "sorting&тип сортировки&ключ=значение... - сортировки по полям (title, description, dueDate, creator,\" +\n" +
+                "                    \" priority, status, project, tag, subtasks, contractors, createdAt, updatedAt, parentId)";
     }
 }
