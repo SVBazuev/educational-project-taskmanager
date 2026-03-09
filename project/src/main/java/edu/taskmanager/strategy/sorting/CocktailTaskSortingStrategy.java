@@ -8,7 +8,7 @@ import edu.taskmanager.model.Task;
 /**
  * Сортировка по приоритету (высокий → низкий) с использованием шейкерной сортировки (Cocktail Sort).
  */
-public class PrioritySortingStrategy implements TaskSortingStrategy {
+public class CocktailTaskSortingStrategy implements TaskSortingStrategy {
 
     @Override
     public List<Task> sort(List<Task> tasks) {
