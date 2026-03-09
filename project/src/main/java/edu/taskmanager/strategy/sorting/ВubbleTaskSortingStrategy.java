@@ -10,7 +10,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 //СОРТИРОВКА ПО Priority Status И Title
-public class PriorityStatusTitleSort {
+public class ВubbleTaskSortingStrategy {
 
     public static List<Task> bubbleSort(List<Task> tasks, Comparator<Task> comparator) {
         // Создаем копию списка, чтобы не изменять исходный
