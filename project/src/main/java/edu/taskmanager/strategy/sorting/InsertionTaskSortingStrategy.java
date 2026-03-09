@@ -8,12 +8,12 @@ import java.util.List;
  * Сортировка задач по дате выполнения (от ближайшей к самой далёкой).
  */
 
-public class DueDateSortingStrategy implements TaskSortingStrategy {
+public class InsertionTaskSortingStrategy implements TaskSortingStrategy {
 
     @Override
     public List<Task> sort(List<Task> tasks) {
         // Компаратор для сортировки по дате выполнения
-        Comparator<Task> comparator = Comparator.comparing(Task::getDueDate);
+        Comparator<Task> comparator = Comparator.comparing(task -> task.getDueDate());
 
         insertionSort(tasks, comparator);
 
