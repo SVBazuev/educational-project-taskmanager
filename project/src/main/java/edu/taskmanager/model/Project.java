@@ -1,5 +1,9 @@
 package edu.taskmanager.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import edu.taskmanager.console.util.LenientObjectIdResolver;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -12,6 +16,7 @@ import java.util.Objects;
  * - description
  * - tasks: список задач, входящих в проект
  */
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Project.class, resolver = LenientObjectIdResolver.class)
 public class Project {
     private Long id;
     private String name;

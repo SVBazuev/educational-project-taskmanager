@@ -1,5 +1,9 @@
 package edu.taskmanager.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import edu.taskmanager.console.util.LenientObjectIdResolver;
+
 import java.util.Objects;
 
 /**
@@ -8,9 +12,16 @@ import java.util.Objects;
  * - id
  * - name
  */
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Tag.class, resolver = LenientObjectIdResolver.class)
 public class Tag {
     private Long id;
     private String name;
+
+    /**
+     *  Конструктор по умолчанию для Jackson public-no-arg.
+     */
+    public Tag() {
+    }
 
     /**
      * Конструктор с названием.
