@@ -1,17 +1,14 @@
 package edu.taskmanager.console.handlers;
 
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import edu.taskmanager.chain.CreatorFilter;
-import edu.taskmanager.chain.FilterChain;
-import edu.taskmanager.chain.PriorityFilter;
-import edu.taskmanager.chain.ProjectFilter;
-import edu.taskmanager.chain.StatusFilter;
-import edu.taskmanager.chain.TagFilter;
+import edu.taskmanager.chain.*;
 import edu.taskmanager.console.Command;
 import edu.taskmanager.model.Project;
 import edu.taskmanager.model.Tag;
@@ -23,6 +20,8 @@ import edu.taskmanager.repository.TaskRepository;
 import edu.taskmanager.repository.UserRepository;
 import edu.taskmanager.util.Priority;
 import edu.taskmanager.util.TaskStatus;
+
+import static edu.taskmanager.console.parser.ArgumentParser.DATE_FORMATTER;
 
 public class FilterCommand implements Command {
     private final TaskRepository taskRepository;
@@ -43,7 +42,7 @@ public class FilterCommand implements Command {
     public void execute(List<String> args) {
         if (args.isEmpty()) {
             System.out.println("Использование: filter&ключ1=значение1&ключ2=значение2...");
-            System.out.println("Доступные ключи: status, tag, project, user, priority");
+            System.out.println("Доступные ключи: status, tag, project, user, priority, duestartdate, dueenddate");
             return;
         }
 
@@ -129,6 +128,27 @@ public class FilterCommand implements Command {
                 return;
             }
         }
+
+        // Фильтр пропускающий задачи по сроку выполнения
+        if (criteria.containsKey("duestartdate")) {
+            try {
+                LocalDateTime dueStartDate = LocalDateTime.parse(criteria.get("duestartdate"), DATE_FORMATTER);
+                filterChain.addFilter(new DueDateFilter(dueStartDate, null));
+            } catch (DateTimeParseException e) {
+                System.out.println("Введен не верный формат даты. Используйте формат: yyyy-MM-dd HH:mm");
+                return;
+            }
+        }
+        if (criteria.containsKey("dueenddate")) {
+            try {
+                LocalDateTime dueEndDate = LocalDateTime.parse(criteria.get("dueenddate"), DATE_FORMATTER);
+                filterChain.addFilter(new DueDateFilter(null, dueEndDate));
+            } catch (DateTimeParseException e) {
+                System.out.println("Введен не верный формат даты. Используйте формат: yyyy-MM-dd HH:mm");
+                return;
+            }
+        }
+
         if (filterChain.isEmpty()) {
             System.out.println("Не задано ни одного корректного критерия фильтрации.");
             return;
@@ -149,6 +169,6 @@ public class FilterCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "filter&ключ=значение... - фильтрация задач (status, tag, project, user, priority)";
+        return "filter&ключ=значение... - фильтрация задач (status, tag, project, user, priority, duestartdate, dueenddate)";
     }
 }
