@@ -1,30 +1,25 @@
+
 package edu.taskmanager.console.handlers;
 
-import edu.taskmanager.console.Command;
-import edu.taskmanager.model.Project;
-import edu.taskmanager.model.Task;
-import edu.taskmanager.repository.ProjectRepository;
-import edu.taskmanager.repository.TagRepository;
-import edu.taskmanager.repository.TaskRepository;
-import edu.taskmanager.repository.UserRepository;
-import edu.taskmanager.strategy.sorting.ВubbleTaskSortingStrategy;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import java.util.*;
+import edu.taskmanager.console.Command;
+import edu.taskmanager.model.Task;
+import edu.taskmanager.repository.TaskRepository;
+import edu.taskmanager.strategy.sorting.CocktailTaskSortingStrategy;
+import edu.taskmanager.strategy.sorting.ВubbleTaskSortingStrategy;
 
 
 public class SortingCommand implements Command {
     private final TaskRepository taskRepository;
-    private final TagRepository tagRepository;
-    private final ProjectRepository projectRepository;
-    private final UserRepository userRepository;
 
     public SortingCommand(
-            TaskRepository taskRepository, TagRepository tagRepository,
-            ProjectRepository projectRepository, UserRepository userRepository) {
+            TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
-        this.tagRepository = tagRepository;
-        this.projectRepository = projectRepository;
-        this.userRepository = userRepository;
     }
 
     @Override
@@ -61,6 +56,7 @@ public class SortingCommand implements Command {
 
         switch (type) {
             case "bubblesort" -> bubbleSort(criteria, sortedTasks);
+            case "cocktailsort" -> cocktailSort(criteria, sortedTasks);
             default -> System.out.println("Неизвестная сортировка: " + type);
         }
     }
@@ -72,9 +68,33 @@ public class SortingCommand implements Command {
                     " priority, status, project, tag, subtasks, contractors, createdAt, updatedAt, parentId");
             return;
         }
+        Comparator<Task> combinedComparator = sortTasks(criteria, sortedTasks);
+
+        sortedTasks = ВubbleTaskSortingStrategy.bubbleSort(sortedTasks, combinedComparator);
+
+        System.out.println("Найдено задач: " + sortedTasks.size());
+        sortedTasks.forEach(System.out::println);
+        }
+    
+    private void cocktailSort(Set<String> criteria, List<Task> sortedTasks) {
+
+        if (criteria.isEmpty()) {
+            System.out.println("Не указаны поля для сортировки. Используйте: title, description, dueDate, creator," +
+                    " priority, status, project, tag, subtasks, contractors, createdAt, updatedAt, parentId");
+            return;
+        }
+        Comparator<Task> combinedComparator = sortTasks(criteria, sortedTasks);
+
+        sortedTasks = CocktailTaskSortingStrategy.cocktailSort(sortedTasks, combinedComparator);
+
+        System.out.println("Найдено задач: " + sortedTasks.size());
+        sortedTasks.forEach(System.out::println);
+        }   
+
+
+    public Comparator<Task> sortTasks(Set<String> criteria, List<Task> sortedTasks) {
 
         List<Comparator<Task>> comparators = new ArrayList<>();
-
         for (String field : criteria) {
             String trimmedField = field.trim().toLowerCase();
 
@@ -124,17 +144,16 @@ public class SortingCommand implements Command {
             }
         }
 
+        Comparator<Task> combinedComparator = null;
+
         if (!comparators.isEmpty()) {
-            Comparator<Task> combinedComparator = comparators.get(0);
+            combinedComparator = comparators.get(0);
             for (int i = 1; i < comparators.size(); i++) {
                 combinedComparator = combinedComparator.thenComparing(comparators.get(i));
             }
 
-            sortedTasks = ВubbleTaskSortingStrategy.bubbleSort(sortedTasks, combinedComparator);
-
-            System.out.println("Найдено задач: " + sortedTasks.size());
-            sortedTasks.forEach(System.out::println);
         }
+        return combinedComparator;
     }
 
     @Override
