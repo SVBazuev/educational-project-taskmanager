@@ -24,7 +24,15 @@ public class DueDateFilter implements TaskFilter {
         LocalDateTime dueDate = task.getDueDate();
 
         // Проверяем, попадает ли срок выполнения в диапазон
-        boolean inRange = !dueDate.isBefore(startDate) && !dueDate.isAfter(endDate);
+        boolean inRange = true;
+
+        if (startDate != null) {
+            inRange = inRange && !dueDate.isBefore(startDate);
+        }
+
+        if (endDate != null) {
+            inRange = inRange && !dueDate.isAfter(endDate);
+        }
 
         if (!inRange) {
             return false;
