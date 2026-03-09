@@ -1,15 +1,18 @@
 package edu.taskmanager.console.handlers;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import edu.taskmanager.console.Command;
-import edu.taskmanager.model.Project;
 import edu.taskmanager.model.Task;
 import edu.taskmanager.repository.ProjectRepository;
 import edu.taskmanager.repository.TagRepository;
 import edu.taskmanager.repository.TaskRepository;
 import edu.taskmanager.repository.UserRepository;
 import edu.taskmanager.strategy.sorting.ВubbleTaskSortingStrategy;
-
-import java.util.*;
 
 
 public class SortingCommand implements Command {
@@ -61,11 +64,20 @@ public class SortingCommand implements Command {
 
         switch (type) {
             case "bubblesort" -> bubbleSort(criteria, sortedTasks);
+            case "cocktail" -> cocktailSort(criteria, sortedTasks);
             default -> System.out.println("Неизвестная сортировка: " + type);
         }
     }
 
     private void bubbleSort(Set<String> criteria, List<Task> sortedTasks) {
+
+        if (criteria.isEmpty()) {
+            System.out.println("Не указаны поля для сортировки. Используйте: title, description, dueDate, creator," +
+                    " priority, status, project, tag, subtasks, contractors, createdAt, updatedAt, parentId");
+            return;
+        }
+    }
+    private void cocktailSort(Set<String> criteria, List<Task> sortedTasks) {
 
         if (criteria.isEmpty()) {
             System.out.println("Не указаны поля для сортировки. Используйте: title, description, dueDate, creator," +
