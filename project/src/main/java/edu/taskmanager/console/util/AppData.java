@@ -1,5 +1,6 @@
 package edu.taskmanager.console.util;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import edu.taskmanager.model.Project;
 import edu.taskmanager.model.Tag;
 import edu.taskmanager.model.Task;
@@ -7,6 +8,7 @@ import edu.taskmanager.model.User;
 
 import java.util.List;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AppData {
     private List<User> users;
     private List<Task> tasks;

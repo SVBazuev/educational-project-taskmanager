@@ -3,6 +3,7 @@ package edu.taskmanager.adapter.export;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import edu.taskmanager.console.util.AppData;
 import edu.taskmanager.model.Task;
 
 import java.io.File;
@@ -51,4 +52,19 @@ public class JsonTaskExporter implements TaskExporter {
             throw new RuntimeException("Ошибка при экспорте задач в JSON: " + e.getMessage(), e);
         }
     }
+
+    public void exportAppData(AppData data) {
+        try {
+            File outputFile = new File(outputFilePath);
+            if (outputFile.getParentFile() != null) {
+                outputFile.getParentFile().mkdirs();
+            }
+            objectMapper.writeValue(outputFile, data);
+            System.out.println("[JsonTaskExporter] Данные успешно сохранены в файл: " + outputFilePath);
+        } catch (IOException e) {
+            throw new RuntimeException("Ошибка при сохранении данных: " + e.getMessage(), e);
+        }
+    }
 }
+
+

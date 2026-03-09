@@ -40,7 +40,7 @@ public class DataLoader {
 
         try (InputStream is = getClass()
                 .getClassLoader()
-                .getResourceAsStream(resourcePath)){
+                .getResourceAsStream(resourcePath)) {
             if (is == null) {
                 System.out.println("Ресурс не найден: " + resourcePath);
                 return;
@@ -48,7 +48,7 @@ public class DataLoader {
 
             AppData data = mapper.readValue(is, AppData.class);
 
-            if(data.getTasks() != null) {
+            if (data.getTasks() != null) {
                 Map<Long, Project> projectMap = new LinkedHashMap<>();
                 Map<Long, Tag> tagMap = new LinkedHashMap<>();
                 Map<Long, User> userMap = new LinkedHashMap<>();
@@ -64,9 +64,20 @@ public class DataLoader {
                     saveTaskRecursively(task);
                 }
 
+                // Проставляем задачи в проекты (в JSON tasks у project всегда пустой)
+                for (Task task : taskRepository.findAll()) {
+                    if (task.getProject() != null && task.getProject().getId() != null) {
+                        projectRepository.findById(task.getProject().getId()).ifPresent(project -> {
+                            if (!project.getTasks().contains(task)) {
+                                project.getTasks().add(task);
+                            }
+                        });
+                    }
+                }
+
             }
             System.out.println("Данные успешно загружены из " + resourcePath);
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Ошибка при загрузке данных: " + e.getMessage());
         }
 
