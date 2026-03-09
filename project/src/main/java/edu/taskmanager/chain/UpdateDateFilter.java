@@ -13,22 +13,22 @@ import java.time.LocalDateTime;
  * 2. endDate - конечная дата диапазона. Задачи, обновленные позже этой даты будут отфильтрованы.
  */
 public class UpdateDateFilter implements TaskFilter {
-    private final LocalDateTime startDate;
-    private final LocalDateTime endDate;
+    private final LocalDateTime upStartDate;
+    private final LocalDateTime upEndDate;
     private TaskFilter next;
 
-    public UpdateDateFilter(LocalDateTime startDate, LocalDateTime endDate) {
-        this.startDate = startDate;
-        this.endDate = endDate;
+    public UpdateDateFilter(LocalDateTime upStartDate, LocalDateTime upEndDate) {
+        this.upStartDate = upStartDate;
+        this.upEndDate = upEndDate;
     }
 
     @Override
     public boolean filter(Task task) {
       LocalDateTime updateDate = task.getUpdatedAt();
 
-      if (startDate != null && updateDate.isBefore(startDate)) { return false; }
+      if (upStartDate != null && updateDate.isBefore(upStartDate)) { return false; }
 
-      if (endDate != null && updateDate.isAfter(endDate)) { return false; }
+      if (upEndDate != null && updateDate.isAfter(upEndDate)) { return false; }
 
       if (next != null) { return next.filter(task); }
 
