@@ -14,17 +14,10 @@ import java.util.*;
 
 public class SortingCommand implements Command {
     private final TaskRepository taskRepository;
-    private final TagRepository tagRepository;
-    private final ProjectRepository projectRepository;
-    private final UserRepository userRepository;
 
     public SortingCommand(
-            TaskRepository taskRepository, TagRepository tagRepository,
-            ProjectRepository projectRepository, UserRepository userRepository) {
+            TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
-        this.tagRepository = tagRepository;
-        this.projectRepository = projectRepository;
-        this.userRepository = userRepository;
     }
 
     @Override
@@ -72,9 +65,18 @@ public class SortingCommand implements Command {
                     " priority, status, project, tag, subtasks, contractors, createdAt, updatedAt, parentId");
             return;
         }
+        Comparator<Task> combinedComparator = sortTasks(criteria, sortedTasks);
+
+        sortedTasks = ВubbleTaskSortingStrategy.bubbleSort(sortedTasks, combinedComparator);
+
+        System.out.println("Найдено задач: " + sortedTasks.size());
+        sortedTasks.forEach(System.out::println);
+        }
+
+
+    public Comparator<Task> sortTasks(Set<String> criteria, List<Task> sortedTasks) {
 
         List<Comparator<Task>> comparators = new ArrayList<>();
-
         for (String field : criteria) {
             String trimmedField = field.trim().toLowerCase();
 
@@ -124,17 +126,16 @@ public class SortingCommand implements Command {
             }
         }
 
+        Comparator<Task> combinedComparator = null;
+
         if (!comparators.isEmpty()) {
-            Comparator<Task> combinedComparator = comparators.get(0);
+            combinedComparator = comparators.get(0);
             for (int i = 1; i < comparators.size(); i++) {
                 combinedComparator = combinedComparator.thenComparing(comparators.get(i));
             }
 
-            sortedTasks = ВubbleTaskSortingStrategy.bubbleSort(sortedTasks, combinedComparator);
-
-            System.out.println("Найдено задач: " + sortedTasks.size());
-            sortedTasks.forEach(System.out::println);
         }
+        return combinedComparator;
     }
 
     @Override
