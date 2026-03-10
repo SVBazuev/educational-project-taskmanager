@@ -5,8 +5,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
+import edu.taskmanager.console.util.LenientObjectIdResolver;
 import edu.taskmanager.util.Priority;
 import edu.taskmanager.util.TaskStatus;
 
@@ -27,6 +30,8 @@ import edu.taskmanager.util.TaskStatus;
  * - updatedAt: дата последнего обновления
  * - parentId: идентификатор родительской задачи (если текущая задача является подзадачей)
  */
+
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Task.class, resolver = LenientObjectIdResolver.class)
 public class Task {
     private Long id;
     private String title;
@@ -217,7 +222,7 @@ public class Task {
     /**
      * Добавляет исполнителя к задаче.
      *
-     * @param tag тег для добавления
+     * @param user тег для добавления
      */
     public void addСontractor(User user) {
         if (user != null && !contractors.contains(user)) {
@@ -228,7 +233,7 @@ public class Task {
     /**
      * Удаляет тег из задачи.
      *
-     * @param tag тег для удаления
+     * @param user тег для удаления
      */
     public void removeContractor(User user) {
         contractors.remove(user);

@@ -1,5 +1,9 @@
 package edu.taskmanager.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import edu.taskmanager.console.util.LenientObjectIdResolver;
+
 import java.util.Objects;
 
 /**
@@ -10,6 +14,7 @@ import java.util.Objects;
  * - passwordHash (в реальности хранить хеш)
  * - role (например, ADMIN, USER)
  */
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = User.class, resolver = LenientObjectIdResolver.class)
 public class User {
     private Long id;
     private String username;

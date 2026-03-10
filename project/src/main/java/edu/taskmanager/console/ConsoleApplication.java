@@ -50,6 +50,10 @@ public class ConsoleApplication {
         ProjectRepository projectRepo = new InMemoryProjectRepository();
         TagRepository tagRepo = new InMemoryTagRepository();
         UserRepository userRepo = new InMemoryUserRepository();
+        DataSaver dataSaver = new DataSaver(taskRepo, projectRepo, userRepo, tagRepo);
+
+        // Загрузчик данных в репозитории
+        new DataLoader(taskRepo, projectRepo, tagRepo, userRepo).load("dev_tasks_.json");
 
         // Создание команд
         Command create = new CreateCommand(taskRepo, projectRepo, tagRepo, userRepo);
@@ -58,8 +62,9 @@ public class ConsoleApplication {
         Command update = new UpdateCommand(taskRepo, projectRepo, tagRepo, userRepo);
         Command delete = new DeleteCommand(taskRepo, projectRepo, tagRepo, userRepo);
         Command filter = new FilterCommand(taskRepo, tagRepo, projectRepo, userRepo);
+        Command sorting = new SortingCommand(taskRepo);
         Command help = new HelpCommand(registry);
-        Command exit = new ExitCommand(() -> running = false);
+        Command exit = new ExitCommand(() -> running = false, dataSaver, "saved/dev_tasks_.json");
 
         // Регистрация (можем обернуть нужные команды в декораторы)
         registry.register("create", new LoggingCommandDecorator(new TimingCommandDecorator(create)));
@@ -68,6 +73,7 @@ public class ConsoleApplication {
         registry.register("update", update);
         registry.register("delete", delete);
         registry.register("filter", filter);
+        registry.register("sorting", sorting);
         registry.register("help", help);
         registry.register("exit", exit);
     }

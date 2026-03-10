@@ -1,5 +1,11 @@
 package edu.taskmanager.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import edu.taskmanager.console.util.LenientObjectIdResolver;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -12,6 +18,7 @@ import java.util.Objects;
  * - description
  * - tasks: список задач, входящих в проект
  */
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Project.class, resolver = LenientObjectIdResolver.class)
 public class Project {
     private Long id;
     private String name;
@@ -68,7 +75,13 @@ public class Project {
     public Long getId() { return id; }
     public String getName() { return name; }
     public String getDescription() { return description; }
+
+    @JsonIgnore
     public List<Task> getTasks() { return tasks; }
+
+    // ИЗБЕГАЕМ РЕКУРСИИ ПРИ СЕРИАЛИЗАЦИИ PROJECT, ТАК КАК ЗАДАЧИ ССЫЛАЮТСЯ НА ПРОЕКТ
+    @JsonProperty("tasks")
+    public List<Task> getTasksForJson() { return new ArrayList<>(); }
 
     // --- Cеттеры ---
 

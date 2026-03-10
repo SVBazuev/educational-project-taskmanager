@@ -64,10 +64,8 @@ public class InMemoryTaskRepository implements TaskRepository {
 
     @Override
     public List<Task> findSubtasksByParentId(Long parentId) {
-        // TODO: реализовать поиск подзадач.
-        // В текущей модели подзадачи хранятся внутри родительской задачи как поле subtasks.
-        // Для поиска всех подзадач по parentId потребуется либо индекс, либо перебор всех задач.
-        // В целях упрощения на ранних этапах можно возвращать пустой список.
-        return new ArrayList<>();
+        return storage.values().stream()
+                .filter(task -> parentId.equals(task.getParentId()))
+                .collect(java.util.stream.Collectors.toList());
     }
 }
