@@ -11,6 +11,7 @@ import edu.taskmanager.console.Command;
 import edu.taskmanager.model.Task;
 import edu.taskmanager.repository.TaskRepository;
 import edu.taskmanager.strategy.sorting.CocktailTaskSortingStrategy;
+import edu.taskmanager.strategy.sorting.InsertionTaskSortingStrategy;
 import edu.taskmanager.strategy.sorting.MergeTaskSortingStrategy;
 import edu.taskmanager.strategy.sorting.ВubbleTaskSortingStrategy;
 
@@ -59,6 +60,7 @@ public class SortingCommand implements Command {
             case "bubblesort" -> bubbleSort(criteria, sortedTasks);
             case "cocktailsort" -> cocktailSort(criteria, sortedTasks);
             case "mergesort" -> mergeSort(criteria, sortedTasks);
+            case "insertionsort" -> insertionSort(criteria, sortedTasks);
             default -> System.out.println("Неизвестная сортировка: " + type);
         }
     }
@@ -108,6 +110,20 @@ public class SortingCommand implements Command {
         sortedTasks.forEach(System.out::println);
     }
 
+    private void insertionSort(Set<String> criteria, List<Task> sortedTasks) {
+
+        if (criteria.isEmpty()) {
+            System.out.println("Не указаны поля для сортировки. Используйте: title, description, dueDate, creator," +
+                    " priority, status, project, tag, subtasks, contractors, createdAt, updatedAt, parentId");
+            return;
+        }
+        Comparator<Task> combinedComparator = sortTasks(criteria, sortedTasks);
+
+        sortedTasks = InsertionTaskSortingStrategy.insertionSort(sortedTasks, combinedComparator);
+
+        System.out.println("Найдено задач: " + sortedTasks.size());
+        sortedTasks.forEach(System.out::println);
+    }
 
     public Comparator<Task> sortTasks(Set<String> criteria, List<Task> sortedTasks) {
 
