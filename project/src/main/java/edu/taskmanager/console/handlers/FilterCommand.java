@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import edu.taskmanager.chain.*;
 import edu.taskmanager.console.Command;
+import edu.taskmanager.console.parser.ArgumentParser;
 import edu.taskmanager.model.Project;
 import edu.taskmanager.model.Tag;
 import edu.taskmanager.model.Task;
@@ -148,6 +149,81 @@ public class FilterCommand implements Command {
                 return;
             }
         }
+
+        // Фильтр пропускающий задачи по дате создания
+        LocalDateTime startDate = null;
+        LocalDateTime endDate =null;
+
+        try {
+            if (criteria.containsKey("startdate")) {
+                String dateString = criteria.get("startdate");
+                try {
+                    startDate = LocalDateTime.parse(dateString, ArgumentParser.DATE_FORMATTER);
+                } catch (DateTimeParseException e) {
+                    System.out.println("Неверный формат даты начала. Используйте формат даты: yyyy-MM-dd HH:mm");
+                    return;
+                }
+            }
+            if (criteria.containsKey("enddate")) {
+                String dateString = criteria.get("enddate");
+                try {
+                    endDate = LocalDateTime.parse(dateString, ArgumentParser.DATE_FORMATTER);
+                } catch (DateTimeParseException e) {
+                    System.out.println("Неверный формат даты окончания. Используйте формат даты: yyyy-MM-dd HH:mm");
+                    return;
+                }
+            }
+            if (startDate !=null && endDate!= null&& startDate.isAfter(endDate)) {
+                System.out.println("Дата начала не может быть позже даты окончания");
+            }
+            if (startDate != null || endDate != null) {
+                filterChain.addFilter(new CreationDateFilter(startDate, endDate));
+            } else {
+                System.out.println("Не заданы даты фильтрации");
+                return;
+            }
+        } catch (Exception e) {
+            System.out.println("Введен не верный формат даты. Используйте формат даты: yyyy-MM-dd HH:mm");
+            return;
+        }
+
+        // Фильтр пропускающий задачи по дате обновления
+        LocalDateTime upStartDate = null;
+        LocalDateTime upEndDate =null;
+
+        try {
+            if (criteria.containsKey("upstartdate")) {
+                String dateString = criteria.get("upstartdate");
+                try {
+                    upStartDate = LocalDateTime.parse(dateString, ArgumentParser.DATE_FORMATTER);
+                } catch (DateTimeParseException e) {
+                    System.out.println("Неверный формат даты начала. Используйте формат даты: yyyy-MM-dd HH:mm");
+                    return;
+                }
+            }
+            if (criteria.containsKey("upenddate")) {
+                String dateString = criteria.get("upenddate");
+                try {
+                    upEndDate = LocalDateTime.parse(dateString, ArgumentParser.DATE_FORMATTER);
+                } catch (DateTimeParseException e) {
+                    System.out.println("Неверный формат даты окончания. Используйте формат даты: yyyy-MM-dd HH:mm");
+                    return;
+                }
+            }
+            if (upStartDate !=null && upEndDate!= null&& upStartDate.isAfter(upEndDate)) {
+                System.out.println("Дата начала не может быть позже даты окончания");
+            }
+            if (upStartDate != null || upEndDate != null) {
+                filterChain.addFilter(new CreationDateFilter(upStartDate, upEndDate));
+            } else {
+                System.out.println("Не заданы даты фильтрации");
+                return;
+            }
+        } catch (Exception e) {
+            System.out.println("Введен не верный формат даты. Используйте формат даты: yyyy-MM-dd HH:mm");
+            return;
+        }
+
 
         if (filterChain.isEmpty()) {
             System.out.println("Не задано ни одного корректного критерия фильтрации.");
