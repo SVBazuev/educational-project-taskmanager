@@ -10,7 +10,7 @@ import edu.taskmanager.backend.model.Task;
 
 
 //СОРТИРОВКА ПО Priority Status И Title
-public class ВubbleTaskSortingStrategy {
+public class BubbleTaskSortingStrategy {
 
     public static List<Task> bubbleSort(List<Task> tasks, Comparator<Task> comparator) {
         // Создаем копию списка, чтобы не изменять исходный
