@@ -1,19 +1,11 @@
 
 package edu.taskmanager.frontend.console.handlers;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import edu.taskmanager.backend.model.Task;
 import edu.taskmanager.backend.repository.TaskRepository;
-import edu.taskmanager.backend.strategy.sorting.CocktailTaskSortingStrategy;
-import edu.taskmanager.backend.strategy.sorting.InsertionTaskSortingStrategy;
-import edu.taskmanager.backend.strategy.sorting.MergeTaskSortingStrategy;
-import edu.taskmanager.backend.strategy.sorting.QuickTaskSortingStrategy;
-import edu.taskmanager.backend.strategy.sorting.BubbleTaskSortingStrategy;
+import edu.taskmanager.backend.strategy.sorting.*;
 import edu.taskmanager.frontend.console.Command;
 
 
@@ -63,9 +55,23 @@ public class SortingCommand implements Command {
             case "mergesort" -> mergeSort(criteria, sortedTasks);
             case "insertionsort" -> insertionSort(criteria, sortedTasks);
             case "quicksort" -> quickSort(criteria, sortedTasks);
+            case "bubblesortswap" -> bubbleSortSwap(criteria, sortedTasks);
             default -> System.out.println("Неизвестная сортировка: " + type);
         }
     }
+
+    private void bubbleSortSwap(Set<String> criteria, List<Task> sortedTasks) {
+        if (criteria.contains("id")) {
+
+            //Comparator<Task> combinedComparator = sortTasks(criteria, sortedTasks);
+
+           // sortedTasks = BubblesSortEvenIdsOnly.bubbleSortEvenIds(sortedTasks);
+
+            System.out.println("Найдено задач: " + sortedTasks.size());
+            sortedTasks.forEach(System.out::println);
+        }
+    }
+
 
     private void bubbleSort(Set<String> criteria, List<Task> sortedTasks) {
 
