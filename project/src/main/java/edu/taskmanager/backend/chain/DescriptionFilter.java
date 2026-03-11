@@ -14,7 +14,7 @@ public class DescriptionFilter implements TaskFilter {
 
     @Override
     public boolean filter(Task task) {
-        boolean descriptionMatches = description.equals(task.getDescription());
+        boolean descriptionMatches = description.equals(task.getDescription().toLowerCase());
 
         if (!descriptionMatches) { return false; }
 

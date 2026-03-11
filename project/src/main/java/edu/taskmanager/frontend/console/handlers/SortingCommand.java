@@ -13,7 +13,7 @@ import edu.taskmanager.backend.strategy.sorting.CocktailTaskSortingStrategy;
 import edu.taskmanager.backend.strategy.sorting.InsertionTaskSortingStrategy;
 import edu.taskmanager.backend.strategy.sorting.MergeTaskSortingStrategy;
 import edu.taskmanager.backend.strategy.sorting.QuickTaskSortingStrategy;
-import edu.taskmanager.backend.strategy.sorting.ВubbleTaskSortingStrategy;
+import edu.taskmanager.backend.strategy.sorting.BubbleTaskSortingStrategy;
 import edu.taskmanager.frontend.console.Command;
 
 
@@ -76,7 +76,7 @@ public class SortingCommand implements Command {
         }
         Comparator<Task> combinedComparator = sortTasks(criteria, sortedTasks);
 
-        sortedTasks = ВubbleTaskSortingStrategy.bubbleSort(sortedTasks, combinedComparator);
+        sortedTasks = BubbleTaskSortingStrategy.bubbleSort(sortedTasks, combinedComparator);
 
         System.out.println("Найдено задач: " + sortedTasks.size());
         sortedTasks.forEach(System.out::println);

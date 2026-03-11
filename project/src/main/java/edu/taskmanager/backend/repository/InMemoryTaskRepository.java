@@ -4,7 +4,6 @@ package edu.taskmanager.backend.repository;
 import java.util.Map;
 import java.util.List;
 import java.util.Optional;
-import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -38,22 +37,25 @@ public class InMemoryTaskRepository implements TaskRepository {
             // Создаём копию задачи с установленным id, чтобы не изменять исходный объект
             Task taskWithId = task.withId(newId); // предполагаем наличие метода withId
             storage.put(newId, taskWithId);
-            return taskWithId;
+            return copyOf(taskWithId);
         } else {
-            // Задача с существующим id — обновляем (перезаписываем)
-            storage.put(task.getId(), task);
-            return task;
+            Task copy = task.withId(task.getId());
+            storage.put(task.getId(), copy);
+            return copyOf(copy);
         }
     }
 
     @Override
     public Optional<Task> findById(Long id) {
-        return Optional.ofNullable(storage.get(id));
+        Task t = storage.get(id);
+        return t != null ? Optional.of(copyOf(t)) : Optional.empty();
     }
 
     @Override
     public List<Task> findAll() {
-        return new ArrayList<>(storage.values());
+        return storage.values().stream()
+                .map(this::copyOf)
+                .collect(java.util.stream.Collectors.toList());
     }
 
     @Override
@@ -65,6 +67,11 @@ public class InMemoryTaskRepository implements TaskRepository {
     public List<Task> findSubtasksByParentId(Long parentId) {
         return storage.values().stream()
                 .filter(task -> parentId.equals(task.getParentId()))
+                .map(this::copyOf)
                 .collect(java.util.stream.Collectors.toList());
+    }
+
+    private Task copyOf(Task t) {
+        return t.withId(t.getId());
     }
 }
