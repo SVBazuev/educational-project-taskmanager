@@ -27,6 +27,8 @@ public class UpdateDateFilter implements TaskFilter {
     public boolean filter(Task task) {
       LocalDateTime updateDate = task.getUpdatedAt();
 
+      if (updateDate == null) { return false; }
+
       if (upStartDate != null && updateDate.isBefore(upStartDate)) { return false; }
 
       if (upEndDate != null && updateDate.isAfter(upEndDate)) { return false; }
