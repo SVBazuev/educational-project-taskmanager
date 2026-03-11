@@ -1,0 +1,1736 @@
+{
+  "tasks" : [ {
+    "id" : 1,
+    "title" : "Этап 1: Модели и репозиторий",
+    "description" : "Создание базовых классов модели и in-memory репозитория",
+    "dueDate" : "2026-02-24T00:00:00",
+    "creator" : {
+      "id" : 7,
+      "username" : "admin",
+      "passwordHash" : "admin",
+      "role" : "ADMIN"
+    },
+    "priority" : "HIGH",
+    "status" : "TODO",
+    "project" : {
+      "id" : 4,
+      "name" : "Task Manager MVP",
+      "description" : "Проект по разработке Task Manager MVP",
+      "tasks" : [ ]
+    },
+    "tags" : [ {
+      "id" : 1,
+      "name" : "model"
+    }, {
+      "id" : 2,
+      "name" : "repository"
+    }, {
+      "id" : 3,
+      "name" : "core"
+    } ],
+    "subtasks" : [ {
+      "id" : 2,
+      "title" : "Создать класс Task",
+      "description" : "Реализовать класс Task с полями id, title, description, dueDate, priority, status, project, tags, subtasks, createdAt, updatedAt. Добавить конструкторы, геттеры/сеттеры, equals/hashCode.",
+      "dueDate" : "2026-02-24T00:00:00",
+      "creator" : {
+        "id" : 6,
+        "username" : "timur",
+        "passwordHash" : "timur",
+        "role" : "USER"
+      },
+      "priority" : "HIGH",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 1,
+        "name" : "model"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 6,
+        "username" : "timur",
+        "passwordHash" : "timur",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-02-24T10:00:00",
+      "updatedAt" : "2026-02-24T10:00:00",
+      "parentId" : 1
+    }, {
+      "id" : 3,
+      "title" : "Создать класс Project",
+      "description" : "Реализовать класс Project с полями id, name, description, tasks. Добавить конструкторы, геттеры/сеттеры, методы addTask/removeTask.",
+      "dueDate" : "2026-02-24T00:00:00",
+      "creator" : {
+        "id" : 2,
+        "username" : "ilya",
+        "passwordHash" : "ilya",
+        "role" : "USER"
+      },
+      "priority" : "HIGH",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 1,
+        "name" : "model"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 2,
+        "username" : "ilya",
+        "passwordHash" : "ilya",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-02-24T10:00:00",
+      "updatedAt" : "2026-02-24T10:00:00",
+      "parentId" : 1
+    }, {
+      "id" : 4,
+      "title" : "Создать класс User",
+      "description" : "Реализовать класс User с полями id, username, passwordHash, role. Добавить конструкторы, геттеры/сеттеры.",
+      "dueDate" : "2026-02-24T00:00:00",
+      "creator" : {
+        "id" : 5,
+        "username" : "nick",
+        "passwordHash" : "nick",
+        "role" : "USER"
+      },
+      "priority" : "MEDIUM",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 1,
+        "name" : "model"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 5,
+        "username" : "nick",
+        "passwordHash" : "nick",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-02-24T10:00:00",
+      "updatedAt" : "2026-02-24T10:00:00",
+      "parentId" : 1
+    }, {
+      "id" : 5,
+      "title" : "Создать класс Tag",
+      "description" : "Реализовать класс Tag с полями id, name. Добавить конструкторы, геттеры/сеттеры, equals/hashCode.",
+      "dueDate" : "2026-02-24T00:00:00",
+      "creator" : {
+        "id" : 3,
+        "username" : "sergei",
+        "passwordHash" : "sergei",
+        "role" : "USER"
+      },
+      "priority" : "MEDIUM",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 1,
+        "name" : "model"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 3,
+        "username" : "sergei",
+        "passwordHash" : "sergei",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-02-24T10:00:00",
+      "updatedAt" : "2026-02-24T10:00:00",
+      "parentId" : 1
+    }, {
+      "id" : 6,
+      "title" : "Создать перечисления Priority и TaskStatus",
+      "description" : "Создать enum Priority со значениями LOW, MEDIUM, HIGH, CRITICAL. Создать enum TaskStatus со значениями TODO, IN_PROGRESS, DONE.",
+      "dueDate" : "2026-02-24T00:00:00",
+      "creator" : {
+        "id" : 4,
+        "username" : "andrey",
+        "passwordHash" : "andrey",
+        "role" : "USER"
+      },
+      "priority" : "MEDIUM",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 4,
+        "name" : "util"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 4,
+        "username" : "andrey",
+        "passwordHash" : "andrey",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-02-24T10:00:00",
+      "updatedAt" : "2026-02-24T10:00:00",
+      "parentId" : 1
+    }, {
+      "id" : 7,
+      "title" : "Реализовать TaskRepository и InMemoryTaskRepository",
+      "description" : "Создать интерфейс TaskRepository с методами save, findById, findAll, deleteById, findSubtasksByParentId. Реализовать InMemoryTaskRepository с использованием ConcurrentHashMap и AtomicLong.",
+      "dueDate" : "2026-02-24T00:00:00",
+      "creator" : {
+        "id" : 1,
+        "username" : "svbazuev",
+        "passwordHash" : "svbazuev",
+        "role" : "USER"
+      },
+      "priority" : "HIGH",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 2,
+        "name" : "repository"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 1,
+        "username" : "svbazuev",
+        "passwordHash" : "svbazuev",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-02-24T10:00:00",
+      "updatedAt" : "2026-02-24T10:00:00",
+      "parentId" : 1
+    } ],
+    "contractors" : [ ],
+    "createdAt" : "2026-02-24T10:00:00",
+    "updatedAt" : "2026-02-24T10:00:00",
+    "parentId" : null
+  }, {
+    "id" : 8,
+    "title" : "Этап 2: Builder",
+    "description" : "Реализация паттерна Builder для пошагового создания задач и проектов",
+    "dueDate" : "2026-02-26T00:00:00",
+    "creator" : {
+      "id" : 7,
+      "username" : "admin",
+      "passwordHash" : "admin",
+      "role" : "ADMIN"
+    },
+    "priority" : "HIGH",
+    "status" : "TODO",
+    "project" : {
+      "id" : 4,
+      "name" : "Task Manager MVP",
+      "description" : "Проект по разработке Task Manager MVP",
+      "tasks" : [ ]
+    },
+    "tags" : [ {
+      "id" : 5,
+      "name" : "builder"
+    }, {
+      "id" : 6,
+      "name" : "pattern"
+    } ],
+    "subtasks" : [ {
+      "id" : 9,
+      "title" : "Реализовать TaskBuilder",
+      "description" : "Создать класс TaskBuilder с методами для установки всех полей Task, проверкой обязательных полей и методом build().",
+      "dueDate" : "2026-02-26T00:00:00",
+      "creator" : {
+        "id" : 6,
+        "username" : "timur",
+        "passwordHash" : "timur",
+        "role" : "USER"
+      },
+      "priority" : "HIGH",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 5,
+        "name" : "builder"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 6,
+        "username" : "timur",
+        "passwordHash" : "timur",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-02-26T10:00:00",
+      "updatedAt" : "2026-02-26T10:00:00",
+      "parentId" : 8
+    }, {
+      "id" : 10,
+      "title" : "Реализовать ProjectBuilder",
+      "description" : "Создать класс ProjectBuilder с методами setName, setDescription, addTask и build().",
+      "dueDate" : "2026-02-26T00:00:00",
+      "creator" : {
+        "id" : 2,
+        "username" : "ilya",
+        "passwordHash" : "ilya",
+        "role" : "USER"
+      },
+      "priority" : "MEDIUM",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 5,
+        "name" : "builder"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 2,
+        "username" : "ilya",
+        "passwordHash" : "ilya",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-02-26T10:00:00",
+      "updatedAt" : "2026-02-26T10:00:00",
+      "parentId" : 8
+    }, {
+      "id" : 11,
+      "title" : "Написать демонстрацию создания задач через Builder в main",
+      "description" : "В методе main продемонстрировать создание нескольких задач с использованием TaskBuilder и ProjectBuilder.",
+      "dueDate" : "2026-02-26T00:00:00",
+      "creator" : {
+        "id" : 3,
+        "username" : "sergei",
+        "passwordHash" : "sergei",
+        "role" : "USER"
+      },
+      "priority" : "MEDIUM",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 7,
+        "name" : "demo"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 3,
+        "username" : "sergei",
+        "passwordHash" : "sergei",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-02-26T10:00:00",
+      "updatedAt" : "2026-02-26T10:00:00",
+      "parentId" : 8
+    } ],
+    "contractors" : [ ],
+    "createdAt" : "2026-02-26T10:00:00",
+    "updatedAt" : "2026-02-26T10:00:00",
+    "parentId" : null
+  }, {
+    "id" : 12,
+    "title" : "Этап 3: Стратегия сортировки",
+    "description" : "Реализация паттерна Strategy для алгоритмов сортировки задач",
+    "dueDate" : "2026-02-28T00:00:00",
+    "creator" : {
+      "id" : 7,
+      "username" : "admin",
+      "passwordHash" : "admin",
+      "role" : "ADMIN"
+    },
+    "priority" : "HIGH",
+    "status" : "TODO",
+    "project" : {
+      "id" : 4,
+      "name" : "Task Manager MVP",
+      "description" : "Проект по разработке Task Manager MVP",
+      "tasks" : [ ]
+    },
+    "tags" : [ {
+      "id" : 8,
+      "name" : "strategy"
+    }, {
+      "id" : 6,
+      "name" : "pattern"
+    } ],
+    "subtasks" : [ {
+      "id" : 13,
+      "title" : "Создать интерфейс TaskSortingStrategy",
+      "description" : "Интерфейс с методом List<Task> sort(List<Task> tasks).",
+      "dueDate" : "2026-02-28T00:00:00",
+      "creator" : {
+        "id" : 4,
+        "username" : "andrey",
+        "passwordHash" : "andrey",
+        "role" : "USER"
+      },
+      "priority" : "MEDIUM",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 8,
+        "name" : "strategy"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 4,
+        "username" : "andrey",
+        "passwordHash" : "andrey",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-02-28T10:00:00",
+      "updatedAt" : "2026-02-28T10:00:00",
+      "parentId" : 12
+    }, {
+      "id" : 14,
+      "title" : "Реализовать DueDateSortingStrategy",
+      "description" : "Сортировка задач по сроку выполнения (от ближайшего к дальнему).",
+      "dueDate" : "2026-02-28T00:00:00",
+      "creator" : {
+        "id" : 5,
+        "username" : "nick",
+        "passwordHash" : "nick",
+        "role" : "USER"
+      },
+      "priority" : "MEDIUM",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 8,
+        "name" : "strategy"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 5,
+        "username" : "nick",
+        "passwordHash" : "nick",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-02-28T10:00:00",
+      "updatedAt" : "2026-02-28T10:00:00",
+      "parentId" : 12
+    }, {
+      "id" : 15,
+      "title" : "Реализовать PrioritySortingStrategy",
+      "description" : "Сортировка задач по приоритету (CRITICAL → HIGH → MEDIUM → LOW).",
+      "dueDate" : "2026-02-28T00:00:00",
+      "creator" : {
+        "id" : 6,
+        "username" : "timur",
+        "passwordHash" : "timur",
+        "role" : "USER"
+      },
+      "priority" : "MEDIUM",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 8,
+        "name" : "strategy"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 6,
+        "username" : "timur",
+        "passwordHash" : "timur",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-02-28T10:00:00",
+      "updatedAt" : "2026-02-28T10:00:00",
+      "parentId" : 12
+    }, {
+      "id" : 16,
+      "title" : "Реализовать TaskManagerService с поддержкой стратегии",
+      "description" : "Создать сервис, который принимает TaskRepository и использует стратегию сортировки. Добавить метод getFilteredAndSortedTasks, применяющий стратегию.",
+      "dueDate" : "2026-02-28T00:00:00",
+      "creator" : {
+        "id" : 1,
+        "username" : "svbazuev",
+        "passwordHash" : "svbazuev",
+        "role" : "USER"
+      },
+      "priority" : "HIGH",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 9,
+        "name" : "service"
+      }, {
+        "id" : 8,
+        "name" : "strategy"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 1,
+        "username" : "svbazuev",
+        "passwordHash" : "svbazuev",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-02-28T10:00:00",
+      "updatedAt" : "2026-02-28T10:00:00",
+      "parentId" : 12
+    } ],
+    "contractors" : [ ],
+    "createdAt" : "2026-02-28T10:00:00",
+    "updatedAt" : "2026-02-28T10:00:00",
+    "parentId" : null
+  }, {
+    "id" : 17,
+    "title" : "Этап 4: Цепочка обязанностей (фильтрация)",
+    "description" : "Реализация паттерна Chain of Responsibility для фильтрации задач",
+    "dueDate" : "2026-03-02T00:00:00",
+    "creator" : {
+      "id" : 7,
+      "username" : "admin",
+      "passwordHash" : "admin",
+      "role" : "ADMIN"
+    },
+    "priority" : "HIGH",
+    "status" : "TODO",
+    "project" : {
+      "id" : 4,
+      "name" : "Task Manager MVP",
+      "description" : "Проект по разработке Task Manager MVP",
+      "tasks" : [ ]
+    },
+    "tags" : [ {
+      "id" : 10,
+      "name" : "chain"
+    }, {
+      "id" : 6,
+      "name" : "pattern"
+    } ],
+    "subtasks" : [ {
+      "id" : 18,
+      "title" : "Создать интерфейс TaskFilter и базовую реализацию с next",
+      "description" : "Интерфейс с методами filter(Task task) и setNext(TaskFilter). Можно создать абстрактный класс AbstractTaskFilter с полем next.",
+      "dueDate" : "2026-03-02T00:00:00",
+      "creator" : {
+        "id" : 2,
+        "username" : "ilya",
+        "passwordHash" : "ilya",
+        "role" : "USER"
+      },
+      "priority" : "HIGH",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 10,
+        "name" : "chain"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 2,
+        "username" : "ilya",
+        "passwordHash" : "ilya",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-03-02T10:00:00",
+      "updatedAt" : "2026-03-02T10:00:00",
+      "parentId" : 17
+    }, {
+      "id" : 19,
+      "title" : "Реализовать StatusFilter",
+      "description" : "Фильтр, пропускающий задачи только с заданным статусом.",
+      "dueDate" : "2026-03-02T00:00:00",
+      "creator" : {
+        "id" : 3,
+        "username" : "sergei",
+        "passwordHash" : "sergei",
+        "role" : "USER"
+      },
+      "priority" : "MEDIUM",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 10,
+        "name" : "chain"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 3,
+        "username" : "sergei",
+        "passwordHash" : "sergei",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-03-02T10:00:00",
+      "updatedAt" : "2026-03-02T10:00:00",
+      "parentId" : 17
+    }, {
+      "id" : 20,
+      "title" : "Реализовать TagFilter",
+      "description" : "Фильтр, пропускающий задачи только с заданным тегом.",
+      "dueDate" : "2026-03-02T00:00:00",
+      "creator" : {
+        "id" : 4,
+        "username" : "andrey",
+        "passwordHash" : "andrey",
+        "role" : "USER"
+      },
+      "priority" : "MEDIUM",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 10,
+        "name" : "chain"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 4,
+        "username" : "andrey",
+        "passwordHash" : "andrey",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-03-02T10:00:00",
+      "updatedAt" : "2026-03-02T10:00:00",
+      "parentId" : 17
+    }, {
+      "id" : 21,
+      "title" : "Реализовать ProjectFilter",
+      "description" : "Фильтр, пропускающий задачи только из заданного проекта.",
+      "dueDate" : "2026-03-02T00:00:00",
+      "creator" : {
+        "id" : 5,
+        "username" : "nick",
+        "passwordHash" : "nick",
+        "role" : "USER"
+      },
+      "priority" : "MEDIUM",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 10,
+        "name" : "chain"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 5,
+        "username" : "nick",
+        "passwordHash" : "nick",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-03-02T10:00:00",
+      "updatedAt" : "2026-03-02T10:00:00",
+      "parentId" : 17
+    }, {
+      "id" : 22,
+      "title" : "Реализовать FilterChain",
+      "description" : "Класс для управления цепочкой фильтров: добавление фильтров, связывание, применение ко всем задачам.",
+      "dueDate" : "2026-03-02T00:00:00",
+      "creator" : {
+        "id" : 6,
+        "username" : "timur",
+        "passwordHash" : "timur",
+        "role" : "USER"
+      },
+      "priority" : "HIGH",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 10,
+        "name" : "chain"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 6,
+        "username" : "timur",
+        "passwordHash" : "timur",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-03-02T10:00:00",
+      "updatedAt" : "2026-03-02T10:00:00",
+      "parentId" : 17
+    } ],
+    "contractors" : [ ],
+    "createdAt" : "2026-03-02T10:00:00",
+    "updatedAt" : "2026-03-02T10:00:00",
+    "parentId" : null
+  }, {
+    "id" : 23,
+    "title" : "Этап 5: Прокси (защитный)",
+    "description" : "Реализация паттерна Proxy для контроля доступа к задачам",
+    "dueDate" : "2026-03-04T00:00:00",
+    "creator" : {
+      "id" : 7,
+      "username" : "admin",
+      "passwordHash" : "admin",
+      "role" : "ADMIN"
+    },
+    "priority" : "HIGH",
+    "status" : "TODO",
+    "project" : {
+      "id" : 4,
+      "name" : "Task Manager MVP",
+      "description" : "Проект по разработке Task Manager MVP",
+      "tasks" : [ ]
+    },
+    "tags" : [ {
+      "id" : 11,
+      "name" : "proxy"
+    }, {
+      "id" : 6,
+      "name" : "pattern"
+    } ],
+    "subtasks" : [ {
+      "id" : 24,
+      "title" : "Создать интерфейс TaskService",
+      "description" : "Интерфейс с CRUD методами, принимающими User currentUser.",
+      "dueDate" : "2026-03-04T00:00:00",
+      "creator" : {
+        "id" : 1,
+        "username" : "svbazuev",
+        "passwordHash" : "svbazuev",
+        "role" : "USER"
+      },
+      "priority" : "HIGH",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 9,
+        "name" : "service"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 1,
+        "username" : "svbazuev",
+        "passwordHash" : "svbazuev",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-03-04T10:00:00",
+      "updatedAt" : "2026-03-04T10:00:00",
+      "parentId" : 23
+    }, {
+      "id" : 25,
+      "title" : "Реализовать TaskServiceImpl",
+      "description" : "Реальная реализация TaskService, использующая TaskRepository.",
+      "dueDate" : "2026-03-04T00:00:00",
+      "creator" : {
+        "id" : 2,
+        "username" : "ilya",
+        "passwordHash" : "ilya",
+        "role" : "USER"
+      },
+      "priority" : "HIGH",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 9,
+        "name" : "service"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 2,
+        "username" : "ilya",
+        "passwordHash" : "ilya",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-03-04T10:00:00",
+      "updatedAt" : "2026-03-04T10:00:00",
+      "parentId" : 23
+    }, {
+      "id" : 26,
+      "title" : "Реализовать TaskServiceProxy",
+      "description" : "Защитный прокси, проверяющий права доступа (ADMIN может всё, остальные только свои задачи).",
+      "dueDate" : "2026-03-04T00:00:00",
+      "creator" : {
+        "id" : 6,
+        "username" : "timur",
+        "passwordHash" : "timur",
+        "role" : "USER"
+      },
+      "priority" : "HIGH",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 11,
+        "name" : "proxy"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 6,
+        "username" : "timur",
+        "passwordHash" : "timur",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-03-04T10:00:00",
+      "updatedAt" : "2026-03-04T10:00:00",
+      "parentId" : 23
+    }, {
+      "id" : 27,
+      "title" : "Модифицировать TaskManagerService для работы с TaskService",
+      "description" : "Изменить TaskManagerService так, чтобы он принимал TaskService (интерфейс) и делегировал ему вызовы.",
+      "dueDate" : "2026-03-04T00:00:00",
+      "creator" : {
+        "id" : 3,
+        "username" : "sergei",
+        "passwordHash" : "sergei",
+        "role" : "USER"
+      },
+      "priority" : "MEDIUM",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 9,
+        "name" : "service"
+      }, {
+        "id" : 11,
+        "name" : "proxy"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 3,
+        "username" : "sergei",
+        "passwordHash" : "sergei",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-03-04T10:00:00",
+      "updatedAt" : "2026-03-04T10:00:00",
+      "parentId" : 23
+    } ],
+    "contractors" : [ ],
+    "createdAt" : "2026-03-04T10:00:00",
+    "updatedAt" : "2026-03-04T10:00:00",
+    "parentId" : null
+  }, {
+    "id" : 28,
+    "title" : "Этап 6: Декоратор",
+    "description" : "Реализация паттерна Decorator для расширения функциональности задач",
+    "dueDate" : "2026-03-06T00:00:00",
+    "creator" : {
+      "id" : 7,
+      "username" : "admin",
+      "passwordHash" : "admin",
+      "role" : "ADMIN"
+    },
+    "priority" : "HIGH",
+    "status" : "TODO",
+    "project" : {
+      "id" : 4,
+      "name" : "Task Manager MVP",
+      "description" : "Проект по разработке Task Manager MVP",
+      "tasks" : [ ]
+    },
+    "tags" : [ {
+      "id" : 12,
+      "name" : "decorator"
+    }, {
+      "id" : 6,
+      "name" : "pattern"
+    } ],
+    "subtasks" : [ {
+      "id" : 29,
+      "title" : "Создать абстрактный класс TaskDecorator",
+      "description" : "Абстрактный декоратор, делегирующий все методы обёрнутой задаче.",
+      "dueDate" : "2026-03-06T00:00:00",
+      "creator" : {
+        "id" : 4,
+        "username" : "andrey",
+        "passwordHash" : "andrey",
+        "role" : "USER"
+      },
+      "priority" : "HIGH",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 12,
+        "name" : "decorator"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 4,
+        "username" : "andrey",
+        "passwordHash" : "andrey",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-03-06T10:00:00",
+      "updatedAt" : "2026-03-06T10:00:00",
+      "parentId" : 28
+    }, {
+      "id" : 30,
+      "title" : "Реализовать LoggingTaskDecorator",
+      "description" : "Декоратор, логирующий изменения задачи (вызовы сеттеров).",
+      "dueDate" : "2026-03-06T00:00:00",
+      "creator" : {
+        "id" : 5,
+        "username" : "nick",
+        "passwordHash" : "nick",
+        "role" : "USER"
+      },
+      "priority" : "MEDIUM",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 12,
+        "name" : "decorator"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 5,
+        "username" : "nick",
+        "passwordHash" : "nick",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-03-06T10:00:00",
+      "updatedAt" : "2026-03-06T10:00:00",
+      "parentId" : 28
+    }, {
+      "id" : 31,
+      "title" : "Показать пример использования декоратора в main",
+      "description" : "В main создать задачу, обернуть её LoggingTaskDecorator и вызвать несколько сеттеров.",
+      "dueDate" : "2026-03-06T00:00:00",
+      "creator" : {
+        "id" : 3,
+        "username" : "sergei",
+        "passwordHash" : "sergei",
+        "role" : "USER"
+      },
+      "priority" : "MEDIUM",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 7,
+        "name" : "demo"
+      }, {
+        "id" : 12,
+        "name" : "decorator"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 3,
+        "username" : "sergei",
+        "passwordHash" : "sergei",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-03-06T10:00:00",
+      "updatedAt" : "2026-03-06T10:00:00",
+      "parentId" : 28
+    } ],
+    "contractors" : [ ],
+    "createdAt" : "2026-03-06T10:00:00",
+    "updatedAt" : "2026-03-06T10:00:00",
+    "parentId" : null
+  }, {
+    "id" : 32,
+    "title" : "Этап 7: Адаптер экспорта",
+    "description" : "Реализация паттерна Adapter для экспорта задач в различные форматы",
+    "dueDate" : "2026-03-07T00:00:00",
+    "creator" : {
+      "id" : 7,
+      "username" : "admin",
+      "passwordHash" : "admin",
+      "role" : "ADMIN"
+    },
+    "priority" : "HIGH",
+    "status" : "TODO",
+    "project" : {
+      "id" : 4,
+      "name" : "Task Manager MVP",
+      "description" : "Проект по разработке Task Manager MVP",
+      "tasks" : [ ]
+    },
+    "tags" : [ {
+      "id" : 13,
+      "name" : "adapter"
+    }, {
+      "id" : 6,
+      "name" : "pattern"
+    } ],
+    "subtasks" : [ {
+      "id" : 33,
+      "title" : "Создать интерфейс TaskExporter",
+      "description" : "Интерфейс с методом String export(List<Task> tasks).",
+      "dueDate" : "2026-03-07T00:00:00",
+      "creator" : {
+        "id" : 2,
+        "username" : "ilya",
+        "passwordHash" : "ilya",
+        "role" : "USER"
+      },
+      "priority" : "MEDIUM",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 13,
+        "name" : "adapter"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 2,
+        "username" : "ilya",
+        "passwordHash" : "ilya",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-03-07T10:00:00",
+      "updatedAt" : "2026-03-07T10:00:00",
+      "parentId" : 32
+    }, {
+      "id" : 34,
+      "title" : "Реализовать CsvTaskExporter",
+      "description" : "Экспорт задач в CSV строку.",
+      "dueDate" : "2026-03-07T00:00:00",
+      "creator" : {
+        "id" : 6,
+        "username" : "timur",
+        "passwordHash" : "timur",
+        "role" : "USER"
+      },
+      "priority" : "MEDIUM",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 13,
+        "name" : "adapter"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 6,
+        "username" : "timur",
+        "passwordHash" : "timur",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-03-07T10:00:00",
+      "updatedAt" : "2026-03-07T10:00:00",
+      "parentId" : 32
+    }, {
+      "id" : 35,
+      "title" : "Реализовать JsonTaskExporter",
+      "description" : "Экспорт задач в JSON (можно использовать ручное формирование или библиотеку).",
+      "dueDate" : "2026-03-07T00:00:00",
+      "creator" : {
+        "id" : 4,
+        "username" : "andrey",
+        "passwordHash" : "andrey",
+        "role" : "USER"
+      },
+      "priority" : "MEDIUM",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 13,
+        "name" : "adapter"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 4,
+        "username" : "andrey",
+        "passwordHash" : "andrey",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-03-07T10:00:00",
+      "updatedAt" : "2026-03-07T10:00:00",
+      "parentId" : 32
+    }, {
+      "id" : 36,
+      "title" : "Добавить метод экспорта в TaskManagerService",
+      "description" : "Метод exportTasks(TaskExporter exporter), который получает все задачи и передаёт их экспортёру.",
+      "dueDate" : "2026-03-07T00:00:00",
+      "creator" : {
+        "id" : 1,
+        "username" : "svbazuev",
+        "passwordHash" : "svbazuev",
+        "role" : "USER"
+      },
+      "priority" : "MEDIUM",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 9,
+        "name" : "service"
+      }, {
+        "id" : 13,
+        "name" : "adapter"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 1,
+        "username" : "svbazuev",
+        "passwordHash" : "svbazuev",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-03-07T10:00:00",
+      "updatedAt" : "2026-03-07T10:00:00",
+      "parentId" : 32
+    } ],
+    "contractors" : [ ],
+    "createdAt" : "2026-03-07T10:00:00",
+    "updatedAt" : "2026-03-07T10:00:00",
+    "parentId" : null
+  }, {
+    "id" : 37,
+    "title" : "Этап 8: Адаптер календаря (имитация)",
+    "description" : "Реализация адаптеров для интеграции с внешними календарями",
+    "dueDate" : "2026-03-08T00:00:00",
+    "creator" : {
+      "id" : 7,
+      "username" : "admin",
+      "passwordHash" : "admin",
+      "role" : "ADMIN"
+    },
+    "priority" : "MEDIUM",
+    "status" : "TODO",
+    "project" : {
+      "id" : 4,
+      "name" : "Task Manager MVP",
+      "description" : "Проект по разработке Task Manager MVP",
+      "tasks" : [ ]
+    },
+    "tags" : [ {
+      "id" : 13,
+      "name" : "adapter"
+    }, {
+      "id" : 14,
+      "name" : "integration"
+    }, {
+      "id" : 6,
+      "name" : "pattern"
+    } ],
+    "subtasks" : [ {
+      "id" : 38,
+      "title" : "Создать интерфейс ExternalCalendarAdapter",
+      "description" : "Интерфейс с методами exportTask(Task task) и List<Task> importTasks().",
+      "dueDate" : "2026-03-08T00:00:00",
+      "creator" : {
+        "id" : 5,
+        "username" : "nick",
+        "passwordHash" : "nick",
+        "role" : "USER"
+      },
+      "priority" : "MEDIUM",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 13,
+        "name" : "adapter"
+      }, {
+        "id" : 14,
+        "name" : "integration"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 5,
+        "username" : "nick",
+        "passwordHash" : "nick",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-03-08T10:00:00",
+      "updatedAt" : "2026-03-08T10:00:00",
+      "parentId" : 37
+    }, {
+      "id" : 39,
+      "title" : "Реализовать GoogleCalendarAdapter (имитация)",
+      "description" : "Адаптер для Google Calendar, который выводит информацию в консоль.",
+      "dueDate" : "2026-03-08T00:00:00",
+      "creator" : {
+        "id" : 3,
+        "username" : "sergei",
+        "passwordHash" : "sergei",
+        "role" : "USER"
+      },
+      "priority" : "MEDIUM",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 13,
+        "name" : "adapter"
+      }, {
+        "id" : 14,
+        "name" : "integration"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 3,
+        "username" : "sergei",
+        "passwordHash" : "sergei",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-03-08T10:00:00",
+      "updatedAt" : "2026-03-08T10:00:00",
+      "parentId" : 37
+    }, {
+      "id" : 40,
+      "title" : "Реализовать OutlookCalendarAdapter (имитация)",
+      "description" : "Адаптер для Outlook Calendar, который выводит информацию в консоль.",
+      "dueDate" : "2026-03-08T00:00:00",
+      "creator" : {
+        "id" : 2,
+        "username" : "ilya",
+        "passwordHash" : "ilya",
+        "role" : "USER"
+      },
+      "priority" : "MEDIUM",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 13,
+        "name" : "adapter"
+      }, {
+        "id" : 14,
+        "name" : "integration"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 2,
+        "username" : "ilya",
+        "passwordHash" : "ilya",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-03-08T10:00:00",
+      "updatedAt" : "2026-03-08T10:00:00",
+      "parentId" : 37
+    } ],
+    "contractors" : [ ],
+    "createdAt" : "2026-03-08T10:00:00",
+    "updatedAt" : "2026-03-08T10:00:00",
+    "parentId" : null
+  }, {
+    "id" : 41,
+    "title" : "Этап 9: Интеграция всех частей в консольное приложение",
+    "description" : "Сборка всех компонентов в единое демонстрационное приложение",
+    "dueDate" : "2026-03-09T00:00:00",
+    "creator" : {
+      "id" : 7,
+      "username" : "admin",
+      "passwordHash" : "admin",
+      "role" : "ADMIN"
+    },
+    "priority" : "HIGH",
+    "status" : "TODO",
+    "project" : {
+      "id" : 4,
+      "name" : "Task Manager MVP",
+      "description" : "Проект по разработке Task Manager MVP",
+      "tasks" : [ ]
+    },
+    "tags" : [ {
+      "id" : 7,
+      "name" : "demo"
+    }, {
+      "id" : 14,
+      "name" : "integration"
+    } ],
+    "subtasks" : [ {
+      "id" : 42,
+      "title" : "Написать главный класс Main",
+      "description" : "Создать класс Main, который будет инициализировать все компоненты и вызывать демонстрационные методы.",
+      "dueDate" : "2026-03-09T00:00:00",
+      "creator" : {
+        "id" : 1,
+        "username" : "svbazuev",
+        "passwordHash" : "svbazuev",
+        "role" : "USER"
+      },
+      "priority" : "HIGH",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 7,
+        "name" : "demo"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 1,
+        "username" : "svbazuev",
+        "passwordHash" : "svbazuev",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-03-09T10:00:00",
+      "updatedAt" : "2026-03-09T10:00:00",
+      "parentId" : 41
+    }, {
+      "id" : 43,
+      "title" : "Создать тестовые задачи через Builder",
+      "description" : "В Main создать несколько задач и проектов с использованием Builder для последующей демонстрации.",
+      "dueDate" : "2026-03-09T00:00:00",
+      "creator" : {
+        "id" : 6,
+        "username" : "timur",
+        "passwordHash" : "timur",
+        "role" : "USER"
+      },
+      "priority" : "MEDIUM",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 5,
+        "name" : "builder"
+      }, {
+        "id" : 7,
+        "name" : "demo"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 6,
+        "username" : "timur",
+        "passwordHash" : "timur",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-03-09T10:00:00",
+      "updatedAt" : "2026-03-09T10:00:00",
+      "parentId" : 41
+    }, {
+      "id" : 44,
+      "title" : "Демонстрация стратегий сортировки",
+      "description" : "Показать сортировку задач разными стратегиями (по дате, по приоритету).",
+      "dueDate" : "2026-03-09T00:00:00",
+      "creator" : {
+        "id" : 5,
+        "username" : "nick",
+        "passwordHash" : "nick",
+        "role" : "USER"
+      },
+      "priority" : "MEDIUM",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 8,
+        "name" : "strategy"
+      }, {
+        "id" : 7,
+        "name" : "demo"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 5,
+        "username" : "nick",
+        "passwordHash" : "nick",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-03-09T10:00:00",
+      "updatedAt" : "2026-03-09T10:00:00",
+      "parentId" : 41
+    }, {
+      "id" : 45,
+      "title" : "Демонстрация цепочки фильтров",
+      "description" : "Показать фильтрацию задач по статусу, тегу, проекту с помощью FilterChain.",
+      "dueDate" : "2026-03-09T00:00:00",
+      "creator" : {
+        "id" : 4,
+        "username" : "andrey",
+        "passwordHash" : "andrey",
+        "role" : "USER"
+      },
+      "priority" : "MEDIUM",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 10,
+        "name" : "chain"
+      }, {
+        "id" : 7,
+        "name" : "demo"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 4,
+        "username" : "andrey",
+        "passwordHash" : "andrey",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-03-09T10:00:00",
+      "updatedAt" : "2026-03-09T10:00:00",
+      "parentId" : 41
+    }, {
+      "id" : 46,
+      "title" : "Демонстрация защитного прокси",
+      "description" : "Показать работу TaskServiceProxy с разными пользователями (админ, обычный пользователь).",
+      "dueDate" : "2026-03-09T00:00:00",
+      "creator" : {
+        "id" : 6,
+        "username" : "timur",
+        "passwordHash" : "timur",
+        "role" : "USER"
+      },
+      "priority" : "MEDIUM",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 11,
+        "name" : "proxy"
+      }, {
+        "id" : 7,
+        "name" : "demo"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 6,
+        "username" : "timur",
+        "passwordHash" : "timur",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-03-09T10:00:00",
+      "updatedAt" : "2026-03-09T10:00:00",
+      "parentId" : 41
+    }, {
+      "id" : 47,
+      "title" : "Демонстрация декоратора",
+      "description" : "Показать использование LoggingTaskDecorator для логирования изменений задачи.",
+      "dueDate" : "2026-03-09T00:00:00",
+      "creator" : {
+        "id" : 3,
+        "username" : "sergei",
+        "passwordHash" : "sergei",
+        "role" : "USER"
+      },
+      "priority" : "MEDIUM",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 12,
+        "name" : "decorator"
+      }, {
+        "id" : 7,
+        "name" : "demo"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 3,
+        "username" : "sergei",
+        "passwordHash" : "sergei",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-03-09T10:00:00",
+      "updatedAt" : "2026-03-09T10:00:00",
+      "parentId" : 41
+    }, {
+      "id" : 48,
+      "title" : "Демонстрация адаптеров (экспорт и календарь)",
+      "description" : "Показать экспорт задач в CSV и JSON, а также имитацию синхронизации с календарём.",
+      "dueDate" : "2026-03-09T00:00:00",
+      "creator" : {
+        "id" : 2,
+        "username" : "ilya",
+        "passwordHash" : "ilya",
+        "role" : "USER"
+      },
+      "priority" : "MEDIUM",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 13,
+        "name" : "adapter"
+      }, {
+        "id" : 7,
+        "name" : "demo"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 2,
+        "username" : "ilya",
+        "passwordHash" : "ilya",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-03-09T10:00:00",
+      "updatedAt" : "2026-03-09T10:00:00",
+      "parentId" : 41
+    } ],
+    "contractors" : [ ],
+    "createdAt" : "2026-03-09T10:00:00",
+    "updatedAt" : "2026-03-09T10:00:00",
+    "parentId" : null
+  }, {
+    "id" : 49,
+    "title" : "Этап 10: Отладка и тестирование",
+    "description" : "Завершающий этап: интеграционное тестирование и подготовка к презентации",
+    "dueDate" : "2026-03-10T00:00:00",
+    "creator" : {
+      "id" : 7,
+      "username" : "admin",
+      "passwordHash" : "admin",
+      "role" : "ADMIN"
+    },
+    "priority" : "HIGH",
+    "status" : "TODO",
+    "project" : {
+      "id" : 4,
+      "name" : "Task Manager MVP",
+      "description" : "Проект по разработке Task Manager MVP",
+      "tasks" : [ ]
+    },
+    "tags" : [ {
+      "id" : 15,
+      "name" : "testing"
+    }, {
+      "id" : 16,
+      "name" : "final"
+    } ],
+    "subtasks" : [ {
+      "id" : 50,
+      "title" : "Интеграционное тестирование и исправление ошибок",
+      "description" : "Запустить приложение, проверить работу всех паттернов, исправить найденные баги. Ответственность распределена по модулям.",
+      "dueDate" : "2026-03-10T00:00:00",
+      "creator" : {
+        "id" : 7,
+        "username" : "admin",
+        "passwordHash" : "admin",
+        "role" : "ADMIN"
+      },
+      "priority" : "HIGH",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 15,
+        "name" : "testing"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 1,
+        "username" : "svbazuev",
+        "passwordHash" : "svbazuev",
+        "role" : "USER"
+      }, {
+        "id" : 2,
+        "username" : "ilya",
+        "passwordHash" : "ilya",
+        "role" : "USER"
+      }, {
+        "id" : 3,
+        "username" : "sergei",
+        "passwordHash" : "sergei",
+        "role" : "USER"
+      }, {
+        "id" : 4,
+        "username" : "andrey",
+        "passwordHash" : "andrey",
+        "role" : "USER"
+      }, {
+        "id" : 5,
+        "username" : "nick",
+        "passwordHash" : "nick",
+        "role" : "USER"
+      }, {
+        "id" : 6,
+        "username" : "timur",
+        "passwordHash" : "timur",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-03-10T10:00:00",
+      "updatedAt" : "2026-03-10T10:00:00",
+      "parentId" : 49
+    }, {
+      "id" : 51,
+      "title" : "Подготовка презентации",
+      "description" : "Подготовить демонстрационные материалы, слайды, примеры для защиты проекта.",
+      "dueDate" : "2026-03-10T00:00:00",
+      "creator" : {
+        "id" : 1,
+        "username" : "svbazuev",
+        "passwordHash" : "svbazuev",
+        "role" : "USER"
+      },
+      "priority" : "HIGH",
+      "status" : "TODO",
+      "project" : {
+        "id" : 4,
+        "name" : "Task Manager MVP",
+        "description" : "Проект по разработке Task Manager MVP",
+        "tasks" : [ ]
+      },
+      "tags" : [ {
+        "id" : 17,
+        "name" : "presentation"
+      } ],
+      "subtasks" : [ ],
+      "contractors" : [ {
+        "id" : 1,
+        "username" : "svbazuev",
+        "passwordHash" : "svbazuev",
+        "role" : "USER"
+      } ],
+      "createdAt" : "2026-03-10T10:00:00",
+      "updatedAt" : "2026-03-10T10:00:00",
+      "parentId" : 49
+    } ],
+    "contractors" : [ ],
+    "createdAt" : "2026-03-10T10:00:00",
+    "updatedAt" : "2026-03-10T10:00:00",
+    "parentId" : null
+  } ]
+}

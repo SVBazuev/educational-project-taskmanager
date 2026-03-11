@@ -1,7 +1,7 @@
 package edu.taskmanager;
 
 
-import edu.taskmanager.console.ConsoleApplication;
+import edu.taskmanager.frontend.console.ConsoleApplication;
 
 
 public class Main {

@@ -1,6 +1,6 @@
 *.class
 /out/
-/target/
+*/target/
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###
@@ -212,3 +212,7 @@ README.html
 /project/target/generated-sources/
 /project/target/maven-status/
 /project/target/maven-status/maven-compiler-plugin/
+documentation.md
+scaner_project.py
+/project/target
+debug.log
