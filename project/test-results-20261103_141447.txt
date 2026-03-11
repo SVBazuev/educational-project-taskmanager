@@ -1,0 +1,2 @@
+error: pathspec 'timurC:\Users\msi\AppData\Roaming\Code\User\globalStorage\pleiades.java-extension-pack-jdk\maven\latest\bin\mvn' did not match any file(s) known to git
+error: pathspec 'test' did not match any file(s) known to git
