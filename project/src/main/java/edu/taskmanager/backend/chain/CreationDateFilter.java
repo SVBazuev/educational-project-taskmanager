@@ -27,6 +27,8 @@ public class CreationDateFilter implements TaskFilter {
     public boolean filter(Task task) {
         LocalDateTime creationDate = task.getCreatedAt();
 
+        if (creationDate == null) { return false; }
+
         if (startDate != null && creationDate.isBefore(startDate)) { return false; }
 
         if (endDate != null && creationDate.isAfter(endDate)) { return false; }
