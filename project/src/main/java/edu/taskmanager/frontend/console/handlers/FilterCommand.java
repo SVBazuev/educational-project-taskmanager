@@ -43,7 +43,7 @@ public class FilterCommand implements Command {
     public void execute(List<String> args) {
         if (args.isEmpty()) {
             System.out.println("Использование: filter&ключ1=значение1&ключ2=значение2...");
-            System.out.println("Доступные ключи: status, tag, project, user, priority, " +
+            System.out.println("Доступные ключи: description, status, tag, project, user, priority, " +
                     "duestartdate, dueenddate, startdate, enddate, upstartdate, upenddate");
             return;
         }
@@ -127,6 +127,16 @@ public class FilterCommand implements Command {
                 filterChain.addFilter(new PriorityFilter(priority));
             } catch (IllegalArgumentException e) {
                 System.out.println("Неверный приоритет. Допустимые: LOW, MEDIUM, HIGH, CRITICAL.");
+                return;
+            }
+        }
+
+        if (criteria.containsKey("description")) {
+            try {
+                String description = criteria.get("description").toLowerCase();
+                filterChain.addFilter(new DescriptionFilter(description));
+            } catch (IllegalArgumentException e) {
+                System.out.println("Неверное описание.");
                 return;
             }
         }
@@ -250,7 +260,7 @@ public class FilterCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "filter&ключ=значение... - фильтрация задач (status, tag, project, user, priority, " +
+        return "filter&ключ=значение... - фильтрация задач (description, status, tag, project, user, priority, " +
                 "duestartdate, dueenddate, startdate, enddate, upstartdate, upenddate)";
     }
 }
