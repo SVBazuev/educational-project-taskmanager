@@ -22,7 +22,7 @@ public class InMemoryTagRepository implements TagRepository {
         Long existingId = nameToId.get(tag.getName());
         if (existingId != null) {
             // Возвращаем существующий тег (не создаём новый)
-            return storage.get(existingId);
+            return copyOf(storage.get(existingId));
         }
         // Создаём новый
         long newId = idGenerator.getAndIncrement();
@@ -30,26 +30,28 @@ public class InMemoryTagRepository implements TagRepository {
         storage.put(newId, tagWithId);
         nameToId.put(tagWithId.getName(), newId);
 
-        return tagWithId;
+        return copyOf(tagWithId);
     }
 
     @Override
     public Optional<Tag> findById(Long id) {
-        return Optional.ofNullable(storage.get(id));
+        Tag t = storage.get(id);
+        return t != null ? Optional.of(copyOf(t)) : Optional.empty();
     }
 
     @Override
     public Optional<Tag> findByName(String name) {
         Long id = nameToId.get(name);
-        if (id != null) {
-            return Optional.ofNullable(storage.get(id));
-        }
-        return Optional.empty();
+        if (id == null) return Optional.empty();
+        Tag t = storage.get(id);
+        return t != null ? Optional.of(copyOf(t)) : Optional.empty();
     }
 
     @Override
     public List<Tag> findAll() {
-        return new ArrayList<>(storage.values());
+        return storage.values().stream()
+                .map(this::copyOf)
+                .collect(java.util.stream.Collectors.toList());
     }
 
     @Override
@@ -58,5 +60,9 @@ public class InMemoryTagRepository implements TagRepository {
         if (tag != null) {
             nameToId.remove(tag.getName());
         }
+    }
+
+    private Tag copyOf(Tag t) {
+        return t.withId(t.getId());
     }
 }

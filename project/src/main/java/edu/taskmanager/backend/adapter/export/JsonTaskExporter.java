@@ -40,7 +40,7 @@ public class JsonTaskExporter implements TaskExporter {
             String json = objectMapper.writeValueAsString(wrapper);
 
             // Сохранение в файл
-            File outputFile = new File(outputFilePath);
+            File outputFile = resolveFile(outputFilePath);
             // Создаём родительские директории, если их нет
             if(outputFile.getParentFile() != null){
                 outputFile.getParentFile().mkdirs();
@@ -56,7 +56,7 @@ public class JsonTaskExporter implements TaskExporter {
 
     public void exportAppData(AppData data) {
         try {
-            File outputFile = new File(outputFilePath);
+            File outputFile = resolveFile(outputFilePath);
             if (outputFile.getParentFile() != null) {
                 outputFile.getParentFile().mkdirs();
             }
@@ -65,5 +65,13 @@ public class JsonTaskExporter implements TaskExporter {
         } catch (IOException e) {
             throw new RuntimeException("Ошибка при сохранении данных: " + e.getMessage(), e);
         }
+    }
+
+    /**
+     * Создаёт объект File для указанного пути.
+     * Выделен в отдельный метод для возможности переопределения в тестах.
+     */
+    protected File resolveFile(String path) {
+        return new File(path);
     }
 }

@@ -1,6 +1,5 @@
 package edu.taskmanager.backend.repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -19,38 +18,44 @@ public class InMemoryProjectRepository implements ProjectRepository {
         if (project.getId() == null) {
             Long existingId = nameToId.get(project.getName());
             if (existingId != null) {
-                return storage.get(existingId);
+                return copyOf(storage.get(existingId));
             }
             long newId = idGenerator.getAndIncrement();
             Project projectWithId = project.withId(newId);
             storage.put(newId, projectWithId);
             nameToId.put(projectWithId.getName(), newId);
-            return projectWithId;
+            return copyOf(projectWithId);
         } else {
             Project old = storage.get(project.getId());
             if (old != null && !old.getName().equals(project.getName())) {
                 nameToId.remove(old.getName());
                 nameToId.put(project.getName(), project.getId());
             }
-            storage.put(project.getId(), project);
-            return project;
+            Project copy = project.withId(project.getId());
+            storage.put(project.getId(), copy);
+            return copyOf(copy);
         }
     }
 
     @Override
     public Optional<Project> findById(Long id) {
-        return Optional.ofNullable(storage.get(id));
+        Project p = storage.get(id);
+        return p != null ? Optional.of(copyOf(p)) : Optional.empty();
     }
 
     @Override
     public Optional<Project> findByName(String name) {
         Long id = nameToId.get(name);
-        return id != null ? Optional.ofNullable(storage.get(id)) : Optional.empty();
+        if (id == null) return Optional.empty();
+        Project p = storage.get(id);
+        return p != null ? Optional.of(copyOf(p)) : Optional.empty();
     }
 
     @Override
     public List<Project> findAll() {
-        return new ArrayList<>(storage.values());
+        return storage.values().stream()
+                .map(this::copyOf)
+                .collect(java.util.stream.Collectors.toList());
     }
 
     @Override
@@ -59,5 +64,9 @@ public class InMemoryProjectRepository implements ProjectRepository {
         if (project != null) {
             nameToId.remove(project.getName());
         }
+    }
+
+    private Project copyOf(Project p) {
+        return p.withId(p.getId());
     }
 }
