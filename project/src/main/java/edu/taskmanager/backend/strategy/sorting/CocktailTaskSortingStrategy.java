@@ -20,6 +20,16 @@ public class CocktailTaskSortingStrategy {
      * @return новый отсортированный список
      */
     public static List<Task> cocktailSort(List<Task> tasks, Comparator<Task> comparator) {
+        // Сначала проверяем компаратор на null
+        if (comparator == null) {
+            throw new NullPointerException("Comparator cannot be null");
+        }
+        
+        // Затем проверяем список на null
+        if (tasks == null) {
+            return new ArrayList<>();
+        }
+        
         // Создаем копию списка, чтобы не изменять исходный
         List<Task> sortedTasks = new ArrayList<>(tasks);
 
