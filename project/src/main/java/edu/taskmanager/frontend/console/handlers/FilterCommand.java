@@ -1,8 +1,6 @@
 package edu.taskmanager.frontend.console.handlers;
 
 
-import static edu.taskmanager.frontend.console.parser.ArgumentParser.DATE_FORMATTER;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
@@ -10,7 +8,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import edu.taskmanager.backend.chain.*;
+import edu.taskmanager.backend.chain.CreationDateFilter;
+import edu.taskmanager.backend.chain.CreatorFilter;
+import edu.taskmanager.backend.chain.DueDateFilter;
+import edu.taskmanager.backend.chain.FilterChain;
+import edu.taskmanager.backend.chain.PriorityFilter;
+import edu.taskmanager.backend.chain.ProjectFilter;
+import edu.taskmanager.backend.chain.StatusFilter;
+import edu.taskmanager.backend.chain.TagFilter;
 import edu.taskmanager.backend.model.Project;
 import edu.taskmanager.backend.model.Tag;
 import edu.taskmanager.backend.model.Task;
@@ -23,6 +28,7 @@ import edu.taskmanager.backend.util.Priority;
 import edu.taskmanager.backend.util.TaskStatus;
 import edu.taskmanager.frontend.console.Command;
 import edu.taskmanager.frontend.console.parser.ArgumentParser;
+import static edu.taskmanager.frontend.console.parser.ArgumentParser.DATE_FORMATTER;
 
 public class FilterCommand implements Command {
     private final TaskRepository taskRepository;
@@ -43,7 +49,8 @@ public class FilterCommand implements Command {
     public void execute(List<String> args) {
         if (args.isEmpty()) {
             System.out.println("Использование: filter&ключ1=значение1&ключ2=значение2...");
-            System.out.println("Доступные ключи: status, tag, project, user, priority, duestartdate, dueenddate");
+            System.out.println("Доступные ключи: status, tag, project, user, priority, " +
+                    "duestartdate, dueenddate, startdate, enddate, upstartdate, upenddate");
             return;
         }
 
@@ -155,32 +162,34 @@ public class FilterCommand implements Command {
         LocalDateTime endDate =null;
 
         try {
-            if (criteria.containsKey("startdate")) {
-                String dateString = criteria.get("startdate");
-                try {
-                    startDate = LocalDateTime.parse(dateString, ArgumentParser.DATE_FORMATTER);
-                } catch (DateTimeParseException e) {
-                    System.out.println("Неверный формат даты начала. Используйте формат даты: yyyy-MM-dd HH:mm");
+            if (criteria.containsKey("startdate") || criteria.containsKey("enddate")) {
+                if (criteria.containsKey("startdate")) {
+                    String dateString = criteria.get("startdate");
+                    try {
+                        startDate = LocalDateTime.parse(dateString, ArgumentParser.DATE_FORMATTER);
+                    } catch (DateTimeParseException e) {
+                        System.out.println("Неверный формат даты начала. Используйте формат даты: yyyy-MM-dd HH:mm");
+                        return;
+                    }
+                }
+                if (criteria.containsKey("enddate")) {
+                    String dateString = criteria.get("enddate");
+                    try {
+                        endDate = LocalDateTime.parse(dateString, ArgumentParser.DATE_FORMATTER);
+                    } catch (DateTimeParseException e) {
+                        System.out.println("Неверный формат даты окончания. Используйте формат даты: yyyy-MM-dd HH:mm");
+                        return;
+                    }
+                }
+                if (startDate !=null && endDate!= null&& startDate.isAfter(endDate)) {
+                    System.out.println("Дата начала не может быть позже даты окончания");
+                }
+                if (startDate != null || endDate != null) {
+                    filterChain.addFilter(new CreationDateFilter(startDate, endDate));
+                } else {
+                    System.out.println("Не заданы даты фильтрации");
                     return;
                 }
-            }
-            if (criteria.containsKey("enddate")) {
-                String dateString = criteria.get("enddate");
-                try {
-                    endDate = LocalDateTime.parse(dateString, ArgumentParser.DATE_FORMATTER);
-                } catch (DateTimeParseException e) {
-                    System.out.println("Неверный формат даты окончания. Используйте формат даты: yyyy-MM-dd HH:mm");
-                    return;
-                }
-            }
-            if (startDate !=null && endDate!= null&& startDate.isAfter(endDate)) {
-                System.out.println("Дата начала не может быть позже даты окончания");
-            }
-            if (startDate != null || endDate != null) {
-                filterChain.addFilter(new CreationDateFilter(startDate, endDate));
-            } else {
-                System.out.println("Не заданы даты фильтрации");
-                return;
             }
         } catch (Exception e) {
             System.out.println("Введен не верный формат даты. Используйте формат даты: yyyy-MM-dd HH:mm");
@@ -192,32 +201,34 @@ public class FilterCommand implements Command {
         LocalDateTime upEndDate =null;
 
         try {
-            if (criteria.containsKey("upstartdate")) {
-                String dateString = criteria.get("upstartdate");
-                try {
-                    upStartDate = LocalDateTime.parse(dateString, ArgumentParser.DATE_FORMATTER);
-                } catch (DateTimeParseException e) {
-                    System.out.println("Неверный формат даты начала. Используйте формат даты: yyyy-MM-dd HH:mm");
+            if (criteria.containsKey("upstartdate") || criteria.containsKey("upenddate")) {
+                if (criteria.containsKey("upstartdate")) {
+                    String dateString = criteria.get("upstartdate");
+                    try {
+                        upStartDate = LocalDateTime.parse(dateString, ArgumentParser.DATE_FORMATTER);
+                    } catch (DateTimeParseException e) {
+                        System.out.println("Неверный формат даты начала. Используйте формат даты: yyyy-MM-dd HH:mm");
+                        return;
+                    }
+                }
+                if (criteria.containsKey("upenddate")) {
+                    String dateString = criteria.get("upenddate");
+                    try {
+                        upEndDate = LocalDateTime.parse(dateString, ArgumentParser.DATE_FORMATTER);
+                    } catch (DateTimeParseException e) {
+                        System.out.println("Неверный формат даты окончания. Используйте формат даты: yyyy-MM-dd HH:mm");
+                        return;
+                    }
+                }
+                if (upStartDate !=null && upEndDate!= null&& upStartDate.isAfter(upEndDate)) {
+                    System.out.println("Дата начала не может быть позже даты окончания");
+                }
+                if (upStartDate != null || upEndDate != null) {
+                    filterChain.addFilter(new CreationDateFilter(upStartDate, upEndDate));
+                } else {
+                    System.out.println("Не заданы даты фильтрации");
                     return;
                 }
-            }
-            if (criteria.containsKey("upenddate")) {
-                String dateString = criteria.get("upenddate");
-                try {
-                    upEndDate = LocalDateTime.parse(dateString, ArgumentParser.DATE_FORMATTER);
-                } catch (DateTimeParseException e) {
-                    System.out.println("Неверный формат даты окончания. Используйте формат даты: yyyy-MM-dd HH:mm");
-                    return;
-                }
-            }
-            if (upStartDate !=null && upEndDate!= null&& upStartDate.isAfter(upEndDate)) {
-                System.out.println("Дата начала не может быть позже даты окончания");
-            }
-            if (upStartDate != null || upEndDate != null) {
-                filterChain.addFilter(new CreationDateFilter(upStartDate, upEndDate));
-            } else {
-                System.out.println("Не заданы даты фильтрации");
-                return;
             }
         } catch (Exception e) {
             System.out.println("Введен не верный формат даты. Используйте формат даты: yyyy-MM-dd HH:mm");
@@ -245,6 +256,7 @@ public class FilterCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "filter&ключ=значение... - фильтрация задач (status, tag, project, user, priority, duestartdate, dueenddate)";
+        return "filter&ключ=значение... - фильтрация задач (status, tag, project, user, priority, " +
+                "duestartdate, dueenddate, startdate, enddate, upstartdate, upenddate)";
     }
 }
