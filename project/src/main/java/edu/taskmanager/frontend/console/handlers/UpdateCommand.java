@@ -1,35 +1,39 @@
 package edu.taskmanager.frontend.console.handlers;
 
-
-import java.util.List;
-import java.util.Optional;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-
 import edu.taskmanager.backend.model.*;
-import edu.taskmanager.backend.repository.*;
+import edu.taskmanager.backend.repository.ProjectRepository;
+import edu.taskmanager.backend.repository.TagRepository;
+import edu.taskmanager.backend.repository.UserRepository;
+import edu.taskmanager.backend.service.TaskService;
 import edu.taskmanager.backend.util.Priority;
 import edu.taskmanager.backend.util.TaskStatus;
 import edu.taskmanager.frontend.console.Command;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.List;
+import java.util.Optional;
 
 public class UpdateCommand implements Command {
-    private static final DateTimeFormatter DATE_FORMATTER =
-        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    private final TaskRepository taskRepository;
+    private final TaskService taskService;
     private final ProjectRepository projectRepository;
     private final TagRepository tagRepository;
     private final UserRepository userRepository;
+    private final User currentUser;
 
-    public UpdateCommand(
-            TaskRepository taskRepository, ProjectRepository projectRepository,
-            TagRepository tagRepository, UserRepository userRepository) {
-        this.taskRepository = taskRepository;
+    public UpdateCommand(TaskService taskService,
+                         ProjectRepository projectRepository,
+                         TagRepository tagRepository,
+                         UserRepository userRepository,
+                         User currentUser) {
+        this.taskService = taskService;
         this.projectRepository = projectRepository;
         this.tagRepository = tagRepository;
         this.userRepository = userRepository;
+        this.currentUser = currentUser;
     }
 
     @Override
@@ -47,7 +51,6 @@ public class UpdateCommand implements Command {
             return;
         }
         String field = args.get(2).toLowerCase();
-        // Значение может содержать пробелы, поэтому объединяем остальные аргументы
         String value = args.size() > 3 ? String.join(" ", args.subList(3, args.size())) : "";
 
         switch (type) {
@@ -60,50 +63,55 @@ public class UpdateCommand implements Command {
     }
 
     private void updateTask(long id, String field, String value) {
-        Optional<Task> opt = taskRepository.findById(id);
-        if (opt.isEmpty()) {
-            System.out.println("Задача с ID " + id + " не найдена.");
-            return;
-        }
-        Task task = opt.get();
-        switch (field) {
-            case "title" -> task.setTitle(value);
-            case "description" -> task.setDescription(value);
-            case "duedate" -> {
-                try {
-                    LocalDateTime newDate = LocalDateTime.parse(value, DATE_FORMATTER);
-                    task.setDueDate(newDate);
-                } catch (DateTimeParseException e) {
-                    System.out.println("Неверный формат даты. Используйте YYYY-MM-DD HH:MM.");
-                    return;
-                }
-            }
-            case "priority" -> {
-                try {
-                    Priority newPriority = Priority.valueOf(value.toUpperCase());
-                    task.setPriority(newPriority);
-                } catch (IllegalArgumentException e) {
-                    System.out.println("Неверный приоритет. Допустимые: LOW, MEDIUM, HIGH, CRITICAL.");
-                    return;
-                }
-            }
-            case "status" -> {
-                try {
-                    TaskStatus newStatus = TaskStatus.valueOf(value.toUpperCase());
-                    task.setStatus(newStatus);
-                } catch (IllegalArgumentException e) {
-                    System.out.println("Неверный статус. Допустимые: TODO, IN_PROGRESS, DONE.");
-                    return;
-                }
-            }
-            default -> {
-                System.out.println("Неизвестное поле. Доступные: title, description, dueDate, priority, status.");
+        try {
+            Optional<Task> opt = taskService.getTask(id, currentUser);
+            if (opt.isEmpty()) {
+                System.out.println("Задача с ID " + id + " не найдена.");
                 return;
             }
+            Task task = opt.get();
+            switch (field) {
+                case "title" -> task.setTitle(value);
+                case "description" -> task.setDescription(value);
+                case "duedate" -> {
+                    try {
+                        LocalDateTime newDate = LocalDateTime.parse(value, DATE_FORMATTER);
+                        task.setDueDate(newDate);
+                    } catch (DateTimeParseException e) {
+                        System.out.println("Неверный формат даты. Используйте YYYY-MM-DD HH:MM.");
+                        return;
+                    }
+                }
+                case "priority" -> {
+                    try {
+                        Priority newPriority = Priority.valueOf(value.toUpperCase());
+                        task.setPriority(newPriority);
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Неверный приоритет. Допустимые: LOW, MEDIUM, HIGH, CRITICAL.");
+                        return;
+                    }
+                }
+                case "status" -> {
+                    try {
+                        TaskStatus newStatus = TaskStatus.valueOf(value.toUpperCase());
+                        task.setStatus(newStatus);
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Неверный статус. Допустимые: TODO, IN_PROGRESS, DONE.");
+                        return;
+                    }
+                }
+                default -> {
+                    System.out.println("Неизвестное поле. Доступные: title, description, dueDate, priority, status.");
+                    return;
+                }
+            }
+            Task updated = taskService.updateTask(task, currentUser);
+            System.out.println("Задача обновлена: " + updated);
+        } catch (SecurityException e) {
+            System.out.println("Ошибка прав доступа: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка: " + e.getMessage());
         }
-        task.setUpdatedAt(LocalDateTime.now());
-        taskRepository.save(task);
-        System.out.println("Задача обновлена: " + task);
     }
 
     private void updateProject(long id, String field, String value) {

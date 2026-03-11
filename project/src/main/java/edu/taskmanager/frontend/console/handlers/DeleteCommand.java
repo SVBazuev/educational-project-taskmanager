@@ -1,27 +1,34 @@
 package edu.taskmanager.frontend.console.handlers;
 
+import edu.taskmanager.backend.model.*;
+import edu.taskmanager.backend.repository.ProjectRepository;
+import edu.taskmanager.backend.repository.TagRepository;
+import edu.taskmanager.backend.repository.UserRepository;
+import edu.taskmanager.backend.service.TaskService;
+import edu.taskmanager.frontend.console.Command;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import edu.taskmanager.backend.repository.*;
-import edu.taskmanager.frontend.console.Command;
-
+import java.util.Optional;
 
 public class DeleteCommand implements Command {
-    private final TaskRepository taskRepository;
+    private final TaskService taskService;
     private final ProjectRepository projectRepository;
     private final TagRepository tagRepository;
     private final UserRepository userRepository;
+    private final User currentUser;
 
-    public DeleteCommand(
-            TaskRepository taskRepository, ProjectRepository projectRepository,
-            TagRepository tagRepository, UserRepository userRepository) {
-        this.taskRepository = taskRepository;
+    public DeleteCommand(TaskService taskService,
+                         ProjectRepository projectRepository,
+                         TagRepository tagRepository,
+                         UserRepository userRepository,
+                         User currentUser) {
+        this.taskService = taskService;
         this.projectRepository = projectRepository;
         this.tagRepository = tagRepository;
         this.userRepository = userRepository;
+        this.currentUser = currentUser;
     }
 
     @Override
@@ -33,7 +40,6 @@ public class DeleteCommand implements Command {
         String type = args.get(0).toLowerCase();
         List<String> params = args.subList(1, args.size());
 
-        // Парсим аргументы в карту критериев
         Map<String, String> criteria = new HashMap<>();
         for (String arg : params) {
             String[] kv = arg.split("=", 2);
@@ -60,14 +66,14 @@ public class DeleteCommand implements Command {
         }
         try {
             long id = Long.parseLong(criteria.get("id"));
-            if (taskRepository.findById(id).isPresent()) {
-                taskRepository.deleteById(id);
-                System.out.println("Задача с ID " + id + " удалена.");
-            } else {
-                System.out.println("Задача с ID " + id + " не найдена.");
-            }
+            taskService.deleteTask(id, currentUser);
+            System.out.println("Задача с ID " + id + " удалена.");
         } catch (NumberFormatException e) {
             System.out.println("ID должен быть числом");
+        } catch (SecurityException e) {
+            System.out.println("Ошибка прав доступа: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка: " + e.getMessage());
         }
     }
 
@@ -80,9 +86,9 @@ public class DeleteCommand implements Command {
             long id = Long.parseLong(criteria.get("id"));
             if (projectRepository.findById(id).isPresent()) {
                 projectRepository.deleteById(id);
-                System.out.println("Проект с ID" + id + " удален.");
+                System.out.println("Проект с ID " + id + " удален.");
             } else {
-                System.out.println("Проект с ID" + id + " не найден");
+                System.out.println("Проект с ID " + id + " не найден");
             }
         } catch (NumberFormatException e) {
             System.out.println("ID должен быть числом");
@@ -118,13 +124,12 @@ public class DeleteCommand implements Command {
                 userRepository.deleteById(id);
                 System.out.println("Пользователь с ID " + id + " удален.");
             } else {
-                System.out.println("Пользователь с ID" + id + " не найден");
+                System.out.println("Пользователь с ID " + id + " не найден");
             }
         } catch (NumberFormatException e) {
             System.out.println("ID должен быть числом");
         }
     }
-
 
     @Override
     public String getDescription() {

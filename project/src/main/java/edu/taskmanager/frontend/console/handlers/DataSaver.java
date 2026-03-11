@@ -14,8 +14,9 @@ import java.util.stream.Collectors;
 public class DataSaver {
     private final TaskRepository taskRepository;
 
-    public DataSaver(TaskRepository taskRepository, ProjectRepository projectRepository,
-                     UserRepository userRepository, TagRepository tagRepository) {
+    public DataSaver(
+                TaskRepository taskRepository, ProjectRepository projectRepository,
+                UserRepository userRepository, TagRepository tagRepository) {
         this.taskRepository = taskRepository;
     }
 

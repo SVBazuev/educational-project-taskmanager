@@ -1,38 +1,44 @@
 package edu.taskmanager.frontend.console.handlers;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeParseException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import edu.taskmanager.backend.builder.TaskBuilder;
-import edu.taskmanager.backend.model.Project;
-import edu.taskmanager.backend.model.Tag;
-import edu.taskmanager.backend.model.Task;
-import edu.taskmanager.backend.model.User;
+import edu.taskmanager.backend.model.*;
 import edu.taskmanager.backend.repository.ProjectRepository;
 import edu.taskmanager.backend.repository.TagRepository;
-import edu.taskmanager.backend.repository.TaskRepository;
 import edu.taskmanager.backend.repository.UserRepository;
+import edu.taskmanager.backend.service.NotificationService;
+import edu.taskmanager.backend.service.TaskService;
 import edu.taskmanager.backend.util.Priority;
 import edu.taskmanager.backend.util.TaskStatus;
 import edu.taskmanager.frontend.console.Command;
 import edu.taskmanager.frontend.console.parser.ArgumentParser;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 public class CreateCommand implements Command {
-    private final TaskRepository taskRepository;
-    private final ProjectRepository projectRepository;
+    private final TaskService taskService;
+    private final NotificationService notificationService;
+    private final ProjectRepository projectRepository; // пока оставляем прямые репозитории для других типов
     private final TagRepository tagRepository;
     private final UserRepository userRepository;
+    private User currentUser; // в реальном приложении получали бы из контекста
 
-    public CreateCommand(
-            TaskRepository taskRepository, ProjectRepository projectRepository,
-            TagRepository tagRepository, UserRepository userRepository) {
-        this.taskRepository = taskRepository;
+    public CreateCommand(TaskService taskService,
+                         NotificationService notificationService,
+                         ProjectRepository projectRepository,
+                         TagRepository tagRepository,
+                         UserRepository userRepository,
+                         User currentUser) {
+        this.taskService = taskService;
+        this.notificationService = notificationService;
         this.projectRepository = projectRepository;
         this.tagRepository = tagRepository;
         this.userRepository = userRepository;
+        this.currentUser = currentUser;
     }
 
     @Override
@@ -45,7 +51,6 @@ public class CreateCommand implements Command {
         String type = args.get(0).toLowerCase();
         List<String> params = args.subList(1, args.size());
 
-        // Парсим аргументы в карту критериев
         Map<String, String> criteria = new HashMap<>();
         for (String arg : params) {
             String[] kv = arg.split("=", 2);
@@ -77,10 +82,7 @@ public class CreateCommand implements Command {
 
         if (criteria.containsKey("duedate")) {
             try {
-                dueDate = LocalDateTime.parse(
-                    criteria.get("duedate"),
-                    ArgumentParser.DATE_FORMATTER
-                );
+                dueDate = LocalDateTime.parse(criteria.get("duedate"), ArgumentParser.DATE_FORMATTER);
             } catch (DateTimeParseException e) {
                 System.out.println("Неверный формат даты. Используйте YYYY-MM-DD HH:MM. Будет установлена дата по умолчанию.");
             }
@@ -101,8 +103,16 @@ public class CreateCommand implements Command {
                 .setStatus(TaskStatus.TODO)
                 .build();
 
-        Task saved = taskRepository.save(task);
-        System.out.println("Создана задача: " + saved);
+        try {
+            Task saved = taskService.createTask(task, currentUser);
+            System.out.println("Создана задача: " + saved);
+            // Отправляем уведомление о создании
+            notificationService.notifyAboutTask(saved);
+        } catch (SecurityException e) {
+            System.out.println("Ошибка прав доступа: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Ошибка при создании задачи: " + e.getMessage());
+        }
     }
 
     private void createProject(Map<String, String> criteria) {

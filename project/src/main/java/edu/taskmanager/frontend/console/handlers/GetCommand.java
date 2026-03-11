@@ -1,27 +1,32 @@
 package edu.taskmanager.frontend.console.handlers;
 
+import edu.taskmanager.backend.model.*;
+import edu.taskmanager.backend.repository.ProjectRepository;
+import edu.taskmanager.backend.repository.TagRepository;
+import edu.taskmanager.backend.repository.UserRepository;
+import edu.taskmanager.backend.service.TaskService;
+import edu.taskmanager.frontend.console.Command;
 
 import java.util.List;
 import java.util.Optional;
 
-import edu.taskmanager.backend.model.*;
-import edu.taskmanager.backend.repository.*;
-import edu.taskmanager.frontend.console.Command;
-
-
 public class GetCommand implements Command {
-    private final TaskRepository taskRepository;
+    private final TaskService taskService;
     private final ProjectRepository projectRepository;
     private final TagRepository tagRepository;
     private final UserRepository userRepository;
+    private final User currentUser;
 
-    public GetCommand(
-            TaskRepository taskRepository, ProjectRepository projectRepository,
-            TagRepository tagRepository, UserRepository userRepository) {
-        this.taskRepository = taskRepository;
+    public GetCommand(TaskService taskService,
+                      ProjectRepository projectRepository,
+                      TagRepository tagRepository,
+                      UserRepository userRepository,
+                      User currentUser) {
+        this.taskService = taskService;
         this.projectRepository = projectRepository;
         this.tagRepository = tagRepository;
         this.userRepository = userRepository;
+        this.currentUser = currentUser;
     }
 
     @Override
@@ -49,11 +54,15 @@ public class GetCommand implements Command {
     }
 
     private void getTask(long id) {
-        Optional<Task> opt = taskRepository.findById(id);
-        if (opt.isPresent()) {
-            System.out.println(opt.get());
-        } else {
-            System.out.println("Задача с ID " + id + " не найдена.");
+        try {
+            Optional<Task> opt = taskService.getTask(id, currentUser);
+            if (opt.isPresent()) {
+                System.out.println(opt.get());
+            } else {
+                System.out.println("Задача с ID " + id + " не найдена.");
+            }
+        } catch (SecurityException e) {
+            System.out.println("Ошибка доступа: " + e.getMessage());
         }
     }
 
