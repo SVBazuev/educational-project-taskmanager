@@ -69,6 +69,10 @@ public class SortingCommand implements Command {
 
             System.out.println("Найдено задач: " + sortedTasks.size());
             sortedTasks.forEach(System.out::println);
+            for (Task task : sortedTasks) {
+                taskRepository.save(new Task(task));
+            }
+            System.out.println("Результат сортировки добавлен в InMemory");
         }
     }
 
@@ -86,7 +90,11 @@ public class SortingCommand implements Command {
 
         System.out.println("Найдено задач: " + sortedTasks.size());
         sortedTasks.forEach(System.out::println);
+        for (Task task : sortedTasks) {
+            taskRepository.save(new Task(task));
         }
+        System.out.println("Результат сортировки добавлен в InMemory");
+    }
 
     private void cocktailSort(Set<String> criteria, List<Task> sortedTasks) {
 
@@ -101,7 +109,11 @@ public class SortingCommand implements Command {
 
         System.out.println("Найдено задач: " + sortedTasks.size());
         sortedTasks.forEach(System.out::println);
+        for (Task task : sortedTasks) {
+            taskRepository.save(new Task(task));
         }
+        System.out.println("Результат сортировки добавлен в InMemory");
+    }
 
     private void mergeSort(Set<String> criteria, List<Task> sortedTasks) {
 
@@ -116,7 +128,11 @@ public class SortingCommand implements Command {
 
         System.out.println("Найдено задач: " + sortedTasks.size());
         sortedTasks.forEach(System.out::println);
+        for (Task task : sortedTasks) {
+            taskRepository.save(new Task(task));
         }
+        System.out.println("Результат сортировки добавлен в InMemory");
+    }
 
     private void quickSort(Set<String> criteria, List<Task> sortedTasks) {
 
@@ -131,6 +147,10 @@ public class SortingCommand implements Command {
 
         System.out.println("Найдено задач: " + sortedTasks.size());
         sortedTasks.forEach(System.out::println);
+        for (Task task : sortedTasks) {
+            taskRepository.save(new Task(task));
+        }
+        System.out.println("Результат сортировки добавлен в InMemory");
     }
 
     private void insertionSort(Set<String> criteria, List<Task> sortedTasks) {
@@ -146,6 +166,10 @@ public class SortingCommand implements Command {
 
         System.out.println("Найдено задач: " + sortedTasks.size());
         sortedTasks.forEach(System.out::println);
+        for (Task task : sortedTasks) {
+            taskRepository.save(new Task(task));
+        }
+        System.out.println("Результат сортировки добавлен в InMemory");
     }
 
     public Comparator<Task> sortTasks(Set<String> criteria, List<Task> sortedTasks) {

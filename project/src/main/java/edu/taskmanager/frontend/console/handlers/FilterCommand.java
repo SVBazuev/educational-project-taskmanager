@@ -255,6 +255,10 @@ public class FilterCommand implements Command {
         } else {
             System.out.println("Найдено задач: " + filtered.size());
             filtered.forEach(System.out::println);
+            for (Task task : filtered) {
+                taskRepository.save(new Task(task));
+            }
+            System.out.println("Результат сортировки добавлен в InMemory");
         }
     }
 
