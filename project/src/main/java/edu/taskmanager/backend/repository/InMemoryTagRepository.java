@@ -4,7 +4,6 @@ package edu.taskmanager.backend.repository;
 import java.util.Map;
 import java.util.List;
 import java.util.Optional;
-import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -18,6 +17,19 @@ public class InMemoryTagRepository implements TagRepository {
 
     @Override
     public Tag save(Tag tag) {
+        if (tag.getId() != null) {
+            // Если тег пришёл с уже известным id
+            Tag old = storage.get(tag.getId());
+            if (old != null) {
+                nameToId.remove(old.getName());
+            }
+            Tag copy = tag.withId(tag.getId());
+            storage.put(tag.getId(), copy);
+            nameToId.put(copy.getName(), tag.getId());
+            // Обновляем генератор, чтобы новые id не конфликтовали с импортированными
+            idGenerator.updateAndGet(current -> Math.max(current, tag.getId() + 1));
+            return copyOf(copy);
+        }
         // Проверим по nameToId, есть ли уже такое имя
         Long existingId = nameToId.get(tag.getName());
         if (existingId != null) {

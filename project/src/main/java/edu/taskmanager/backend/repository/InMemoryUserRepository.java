@@ -32,9 +32,13 @@ public class InMemoryUserRepository implements UserRepository {
             if (old != null && !old.getUsername().equals(user.getUsername())) {
                 usernameToId.remove(old.getUsername());
                 usernameToId.put(user.getUsername(), user.getId());
+            } else if (old == null) {
+                usernameToId.put(user.getUsername(), user.getId());
             }
             User copy = user.withId(user.getId());
             storage.put(user.getId(), copy);
+            // Обновляем генератор, чтобы новые id не конфликтовали с импортированными
+            idGenerator.updateAndGet(current -> Math.max(current, user.getId() + 1));
             return copyOf(copy);
         }
     }

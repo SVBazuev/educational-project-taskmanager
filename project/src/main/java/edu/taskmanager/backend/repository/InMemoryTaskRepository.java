@@ -41,6 +41,8 @@ public class InMemoryTaskRepository implements TaskRepository {
         } else {
             Task copy = task.withId(task.getId());
             storage.put(task.getId(), copy);
+            // Обязательно обновить атомик последним ID
+            idGenerator.updateAndGet(current -> Math.max(current, task.getId() + 1));
             return copyOf(copy);
         }
     }

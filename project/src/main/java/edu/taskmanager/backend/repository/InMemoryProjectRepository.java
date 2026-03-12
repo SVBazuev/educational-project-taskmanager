@@ -30,9 +30,13 @@ public class InMemoryProjectRepository implements ProjectRepository {
             if (old != null && !old.getName().equals(project.getName())) {
                 nameToId.remove(old.getName());
                 nameToId.put(project.getName(), project.getId());
+            } else if (old == null) {
+                nameToId.put(project.getName(), project.getId());
             }
             Project copy = project.withId(project.getId());
             storage.put(project.getId(), copy);
+            // Обновляем генератор, чтобы новые id не конфликтовали с импортированными
+            idGenerator.updateAndGet(current -> Math.max(current, project.getId() + 1));
             return copyOf(copy);
         }
     }
