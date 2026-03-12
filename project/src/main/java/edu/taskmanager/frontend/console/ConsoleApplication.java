@@ -59,7 +59,6 @@ public class ConsoleApplication {
         Command create = new CreateCommand(taskRepo, projectRepo, tagRepo, userRepo);
         Command list = new ListCommand(taskRepo, projectRepo, tagRepo, userRepo);
         Command get = new GetCommand(taskRepo, projectRepo, tagRepo, userRepo);
-        Command update = new UpdateCommand(taskRepo, projectRepo, tagRepo, userRepo);
         Command delete = new DeleteCommand(taskRepo, projectRepo, tagRepo, userRepo);
         Command filter = new FilterCommand(taskRepo, tagRepo, projectRepo, userRepo);
         Command sorting = new SortingCommand(taskRepo);
@@ -70,7 +69,6 @@ public class ConsoleApplication {
         registry.register("create", new LoggingCommandDecorator(new TimingCommandDecorator(create)));
         registry.register("list", list);
         registry.register("get", get);
-        registry.register("update", update);
         registry.register("delete", delete);
         registry.register("filter", filter);
         registry.register("sorting", sorting);
