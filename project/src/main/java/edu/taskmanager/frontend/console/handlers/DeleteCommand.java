@@ -8,6 +8,8 @@ import java.util.Map;
 import edu.taskmanager.backend.repository.*;
 import edu.taskmanager.frontend.console.Command;
 
+import static edu.taskmanager.frontend.console.parser.ArgumentParser.parseArguments;
+
 
 public class DeleteCommand implements Command {
     private final TaskRepository taskRepository;
@@ -34,15 +36,7 @@ public class DeleteCommand implements Command {
         List<String> params = args.subList(1, args.size());
 
         // Парсим аргументы в карту критериев
-        Map<String, String> criteria = new HashMap<>();
-        for (String arg : params) {
-            String[] kv = arg.split("=", 2);
-            if (kv.length == 2) {
-                criteria.put(kv[0].toLowerCase(), kv[1]);
-            } else {
-                System.out.println("Пропущен некорректный аргумент: " + arg);
-            }
-        }
+        Map<String, String> criteria = parseArguments(args);
 
         switch (type) {
             case "task" -> deleteTask(criteria);

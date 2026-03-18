@@ -2,6 +2,7 @@ package edu.taskmanager.frontend.console.handlers;
 
 
 import static edu.taskmanager.frontend.console.parser.ArgumentParser.DATE_FORMATTER;
+import static edu.taskmanager.frontend.console.parser.ArgumentParser.parseArguments;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
@@ -49,15 +50,7 @@ public class FilterCommand implements Command {
         }
 
         // Парсим аргументы в карту критериев
-        Map<String, String> criteria = new HashMap<>();
-        for (String arg : args) {
-            String[] kv = arg.split("=", 2);
-            if (kv.length == 2) {
-                criteria.put(kv[0].toLowerCase(), kv[1]);
-            } else {
-                System.out.println("Пропущен некорректный аргумент: " + arg);
-            }
-        }
+        Map<String, String> criteria = parseArguments(args);
 
         // Строим цепочку фильтров
         FilterChain filterChain = new FilterChain();

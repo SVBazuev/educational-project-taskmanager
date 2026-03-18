@@ -1,6 +1,9 @@
 package edu.taskmanager.frontend.console.parser;
 
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -17,6 +20,19 @@ public class ArgumentParser {
         } catch (DateTimeParseException e) {
             return Optional.empty();
         }
+    }
+
+    public static Map<String, String> parseArguments(List<String> args) {
+        Map<String, String> criteria = new HashMap<>();
+        for (String arg : args) {
+            String[] kv = arg.split("=", 2);
+            if (kv.length == 2) {
+                criteria.put(kv[0].toLowerCase(), kv[1]);
+            } else {
+                System.out.println("Пропущен некорректный аргумент: " + arg);
+            }
+        }
+        return criteria;
     }
 
     // Можно добавить другие методы парсинга

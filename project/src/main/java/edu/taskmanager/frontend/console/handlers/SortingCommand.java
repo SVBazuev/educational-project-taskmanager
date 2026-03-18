@@ -33,10 +33,13 @@ public class SortingCommand implements Command {
         for (String arg : params) {
             String[] keys = arg.split("&");
             for (String key : keys) {
+                if(key.contains("id")){
+                    System.out.println("Id будет пропущен");
+                    continue;
+                }
                 if (!key.trim().isEmpty()) {
                     criteria.add(key.trim().toLowerCase());
-                }
-                else {
+                } else {
                     System.out.println("Пропущен пустой аргумент: " + arg);
                 }
             }
