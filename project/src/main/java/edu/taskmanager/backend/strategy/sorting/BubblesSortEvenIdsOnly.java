@@ -2,18 +2,17 @@ package edu.taskmanager.backend.strategy.sorting;
 
 import edu.taskmanager.backend.model.Task;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
-public class BubblesSortEvenIdsOnly {
+public class BubblesSortEvenIdsOnly implements TaskSortingStrategy {
 
-    public static List<Task> bubbleSortEvenIds(List<Task> tasks) {
-        if (tasks == null || tasks.isEmpty()) {
-            return tasks;
+    @Override
+    public List<Task> sort(List<Task> tasks, Comparator<Task> comparator) {
+        if (tasks == null) {
+            return new ArrayList<>();
         }
-
         List<Task> result = new ArrayList<>(tasks);
 
         // Собираем все чётные задачи
@@ -50,5 +49,3 @@ public class BubblesSortEvenIdsOnly {
         }
     }
 }
-
-

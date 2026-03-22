@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -89,7 +90,8 @@ class BubblesSortEvenIdsOnlyTest {
 
         mixedTasks.addAll(Arrays.asList(t1, t2, t3, t4, t5, t6));
 
-        List<Task> result = BubblesSortEvenIdsOnly.bubbleSortEvenIds(mixedTasks);
+        BubblesSortEvenIdsOnly strategy = new BubblesSortEvenIdsOnly();
+        List<Task> result = strategy.sort(mixedTasks, Comparator.comparing(Task::getId));
 
         // Проверяем размер списка
         assertEquals(6, result.size());
@@ -120,7 +122,8 @@ class BubblesSortEvenIdsOnlyTest {
 
         evenTasks.addAll(Arrays.asList(task4, task2, task8, task6));
 
-        List<Task> result = BubblesSortEvenIdsOnly.bubbleSortEvenIds(evenTasks);
+        BubblesSortEvenIdsOnly strategy = new BubblesSortEvenIdsOnly();
+        List<Task> result = strategy.sort(evenTasks, Comparator.comparing(Task::getId));
 
         // Проверяем сортировку по возрастанию ID
         assertEquals(2, result.get(0).getId());
@@ -129,21 +132,22 @@ class BubblesSortEvenIdsOnlyTest {
         assertEquals(8, result.get(3).getId());
     }
 
-
     @Test
-    void bubbleSortEvenIds_ShouldReturnSameList_WhenEmptyList() {
+    void bubbleSortEvenIds_ShouldReturnEmptyList_WhenEmptyList() {
         List<Task> emptyList = new ArrayList<>();
-        List<Task> result = BubblesSortEvenIdsOnly.bubbleSortEvenIds(emptyList);
+        BubblesSortEvenIdsOnly strategy = new BubblesSortEvenIdsOnly();
+        List<Task> result = strategy.sort(emptyList, Comparator.comparing(Task::getId));
 
         assertTrue(result.isEmpty());
-        assertSame(emptyList, result); // Проверяем, что возвращается та же ссылка
     }
 
     @Test
-    void bubbleSortEvenIds_ShouldReturnNull_WhenNullInput() {
-        List<Task> result = BubblesSortEvenIdsOnly.bubbleSortEvenIds(null);
+    void bubbleSortEvenIds_ShouldReturnEmptyList_WhenNullInput() {
+        BubblesSortEvenIdsOnly strategy = new BubblesSortEvenIdsOnly();
+        List<Task> result = strategy.sort(null, Comparator.comparing(Task::getId));
 
-        assertNull(result);
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
     }
 
     @Test
@@ -151,7 +155,8 @@ class BubblesSortEvenIdsOnlyTest {
         List<Task> originalList = new ArrayList<>(tasks);
         List<Task> originalCopy = new ArrayList<>(tasks);
 
-        BubblesSortEvenIdsOnly.bubbleSortEvenIds(originalList);
+        BubblesSortEvenIdsOnly strategy = new BubblesSortEvenIdsOnly();
+        strategy.sort(originalList, Comparator.comparing(Task::getId));
 
         // Оригинальный список не должен измениться
         assertEquals(originalCopy.size(), originalList.size());
@@ -182,7 +187,8 @@ class BubblesSortEvenIdsOnlyTest {
 
         testTasks.addAll(Arrays.asList(highPriorityTask, lowPriorityTask));
 
-        List<Task> result = BubblesSortEvenIdsOnly.bubbleSortEvenIds(testTasks);
+        BubblesSortEvenIdsOnly strategy = new BubblesSortEvenIdsOnly();
+        List<Task> result = strategy.sort(testTasks, Comparator.comparing(Task::getId));
 
         // Проверяем, что свойства задач сохранились после сортировки
         Task firstTask = result.get(0);
@@ -212,7 +218,8 @@ class BubblesSortEvenIdsOnlyTest {
 
         tasksWithDuplicates.addAll(Arrays.asList(task1, task2, task3, task4));
 
-        List<Task> result = BubblesSortEvenIdsOnly.bubbleSortEvenIds(tasksWithDuplicates);
+        BubblesSortEvenIdsOnly strategy = new BubblesSortEvenIdsOnly();
+        List<Task> result = strategy.sort(tasksWithDuplicates, Comparator.comparing(Task::getId));
 
         // Проверяем сортировку по ID, задачи с одинаковыми ID сохраняют относительный порядок
         assertEquals(2, result.get(0).getId());
@@ -233,10 +240,10 @@ class BubblesSortEvenIdsOnlyTest {
         Task task = new Task(); task.setId(2L); task.setTitle("Single Task");
         singleTaskList.add(task);
 
-        List<Task> result = BubblesSortEvenIdsOnly.bubbleSortEvenIds(singleTaskList);
+        BubblesSortEvenIdsOnly strategy = new BubblesSortEvenIdsOnly();
+        List<Task> result = strategy.sort(singleTaskList, Comparator.comparing(Task::getId));
 
         assertEquals(1, result.size());
         assertSame(task, result.get(0));
     }
-
 }

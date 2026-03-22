@@ -1,51 +1,31 @@
 package edu.taskmanager.backend.strategy.sorting;
 
+import edu.taskmanager.backend.model.Task;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import edu.taskmanager.backend.model.Task;
+public class CocktailTaskSortingStrategy implements TaskSortingStrategy {
 
-/**
- * Сортировка с использованием шейкерной сортировки (Cocktail Sort)
- * с возможностью передачи компаратора.
- */
-public class CocktailTaskSortingStrategy {
-
-    /**
-     * Сортирует список задач с использованием шейкерной сортировки.
-     *
-     * @param tasks      исходный список задач
-     * @param comparator компаратор для сравнения задач
-     * @return новый отсортированный список
-     */
-    public static List<Task> cocktailSort(List<Task> tasks, Comparator<Task> comparator) {
-        // Сначала проверяем компаратор на null
-        if (comparator == null) {
-            throw new NullPointerException("Comparator cannot be null");
-        }
-        
-        // Затем проверяем список на null
+    @Override
+    public List<Task> sort(List<Task> tasks, Comparator<Task> comparator) {
         if (tasks == null) {
             return new ArrayList<>();
         }
-        
-        // Создаем копию списка, чтобы не изменять исходный
-        List<Task> sortedTasks = new ArrayList<>(tasks);
-
-        int start = 0;
-        int end = sortedTasks.size() - 1;
+        List<Task> sorted = new ArrayList<>(tasks);
         boolean swapped;
+        int start = 0;
+        int end = sorted.size() - 1;
 
         do {
             swapped = false;
 
-            // Проход слева направо
             for (int i = start; i < end; i++) {
-                if (comparator.compare(sortedTasks.get(i), sortedTasks.get(i + 1)) > 0) {
-                    Task temp = sortedTasks.get(i);
-                    sortedTasks.set(i, sortedTasks.get(i + 1));
-                    sortedTasks.set(i + 1, temp);
+                if (comparator.compare(sorted.get(i), sorted.get(i + 1)) > 0) {
+                    Task temp = sorted.get(i);
+                    sorted.set(i, sorted.get(i + 1));
+                    sorted.set(i + 1, temp);
                     swapped = true;
                 }
             }
@@ -55,12 +35,11 @@ public class CocktailTaskSortingStrategy {
             end--;
             swapped = false;
 
-            // Проход справа налево
             for (int i = end - 1; i >= start; i--) {
-                if (comparator.compare(sortedTasks.get(i), sortedTasks.get(i + 1)) > 0) {
-                    Task temp = sortedTasks.get(i);
-                    sortedTasks.set(i, sortedTasks.get(i + 1));
-                    sortedTasks.set(i + 1, temp);
+                if (comparator.compare(sorted.get(i), sorted.get(i + 1)) > 0) {
+                    Task temp = sorted.get(i);
+                    sorted.set(i, sorted.get(i + 1));
+                    sorted.set(i + 1, temp);
                     swapped = true;
                 }
             }
@@ -69,6 +48,6 @@ public class CocktailTaskSortingStrategy {
 
         } while (swapped);
 
-        return sortedTasks;
+        return sorted;
     }
 }

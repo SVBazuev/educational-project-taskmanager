@@ -22,12 +22,10 @@ class MergeTaskSortingStrategyTest {
 
     @BeforeEach
     void setUp() {
-        // Создаем тестового пользователя
         testUser = new User();
         testUser.setId(1L);
         testUser.setUsername("testuser");
 
-        // Создаем тестовые задачи
         tasks = new ArrayList<>();
 
         Task task1 = new Task();
@@ -67,31 +65,30 @@ class MergeTaskSortingStrategyTest {
 
     @Test
     void mergeSort_ShouldSortByPriorityAscending() {
-        // Создаем компаратор для сортировки по приоритету (от низкого к высокому)
-        Comparator<Task> priorityComparator = Comparator.comparing(Task::getPriority);
+        Comparator<Task> priorityComparator = Comparator
+            .comparing(Task::getPriority);
+        MergeTaskSortingStrategy strategy = new MergeTaskSortingStrategy();
 
-        List<Task> sortedTasks = MergeTaskSortingStrategy.mergeSort(tasks, priorityComparator);
+        List<Task> sortedTasks = strategy.sort(tasks, priorityComparator);
 
-        // Проверяем, что задачи отсортированы по приоритету
         assertEquals(4, sortedTasks.size());
         assertEquals(Priority.LOW, sortedTasks.get(0).getPriority());
         assertEquals(Priority.MEDIUM, sortedTasks.get(1).getPriority());
         assertEquals(Priority.HIGH, sortedTasks.get(2).getPriority());
         assertEquals(Priority.CRITICAL, sortedTasks.get(3).getPriority());
 
-        // Проверяем, что исходный список не изменился
         assertEquals(4, tasks.size());
         assertEquals(Priority.HIGH, tasks.get(0).getPriority());
     }
 
     @Test
     void mergeSort_ShouldSortByPriorityDescending() {
-        // Создаем компаратор для сортировки по приоритету (от высокого к низкому)
-        Comparator<Task> priorityComparator = (t1, t2) -> t2.getPriority().compareTo(t1.getPriority());
+        Comparator<Task> priorityComparator = (t1, t2)
+            -> t2.getPriority().compareTo(t1.getPriority());
+        MergeTaskSortingStrategy strategy = new MergeTaskSortingStrategy();
 
-        List<Task> sortedTasks = MergeTaskSortingStrategy.mergeSort(tasks, priorityComparator);
+        List<Task> sortedTasks = strategy.sort(tasks, priorityComparator);
 
-        // Проверяем, что задачи отсортированы по приоритету в обратном порядке
         assertEquals(4, sortedTasks.size());
         assertEquals(Priority.CRITICAL, sortedTasks.get(0).getPriority());
         assertEquals(Priority.HIGH, sortedTasks.get(1).getPriority());
@@ -101,15 +98,13 @@ class MergeTaskSortingStrategyTest {
 
     @Test
     void mergeSort_ShouldSortByStatus() {
-        // Создаем компаратор для сортировки по статусу
-        Comparator<Task> statusComparator = Comparator.comparing(Task::getStatus);
+        Comparator<Task> statusComparator = Comparator
+            .comparing(Task::getStatus);
+        MergeTaskSortingStrategy strategy = new MergeTaskSortingStrategy();
 
-        List<Task> sortedTasks = MergeTaskSortingStrategy.mergeSort(tasks, statusComparator);
+        List<Task> sortedTasks = strategy.sort(tasks, statusComparator);
 
-        // Проверяем, что задачи отсортированы по статусу
         assertEquals(4, sortedTasks.size());
-
-        // Ожидаемый порядок: TODO, TODO, IN_PROGRESS, DONE
         assertEquals(TaskStatus.TODO, sortedTasks.get(0).getStatus());
         assertEquals(TaskStatus.TODO, sortedTasks.get(1).getStatus());
         assertEquals(TaskStatus.IN_PROGRESS, sortedTasks.get(2).getStatus());
@@ -118,61 +113,73 @@ class MergeTaskSortingStrategyTest {
 
     @Test
     void mergeSort_ShouldSortByCreationDate() {
-        // Создаем компаратор для сортировки по дате создания
-        Comparator<Task> dateComparator = Comparator.comparing(Task::getCreatedAt);
+        Comparator<Task> dateComparator = Comparator
+            .comparing(Task::getCreatedAt);
+        MergeTaskSortingStrategy strategy = new MergeTaskSortingStrategy();
 
-        List<Task> sortedTasks = MergeTaskSortingStrategy.mergeSort(tasks, dateComparator);
+        List<Task> sortedTasks = strategy.sort(tasks, dateComparator);
 
-        // Проверяем, что задачи отсортированы по дате создания
-        assertTrue(sortedTasks.get(0).getCreatedAt().isBefore(sortedTasks.get(1).getCreatedAt()));
-        assertTrue(sortedTasks.get(1).getCreatedAt().isBefore(sortedTasks.get(2).getCreatedAt()));
-        assertTrue(sortedTasks.get(2).getCreatedAt().isBefore(sortedTasks.get(3).getCreatedAt()));
+        assertTrue(
+            sortedTasks.get(0)
+            .getCreatedAt()
+            .isBefore(sortedTasks.get(1).getCreatedAt())
+        );
+        assertTrue(
+            sortedTasks.get(1)
+            .getCreatedAt()
+            .isBefore(sortedTasks.get(2).getCreatedAt())
+        );
+        assertTrue(
+            sortedTasks.get(2)
+            .getCreatedAt()
+            .isBefore(sortedTasks.get(3).getCreatedAt())
+        );
     }
 
     @Test
     void mergeSort_ShouldSortByMultipleFields() {
-        // Создаем компаратор для сортировки по нескольким полям одновременно
         Comparator<Task> multiComparator = Comparator
-                .comparing(Task::getStatus)
-                .thenComparing(Task::getPriority)
-                .thenComparing(Task::getCreatedAt);
+            .comparing(Task::getStatus)
+            .thenComparing(Task::getPriority)
+            .thenComparing(Task::getCreatedAt);
+        MergeTaskSortingStrategy strategy = new MergeTaskSortingStrategy();
 
-        List<Task> sortedTasks = MergeTaskSortingStrategy.mergeSort(tasks, multiComparator);
+        List<Task> sortedTasks = strategy.sort(tasks, multiComparator);
 
-        // Проверяем первую группу (TODO)
         assertEquals(TaskStatus.TODO, sortedTasks.get(0).getStatus());
         assertEquals(Priority.HIGH, sortedTasks.get(0).getPriority());
 
-        // Проверяем вторую группу (TODO)
         assertEquals(TaskStatus.TODO, sortedTasks.get(1).getStatus());
         assertEquals(Priority.CRITICAL, sortedTasks.get(1).getPriority());
 
-        // Проверяем третью группу (IN_PROGRESS)
         assertEquals(TaskStatus.IN_PROGRESS, sortedTasks.get(2).getStatus());
         assertEquals(Priority.MEDIUM, sortedTasks.get(2).getPriority());
 
-        // Проверяем четвертую группу (DONE)
         assertEquals(TaskStatus.DONE, sortedTasks.get(3).getStatus());
         assertEquals(Priority.LOW, sortedTasks.get(3).getPriority());
     }
 
     @Test
     void mergeSort_ShouldHandleEmptyList() {
-        // Обработка пустого списка
         List<Task> emptyList = new ArrayList<>();
+        MergeTaskSortingStrategy strategy = new MergeTaskSortingStrategy();
 
-        List<Task> sortedTasks = MergeTaskSortingStrategy.mergeSort(emptyList, Comparator.comparing(Task::getId));
+        List<Task> sortedTasks = strategy.sort(
+            emptyList, Comparator.comparing(Task::getId)
+        );
 
         assertTrue(sortedTasks.isEmpty());
     }
 
     @Test
     void mergeSort_ShouldHandleSingleElement() {
-        // Обработка списка с одним элементом
         List<Task> singleTaskList = new ArrayList<>();
         singleTaskList.add(tasks.get(0));
+        MergeTaskSortingStrategy strategy = new MergeTaskSortingStrategy();
 
-        List<Task> sortedTasks = MergeTaskSortingStrategy.mergeSort(singleTaskList, Comparator.comparing(Task::getId));
+        List<Task> sortedTasks = strategy.sort(
+            singleTaskList, Comparator.comparing(Task::getId)
+        );
 
         assertEquals(1, sortedTasks.size());
         assertEquals(tasks.get(0).getId(), sortedTasks.get(0).getId());
@@ -180,12 +187,11 @@ class MergeTaskSortingStrategyTest {
 
     @Test
     void mergeSort_ShouldSortByTitle() {
-        // Создаем компаратор для сортировки по названию задачи
         Comparator<Task> titleComparator = Comparator.comparing(Task::getTitle);
+        MergeTaskSortingStrategy strategy = new MergeTaskSortingStrategy();
 
-        List<Task> sortedTasks = MergeTaskSortingStrategy.mergeSort(tasks, titleComparator);
+        List<Task> sortedTasks = strategy.sort(tasks, titleComparator);
 
-        // Проверяем алфавитный порядок
         assertEquals("Task 1", sortedTasks.get(0).getTitle());
         assertEquals("Task 2", sortedTasks.get(1).getTitle());
         assertEquals("Task 3", sortedTasks.get(2).getTitle());
@@ -194,13 +200,12 @@ class MergeTaskSortingStrategyTest {
 
     @Test
     void mergeSort_ShouldSortByCreator() {
-        // Создаем компаратор для сортировки по создателю задачи
         Comparator<Task> creatorComparator = Comparator
-                .comparing(task -> task.getCreator().getUsername());
+            .comparing(task -> task.getCreator().getUsername());
+        MergeTaskSortingStrategy strategy = new MergeTaskSortingStrategy();
 
-        List<Task> sortedTasks = MergeTaskSortingStrategy.mergeSort(tasks, creatorComparator);
+        List<Task> sortedTasks = strategy.sort(tasks, creatorComparator);
 
-        // Проверяем, что все задачи созданы одним пользователем
         for (Task task : sortedTasks) {
             assertEquals("testuser", task.getCreator().getUsername());
         }
@@ -208,15 +213,12 @@ class MergeTaskSortingStrategyTest {
 
     @Test
     void mergeSort_ShouldHandleNullComparator() {
-        // Обработка nill-компаратора
-        assertThrows(NullPointerException.class, () -> {
-            MergeTaskSortingStrategy.mergeSort(tasks, null);
-        });
+        MergeTaskSortingStrategy strategy = new MergeTaskSortingStrategy();
+        assertThrows(NullPointerException.class, () -> strategy.sort(tasks, null));
     }
 
     @Test
     void mergeSort_ShouldHandleLargeDataset() {
-        // Проверка производительности при большом наборе данных
         List<Task> largeTasks = new ArrayList<>();
         User user = new User();
         user.setId(1L);
@@ -234,23 +236,27 @@ class MergeTaskSortingStrategyTest {
         }
 
         Comparator<Task> comparator = Comparator.comparing(Task::getCreatedAt);
-        List<Task> sortedTasks = MergeTaskSortingStrategy.mergeSort(largeTasks, comparator);
+        MergeTaskSortingStrategy strategy = new MergeTaskSortingStrategy();
 
-        // Проверяем, что список отсортирован
+        List<Task> sortedTasks = strategy.sort(largeTasks, comparator);
+
         for (int i = 1; i < sortedTasks.size(); i++) {
-            assertTrue(sortedTasks.get(i-1).getCreatedAt().isBefore(sortedTasks.get(i).getCreatedAt()));
+            assertTrue(
+                sortedTasks.get(i-1)
+                .getCreatedAt()
+                .isBefore(sortedTasks.get(i).getCreatedAt())
+            );
         }
     }
 
     @Test
     void mergeSort_ShouldPreserveOriginalList() {
-        // Проверка на неизменность исходного списка
         List<Task> originalTasks = new ArrayList<>(tasks);
-
         Comparator<Task> comparator = Comparator.comparing(Task::getPriority);
-        MergeTaskSortingStrategy.mergeSort(tasks, comparator);
+        MergeTaskSortingStrategy strategy = new MergeTaskSortingStrategy();
 
-        // Проверяем, что исходный список не изменился
+        strategy.sort(tasks, comparator);
+
         for (int i = 0; i < tasks.size(); i++) {
             assertEquals(originalTasks.get(i).getId(), tasks.get(i).getId());
             assertEquals(originalTasks.get(i).getPriority(), tasks.get(i).getPriority());

@@ -12,10 +12,17 @@ import java.util.*;
 public class SortingCommand implements Command {
     private final TaskService taskService;
     private final User currentUser;
+    private final Map<String, TaskSortingStrategy> strategies;
 
     public SortingCommand(TaskService taskService, User currentUser) {
         this.taskService = taskService;
         this.currentUser = currentUser;
+        this.strategies = new HashMap<>();
+        strategies.put("bubblesort", new BubbleTaskSortingStrategy());
+        strategies.put("cocktailsort", new CocktailTaskSortingStrategy());
+        strategies.put("mergesort", new MergeTaskSortingStrategy());
+        strategies.put("insertionsort", new InsertionTaskSortingStrategy());
+        strategies.put("quicksort", new QuickTaskSortingStrategy());
     }
 
     @Override
@@ -36,14 +43,18 @@ public class SortingCommand implements Command {
             for (String key : keys) {
                 if (!key.trim().isEmpty()) {
                     criteria.add(key.trim().toLowerCase());
-                } else {
-                    System.out.println("Пропущен пустой аргумент: " + arg);
                 }
             }
         }
 
         if (criteria.isEmpty()) {
             System.out.println("Не указаны поля для сортировки.");
+            return;
+        }
+
+        TaskSortingStrategy strategy = strategies.get(type);
+        if (strategy == null) {
+            System.out.println("Неизвестная сортировка: " + type);
             return;
         }
 
@@ -55,19 +66,7 @@ public class SortingCommand implements Command {
             }
 
             Comparator<Task> comparator = buildComparator(criteria);
-            List<Task> sortedTasks = new ArrayList<>();
-
-            switch (type) {
-                case "bubblesort" -> sortedTasks = BubbleTaskSortingStrategy.bubbleSort(allTasks, comparator);
-                case "cocktailsort" -> sortedTasks = CocktailTaskSortingStrategy.cocktailSort(allTasks, comparator);
-                case "mergesort" -> sortedTasks = MergeTaskSortingStrategy.mergeSort(allTasks, comparator);
-                case "insertionsort" -> sortedTasks = InsertionTaskSortingStrategy.insertionSort(allTasks, comparator);
-                case "quicksort" -> sortedTasks = QuickTaskSortingStrategy.quickSort(allTasks, comparator);
-                default -> {
-                    System.out.println("Неизвестная сортировка: " + type);
-                    return;
-                }
-            }
+            List<Task> sortedTasks = strategy.sort(allTasks, comparator);
 
             System.out.println("Отсортировано задач: " + sortedTasks.size());
             sortedTasks.forEach(System.out::println);

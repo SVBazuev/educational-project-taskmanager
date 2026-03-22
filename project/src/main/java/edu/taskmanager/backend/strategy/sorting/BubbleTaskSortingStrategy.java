@@ -1,36 +1,32 @@
 package edu.taskmanager.backend.strategy.sorting;
 
-
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Comparator;
-
-
 import edu.taskmanager.backend.model.Task;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
-//СОРТИРОВКА ПО Priority Status И Title
-public class BubbleTaskSortingStrategy {
+public class BubbleTaskSortingStrategy implements TaskSortingStrategy {
 
-    public static List<Task> bubbleSort(List<Task> tasks, Comparator<Task> comparator) {
-        // Создаем копию списка, чтобы не изменять исходный
-        List<Task> sortedTasks = new ArrayList<>(tasks);
-        int n = sortedTasks.size();
-        boolean swapped;
-
+    @Override
+    public List<Task> sort(List<Task> tasks, Comparator<Task> comparator) {
+        if (tasks == null) {
+            return new ArrayList<>();
+        }
+        List<Task> sorted = new ArrayList<>(tasks);
+        int n = sorted.size();
         for (int i = 0; i < n - 1; i++) {
-            swapped = false;
+            boolean swapped = false;
             for (int j = 0; j < n - i - 1; j++) {
-                if (comparator.compare(sortedTasks.get(j), sortedTasks.get(j + 1)) > 0) {
-                    Task temp = sortedTasks.get(j);
-                    sortedTasks.set(j, sortedTasks.get(j + 1));
-                    sortedTasks.set(j + 1, temp);
+                if (comparator.compare(sorted.get(j), sorted.get(j + 1)) > 0) {
+                    Task temp = sorted.get(j);
+                    sorted.set(j, sorted.get(j + 1));
+                    sorted.set(j + 1, temp);
                     swapped = true;
                 }
             }
             if (!swapped) break;
         }
-
-        return sortedTasks;
+        return sorted;
     }
 }
