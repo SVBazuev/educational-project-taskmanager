@@ -10,7 +10,6 @@ import edu.taskmanager.frontend.console.Command;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class DeleteCommand implements Command {
     private final TaskService taskService;
