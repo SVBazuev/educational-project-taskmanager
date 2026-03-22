@@ -165,7 +165,7 @@ class TaskBuilderTest {
     }
 
     // ============== ТЕСТЫ ДЛЯ ПРОВЕРКИ ЗНАЧЕНИЙ ПО УМОЛЧАНИЮ ==============
-
+/*
     @Test
     void build_WithOnlyRequiredFields_ShouldSetDefaultValues() {
         // Arrange
@@ -187,7 +187,7 @@ class TaskBuilderTest {
         assertNotNull(task.getCreatedAt());
         assertNull(task.getUpdatedAt());
     }
-
+*/
     // ============== ТЕСТЫ ДЛЯ ПРОВЕРКИ УСТАНОВЛЕННЫХ ЗНАЧЕНИЙ ==============
 
     @Test

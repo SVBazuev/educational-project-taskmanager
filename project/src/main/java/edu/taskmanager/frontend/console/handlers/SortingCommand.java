@@ -89,7 +89,9 @@ public class SortingCommand implements Command {
         }
         Comparator<Task> combinedComparator = sortTasks(criteria, sortedTasks);
 
-        sortedTasks = BubbleTaskSortingStrategy.bubbleSort(sortedTasks, combinedComparator);
+        TaskSortingStrategy sortingStrategy = new BubbleTaskSortingStrategy(combinedComparator);
+
+        sortedTasks = sortingStrategy.sort(sortedTasks);
 
         System.out.println("Найдено задач: " + sortedTasks.size());
         sortedTasks.forEach(System.out::println);
