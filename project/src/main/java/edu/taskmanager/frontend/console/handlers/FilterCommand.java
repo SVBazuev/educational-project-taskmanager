@@ -259,7 +259,19 @@ public class FilterCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "filter&ключ=значение... - фильтрация задач (description, status, tag, project, user, priority, " +
-                "duestartdate, dueenddate, startdate, enddate, upstartdate, upenddate)";
+
+        return new StringBuilder()
+            .append("filter&ключ=значение&... - фильтрация задач\n")
+            .append("                   ")
+            .append("Доступные поля:\n")
+            .append("                       ")
+            .append("description, dueDate, creator,\n")
+            .append("                       ")
+            .append("priority, status, project, tag, subtasks,\n")
+            .append("                       ")
+            .append("contractors, createdAt, updatedAt, parentId")
+            .toString();
+        // return "filter&ключ=значение... - фильтрация задач (description, status, tag, project, user, priority, " +
+        //         "duestartdate, dueenddate, startdate, enddate, upstartdate, upenddate)";
     }
 }

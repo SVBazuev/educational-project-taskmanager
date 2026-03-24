@@ -247,7 +247,17 @@ public class SortingCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "sorting&тип сортировки&ключ=значение... - сортировки по полям (title, description, dueDate, creator,\" +\n" +
-                "                    \" priority, status, project, tag, subtasks, contractors, createdAt, updatedAt, parentId)";
+        return new StringBuilder()
+            .append("sorting&тип сортировки&поле&...")
+            .append(" - сортировка задач\n")
+            .append("                   ")
+            .append("Доступные поля:\n")
+            .append("                       ")
+            .append("title, description, dueDate, creator,\n")
+            .append("                       ")
+            .append("priority, status, project, tag, subtasks,\n")
+            .append("                       ")
+            .append("contractors, createdAt, updatedAt, parentId")
+            .toString();
     }
 }
