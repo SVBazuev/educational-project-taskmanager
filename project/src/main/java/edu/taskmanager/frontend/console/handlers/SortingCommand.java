@@ -8,6 +8,8 @@ import edu.taskmanager.backend.repository.TaskRepository;
 import edu.taskmanager.backend.strategy.sorting.*;
 import edu.taskmanager.frontend.console.Command;
 
+import static edu.taskmanager.frontend.console.parser.ArgumentParser.parseArgumentsList;
+
 
 public class SortingCommand implements Command {
     private final TaskRepository taskRepository;
@@ -32,21 +34,7 @@ public class SortingCommand implements Command {
         List<String> params = args.subList(1, args.size());
 
         // Парсим аргументы в карту критериев
-        Set<String> criteria = new HashSet<>();
-        for (String arg : params) {
-            String[] keys = arg.split("&");
-            for (String key : keys) {
-                if(key.contains("id")){
-                    System.out.println("Id будет пропущен");
-                    continue;
-                }
-                if (!key.trim().isEmpty()) {
-                    criteria.add(key.trim().toLowerCase());
-                } else {
-                    System.out.println("Пропущен пустой аргумент: " + arg);
-                }
-            }
-        }
+        Set<String> criteria = parseArgumentsList(params);
 
         List<Task> allTasks = taskRepository.findAll();
         if (allTasks.isEmpty()) {
