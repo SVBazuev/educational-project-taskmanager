@@ -11,10 +11,13 @@ import edu.taskmanager.frontend.console.Command;
 
 public class SortingCommand implements Command {
     private final TaskRepository taskRepository;
+    private TaskSortingStrategy sortingStrategy;
+    private List<Task> lastResult;
 
     public SortingCommand(
             TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
+        this.lastResult = new ArrayList<>();
     }
 
     @Override
@@ -48,135 +51,136 @@ public class SortingCommand implements Command {
         List<Task> allTasks = taskRepository.findAll();
         if (allTasks.isEmpty()) {
             System.out.println("Нет задач для сортировки");
+            lastResult = new ArrayList<>();
             return;
         }
         List<Task> sortedTasks = new ArrayList<>(allTasks);
 
-        switch (type) {
-            case "bubblesort" -> bubbleSort(criteria, sortedTasks);
-            case "cocktailsort" -> cocktailSort(criteria, sortedTasks);
-            case "mergesort" -> mergeSort(criteria, sortedTasks);
-            case "insertionsort" -> insertionSort(criteria, sortedTasks);
-            case "quicksort" -> quickSort(criteria, sortedTasks);
-            case "bubblesortswap" -> bubbleSortSwap(criteria, sortedTasks);
-            default -> System.out.println("Неизвестная сортировка: " + type);
-        }
-    }
-
-    private void bubbleSortSwap(Set<String> criteria, List<Task> sortedTasks) {
-        if (criteria.contains("id")) {
-
-            //Comparator<Task> combinedComparator = sortTasks(criteria, sortedTasks);
-
-           // sortedTasks = BubblesSortEvenIdsOnly.bubbleSortEvenIds(sortedTasks);
-
-            System.out.println("Найдено задач: " + sortedTasks.size());
-            sortedTasks.forEach(System.out::println);
-            for (Task task : sortedTasks) {
-                taskRepository.save(new Task(task));
-            }
-            System.out.println("Результат сортировки добавлен в InMemory");
-        }
-    }
-
-
-    private void bubbleSort(Set<String> criteria, List<Task> sortedTasks) {
-
-        if (criteria.isEmpty()) {
-            System.out.println("Не указаны поля для сортировки. Используйте: title, description, dueDate, creator," +
-                    " priority, status, project, tag, subtasks, contractors, createdAt, updatedAt, parentId");
-            return;
-        }
         Comparator<Task> combinedComparator = sortTasks(criteria, sortedTasks);
 
-        TaskSortingStrategy sortingStrategy = new BubbleTaskSortingStrategy(combinedComparator);
+        switch (type) {
+            case "bubblesort" -> sortingStrategy = new BubbleTaskSortingStrategy();
+            case "cocktailsort" -> sortingStrategy = new CocktailTaskSortingStrategy();
+            case "mergesort" -> sortingStrategy = new MergeTaskSortingStrategy();
+            case "insertionsort" -> sortingStrategy = new InsertionTaskSortingStrategy();
+            case "quicksort" -> sortingStrategy = new QuickTaskSortingStrategy();
+            case "bubblesortswap" -> sortingStrategy = new BubblesSortEvenIdsOnly();
+            default -> System.out.println("Неизвестная сортировка: " + type);
+        }
+        sortedTasks = sortingStrategy.sort(sortedTasks, combinedComparator);
 
-        sortedTasks = sortingStrategy.sort(sortedTasks);
+        lastResult = new ArrayList<>(sortedTasks);
 
         System.out.println("Найдено задач: " + sortedTasks.size());
         sortedTasks.forEach(System.out::println);
-        for (Task task : sortedTasks) {
-            taskRepository.save(new Task(task));
+    }
+
+    public List<Task> getLastResult() {
+        return lastResult != null ? new ArrayList<>(lastResult) : new ArrayList<>();
+    }
+/*
+    private void bubbleSortSwap(Set<String> criteria, List<Task> sortedTasks) {
+        if (criteria.contains("id")) {
+            Comparator<Task> combinedComparator = sortTasks(criteria, sortedTasks);
+
+
+            // Сохраняем результат
+
+        } else {
+            lastResult = new ArrayList<>();
         }
-        System.out.println("Результат сортировки добавлен в InMemory");
+    }
+
+    private void bubbleSort(Set<String> criteria, List<Task> sortedTasks) {
+        if (criteria.isEmpty()) {
+            System.out.println("Не указаны поля для сортировки. Используйте: title, description, dueDate, creator," +
+                    " priority, status, project, tag, subtasks, contractors, createdAt, updatedAt, parentId");
+            lastResult = new ArrayList<>();
+            return;
+        }
+        Comparator<Task> combinedComparator = sortTasks(criteria, sortedTasks);
+        sortingStrategy = new BubbleTaskSortingStrategy();
+        sortedTasks = sortingStrategy.sort(sortedTasks, combinedComparator);
+
+        // Сохраняем результат
+        lastResult = new ArrayList<>(sortedTasks);
+
+        System.out.println("Найдено задач: " + sortedTasks.size());
+        sortedTasks.forEach(System.out::println);
     }
 
     private void cocktailSort(Set<String> criteria, List<Task> sortedTasks) {
-
         if (criteria.isEmpty()) {
             System.out.println("Не указаны поля для сортировки. Используйте: title, description, dueDate, creator," +
                     " priority, status, project, tag, subtasks, contractors, createdAt, updatedAt, parentId");
+            lastResult = new ArrayList<>();
             return;
         }
         Comparator<Task> combinedComparator = sortTasks(criteria, sortedTasks);
+        sortingStrategy = new CocktailTaskSortingStrategy();
+        sortedTasks = sortingStrategy.sort(sortedTasks, combinedComparator);
 
-        sortedTasks = CocktailTaskSortingStrategy.cocktailSort(sortedTasks, combinedComparator);
+        // Сохраняем результат
+        lastResult = new ArrayList<>(sortedTasks);
 
         System.out.println("Найдено задач: " + sortedTasks.size());
         sortedTasks.forEach(System.out::println);
-        for (Task task : sortedTasks) {
-            taskRepository.save(new Task(task));
-        }
-        System.out.println("Результат сортировки добавлен в InMemory");
     }
 
     private void mergeSort(Set<String> criteria, List<Task> sortedTasks) {
-
         if (criteria.isEmpty()) {
             System.out.println("Не указаны поля для сортировки. Используйте: title, description, dueDate, creator," +
                     " priority, status, project, tag, subtasks, contractors, createdAt, updatedAt, parentId");
+            lastResult = new ArrayList<>();
             return;
         }
         Comparator<Task> combinedComparator = sortTasks(criteria, sortedTasks);
+        sortingStrategy = new MergeTaskSortingStrategy();
+        sortedTasks = sortingStrategy.sort(sortedTasks, combinedComparator);
 
-        sortedTasks = MergeTaskSortingStrategy.mergeSort(sortedTasks, combinedComparator);
+        // Сохраняем результат
+        lastResult = new ArrayList<>(sortedTasks);
 
         System.out.println("Найдено задач: " + sortedTasks.size());
         sortedTasks.forEach(System.out::println);
-        for (Task task : sortedTasks) {
-            taskRepository.save(new Task(task));
-        }
-        System.out.println("Результат сортировки добавлен в InMemory");
     }
 
     private void quickSort(Set<String> criteria, List<Task> sortedTasks) {
-
-        if( criteria.isEmpty()) {
+        if(criteria.isEmpty()) {
             System.out.println("Не указаны поля для сортировки. Используйте: title, description, dueDate, creator," +
                     " priority, status, project, tag, subtasks, contractors, createdAt, updatedAt, parentId");
+            lastResult = new ArrayList<>();
             return;
         }
         Comparator<Task> combinedComparator = sortTasks(criteria, sortedTasks);
+        sortingStrategy = new QuickTaskSortingStrategy();
+        sortedTasks = sortingStrategy.sort(sortedTasks, combinedComparator);
 
-        sortedTasks = QuickTaskSortingStrategy.quickSort(sortedTasks, combinedComparator);
+        // Сохраняем результат
+        lastResult = new ArrayList<>(sortedTasks);
 
         System.out.println("Найдено задач: " + sortedTasks.size());
         sortedTasks.forEach(System.out::println);
-        for (Task task : sortedTasks) {
-            taskRepository.save(new Task(task));
-        }
-        System.out.println("Результат сортировки добавлен в InMemory");
     }
 
     private void insertionSort(Set<String> criteria, List<Task> sortedTasks) {
-
         if (criteria.isEmpty()) {
             System.out.println("Не указаны поля для сортировки. Используйте: title, description, dueDate, creator," +
                     " priority, status, project, tag, subtasks, contractors, createdAt, updatedAt, parentId");
+            lastResult = new ArrayList<>();
             return;
         }
         Comparator<Task> combinedComparator = sortTasks(criteria, sortedTasks);
+        sortingStrategy = new InsertionTaskSortingStrategy();
+        sortedTasks = sortingStrategy.sort(sortedTasks, combinedComparator);
 
-        sortedTasks = InsertionTaskSortingStrategy.insertionSort(sortedTasks, combinedComparator);
+        // Сохраняем результат
+        lastResult = new ArrayList<>(sortedTasks);
 
         System.out.println("Найдено задач: " + sortedTasks.size());
         sortedTasks.forEach(System.out::println);
-        for (Task task : sortedTasks) {
-            taskRepository.save(new Task(task));
-        }
-        System.out.println("Результат сортировки добавлен в InMemory");
     }
-
+*/
     public Comparator<Task> sortTasks(Set<String> criteria, List<Task> sortedTasks) {
 
         List<Comparator<Task>> comparators = new ArrayList<>();

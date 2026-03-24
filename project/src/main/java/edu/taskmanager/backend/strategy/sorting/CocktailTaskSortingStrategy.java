@@ -10,7 +10,7 @@ import edu.taskmanager.backend.model.Task;
  * Сортировка с использованием шейкерной сортировки (Cocktail Sort)
  * с возможностью передачи компаратора.
  */
-public class CocktailTaskSortingStrategy {
+public class CocktailTaskSortingStrategy implements TaskSortingStrategy {
 
     /**
      * Сортирует список задач с использованием шейкерной сортировки.
@@ -19,7 +19,7 @@ public class CocktailTaskSortingStrategy {
      * @param comparator компаратор для сравнения задач
      * @return новый отсортированный список
      */
-    public static List<Task> cocktailSort(List<Task> tasks, Comparator<Task> comparator) {
+    public List<Task> sort(List<Task> tasks, Comparator<Task> comparator) {
         // Сначала проверяем компаратор на null
         if (comparator == null) {
             throw new NullPointerException("Comparator cannot be null");

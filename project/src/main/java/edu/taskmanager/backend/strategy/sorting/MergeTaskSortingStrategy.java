@@ -11,7 +11,7 @@ import edu.taskmanager.backend.model.Task;
  * Сортировка с использованием метода слияния (Merge Sort)
  * с возможностью передачи компаратора
  */
-public class MergeTaskSortingStrategy {
+public class MergeTaskSortingStrategy implements TaskSortingStrategy {
 
     /**
      * Сортирует список задач с использованием сортировки слиянием.
@@ -20,7 +20,7 @@ public class MergeTaskSortingStrategy {
      * @param comparator - компаратор для сравнения задач
      * @return - новый отсортированный список
      */
-    public static List<Task> mergeSort(List<Task> tasks, Comparator<Task> comparator) {
+    public List<Task> sort(List<Task> tasks, Comparator<Task> comparator) {
         List<Task> sortedTasks = new ArrayList<>(tasks);
 
         // Вызываем рекурсивную сортировку

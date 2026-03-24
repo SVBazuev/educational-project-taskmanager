@@ -14,12 +14,7 @@ import edu.taskmanager.backend.model.Task;
 public class QuickTaskSortingStrategy implements TaskSortingStrategy {
 
     @Override
-    public List<Task> sort(List<Task> tasks) {
-        Comparator<Task> comparator = Comparator.comparing(Task::getPriority).reversed();
-        return quickSort(tasks, comparator);
-    }
-
-    public static List<Task> quickSort(List<Task> tasks, Comparator<Task> comparator) {
+    public List<Task> sort(List<Task> tasks, Comparator<Task> comparator) {
         if (tasks.size() <= 1) {
             return tasks;
         }
@@ -29,6 +24,17 @@ public class QuickTaskSortingStrategy implements TaskSortingStrategy {
 
         return sortedTasks;
     }
+
+    /*public static List<Task> quickSort(List<Task> tasks, Comparator<Task> comparator) {
+        if (tasks.size() <= 1) {
+            return tasks;
+        }
+        // Копия, чтоб не изменять исходный список
+        List<Task> sortedTasks = new ArrayList<>(tasks);
+        quickSortRecursive(sortedTasks, 0, sortedTasks.size() - 1, comparator);
+
+        return sortedTasks;
+    }/*
 
     /*
      * Рекурсивная функция для быстрой сортировки.

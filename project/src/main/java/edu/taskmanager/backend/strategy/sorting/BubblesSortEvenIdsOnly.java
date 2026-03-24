@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class BubblesSortEvenIdsOnly {
+public class BubblesSortEvenIdsOnly implements TaskSortingStrategy {
 
-    public static List<Task> bubbleSortEvenIds(List<Task> tasks) {
+    public List<Task> sort(List<Task> tasks, Comparator<Task> comparator) {
         if (tasks == null || tasks.isEmpty()) {
             return tasks;
         }

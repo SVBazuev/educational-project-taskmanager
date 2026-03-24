@@ -1,14 +1,17 @@
 package edu.taskmanager.frontend.console;
 
 
+import edu.taskmanager.backend.model.Task;
 import edu.taskmanager.backend.repository.*;
 import edu.taskmanager.frontend.console.decorator.LoggingCommandDecorator;
+import edu.taskmanager.frontend.console.decorator.ResultSavingDecorator;
 import edu.taskmanager.frontend.console.decorator.TimingCommandDecorator;
 import edu.taskmanager.frontend.console.handlers.*;
 import edu.taskmanager.frontend.console.parser.CommandParser;
 import edu.taskmanager.frontend.console.parser.ParsedCommand;
 import edu.taskmanager.frontend.console.util.Printer;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleApplication {
@@ -70,8 +73,8 @@ public class ConsoleApplication {
         registry.register("list", list);
         registry.register("get", get);
         registry.register("delete", delete);
-        registry.register("filter", filter);
-        registry.register("sorting", sorting);
+        registry.register("filter", new ResultSavingDecorator(filter, taskRepo));
+        registry.register("sorting", new ResultSavingDecorator(sorting, taskRepo));
         registry.register("help", help);
         registry.register("exit", exit);
     }

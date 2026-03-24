@@ -10,13 +10,13 @@ import edu.taskmanager.backend.model.Task;
  * Сортировка задач по дате выполнения (от ближайшей к самой далёкой).
  */
 
-public class InsertionTaskSortingStrategy {
+public class InsertionTaskSortingStrategy implements TaskSortingStrategy {
 
     /**
      * Сортировка вставками (Insertion Sort).
      */
 
-    public static List<Task> insertionSort(List<Task> tasks, Comparator<Task> comparator) {
+    public List<Task> sort(List<Task> tasks, Comparator<Task> comparator) {
 
         List<Task> sortedTasks = new ArrayList<>(tasks);
 

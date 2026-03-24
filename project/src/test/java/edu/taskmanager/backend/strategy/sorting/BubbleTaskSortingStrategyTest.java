@@ -21,6 +21,7 @@ class BubbleTaskSortingStrategyTest {
     private List<Task> tasks;
     private User testUser;
     private Project testProject;
+    private TaskSortingStrategy sortingStrategy;
 
     @BeforeEach
     void setUp() {
@@ -74,6 +75,7 @@ class BubbleTaskSortingStrategyTest {
         task4.setCreatedAt(LocalDateTime.now());
 
         tasks.addAll(Arrays.asList(task1, task2, task3, task4));
+        sortingStrategy = new BubbleTaskSortingStrategy();
     }
 
     @Test
@@ -81,9 +83,7 @@ class BubbleTaskSortingStrategyTest {
         // Создаем компаратор для сортировки по приоритету (от низкого к высокому)
         Comparator<Task> priorityComparator = Comparator.comparing(Task::getPriority);
 
-        TaskSortingStrategy sortingStrategy = new BubbleTaskSortingStrategy(priorityComparator);
-
-        List<Task> sortedTasks = sortingStrategy.sort(tasks);
+        List<Task> sortedTasks = sortingStrategy.sort(tasks, priorityComparator);
 
         //List<Task> sortedTasks = BubbleTaskSortingStrategy.bubbleSort(tasks, priorityComparator);
 
@@ -104,9 +104,7 @@ class BubbleTaskSortingStrategyTest {
         // Создаем компаратор для сортировки по приоритету (от высокого к низкому)
         Comparator<Task> priorityComparator = (t1, t2) -> t2.getPriority().compareTo(t1.getPriority());
 
-        TaskSortingStrategy sortingStrategy = new BubbleTaskSortingStrategy(priorityComparator);
-
-        List<Task> sortedTasks = sortingStrategy.sort(tasks);
+        List<Task> sortedTasks = sortingStrategy.sort(tasks, priorityComparator);
 
         // Проверяем, что задачи отсортированы по приоритету в обратном порядке
         assertEquals(4, sortedTasks.size());
@@ -121,9 +119,7 @@ class BubbleTaskSortingStrategyTest {
         // Создаем компаратор для сортировки по статусу
         Comparator<Task> statusComparator = Comparator.comparing(Task::getStatus);
 
-        TaskSortingStrategy sortingStrategy = new BubbleTaskSortingStrategy(statusComparator);
-
-        List<Task> sortedTasks = sortingStrategy.sort(tasks);
+        List<Task> sortedTasks = sortingStrategy.sort(tasks, statusComparator);
 
         // Проверяем, что задачи отсортированы по статусу в порядке объявления Enum
         assertEquals(4, sortedTasks.size());
@@ -140,9 +136,7 @@ class BubbleTaskSortingStrategyTest {
         // Создаем компаратор для сортировки по заголовку
         Comparator<Task> titleComparator = Comparator.comparing(Task::getTitle);
 
-        TaskSortingStrategy sortingStrategy = new BubbleTaskSortingStrategy(titleComparator);
-
-        List<Task> sortedTasks = sortingStrategy.sort(tasks);
+        List<Task> sortedTasks = sortingStrategy.sort(tasks, titleComparator);
 
         // Проверяем, что задачи отсортированы по заголовку
         assertEquals(4, sortedTasks.size());
@@ -179,9 +173,7 @@ class BubbleTaskSortingStrategyTest {
         tasks.add(task6);
         tasks.add(task5);
 
-        TaskSortingStrategy sortingStrategy = new BubbleTaskSortingStrategy(priorityThenTitleComparator);
-
-        List<Task> sortedTasks = sortingStrategy.sort(tasks);
+        List<Task> sortedTasks = sortingStrategy.sort(tasks, priorityThenTitleComparator);
 
         // Проверяем, что задачи с одинаковым приоритетом отсортированы по заголовку
         assertEquals(6, sortedTasks.size());
@@ -207,9 +199,7 @@ class BubbleTaskSortingStrategyTest {
         List<Task> emptyList = new ArrayList<>();
         Comparator<Task> comparator = Comparator.comparing(Task::getTitle);
 
-        TaskSortingStrategy sortingStrategy = new BubbleTaskSortingStrategy(comparator);
-
-        List<Task> sortedTasks = sortingStrategy.sort(emptyList);
+        List<Task> sortedTasks = sortingStrategy.sort(emptyList, comparator);
 
         assertTrue(sortedTasks.isEmpty());
     }
@@ -219,9 +209,7 @@ class BubbleTaskSortingStrategyTest {
         List<Task> singleTaskList = Arrays.asList(tasks.get(0));
         Comparator<Task> comparator = Comparator.comparing(Task::getTitle);
 
-        TaskSortingStrategy sortingStrategy = new BubbleTaskSortingStrategy(comparator);
-
-        List<Task> sortedTasks = sortingStrategy.sort(singleTaskList);
+        List<Task> sortedTasks = sortingStrategy.sort(singleTaskList, comparator);
 
         assertEquals(1, sortedTasks.size());
         assertEquals(tasks.get(0).getId(), sortedTasks.get(0).getId());
@@ -232,9 +220,7 @@ class BubbleTaskSortingStrategyTest {
         List<Task> originalList = new ArrayList<>(tasks);
         Comparator<Task> comparator = Comparator.comparing(Task::getTitle);
 
-        TaskSortingStrategy sortingStrategy = new BubbleTaskSortingStrategy(comparator);
-
-        List<Task> sortedTasks = sortingStrategy.sort(tasks);
+        List<Task> sortedTasks = sortingStrategy.sort(tasks, comparator);
 
         // Проверяем, что исходный список не изменился
         assertEquals(originalList.size(), tasks.size());
@@ -247,9 +233,7 @@ class BubbleTaskSortingStrategyTest {
     void bubbleSort_ShouldHandleNullComparator() {
         // При null компараторе должна выбрасываться NullPointerException
         assertThrows(NullPointerException.class, () -> {
-            TaskSortingStrategy sortingStrategy = new BubbleTaskSortingStrategy(null);
-
-            List<Task> sortedTasks = sortingStrategy.sort(tasks);
+            List<Task> sortedTasks = sortingStrategy.sort(tasks, null);
         });
     }
 
@@ -262,9 +246,7 @@ class BubbleTaskSortingStrategyTest {
 
         // При наличии null в списке должна выбрасываться NullPointerException
         assertThrows(NullPointerException.class, () -> {
-            TaskSortingStrategy sortingStrategy = new BubbleTaskSortingStrategy(comparator);
-
-            List<Task> sortedTasks = sortingStrategy.sort(listWithNull);
+            List<Task> sortedTasks = sortingStrategy.sort(listWithNull, comparator);
         });
     }
 }

@@ -6,10 +6,7 @@ import static edu.taskmanager.frontend.console.parser.ArgumentParser.parseArgume
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import edu.taskmanager.backend.chain.*;
 import edu.taskmanager.backend.model.Project;
@@ -30,6 +27,7 @@ public class FilterCommand implements Command {
     private final TagRepository tagRepository;
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
+    private List<Task> lastResult;
 
     public FilterCommand(
             TaskRepository taskRepository, TagRepository tagRepository,
@@ -38,6 +36,7 @@ public class FilterCommand implements Command {
         this.tagRepository = tagRepository;
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
+        this.lastResult = new ArrayList<>();
     }
 
     @Override
@@ -240,19 +239,22 @@ public class FilterCommand implements Command {
 
         // Получаем все задачи и фильтруем
         List<Task> allTasks = taskRepository.findAll();
-        List<Task> filtered = filterChain.apply(allTasks);
-
+        lastResult = filterChain.apply(allTasks);
         // Вывод
-        if (filtered.isEmpty()) {
+        if (lastResult.isEmpty()) {
             System.out.println("Задачи, удовлетворяющие условиям, не найдены.");
         } else {
-            System.out.println("Найдено задач: " + filtered.size());
-            filtered.forEach(System.out::println);
-            for (Task task : filtered) {
-                taskRepository.save(new Task(task));
-            }
-            System.out.println("Результат сортировки добавлен в InMemory");
+            System.out.println("Найдено задач: " + lastResult.size());
+            lastResult.forEach(System.out::println);
+//            for (Task task : filtered) {
+//                taskRepository.save(new Task(task));
+//            }
+//            System.out.println("Результат сортировки добавлен в InMemory");
         }
+    }
+
+    public List<Task> getLastResult() {
+        return lastResult != null ? new ArrayList<>(lastResult) : new ArrayList<>();
     }
 
     @Override

@@ -22,6 +22,7 @@ class CocktailTaskSortingStrategyTest {
     private Comparator<Task> priorityComparator;
     private Comparator<Task> dueDateComparator;
     private Comparator<Task> titleComparator;
+    private TaskSortingStrategy sortingStrategy;
 
     @BeforeEach
     void setUp() {
@@ -38,6 +39,7 @@ class CocktailTaskSortingStrategyTest {
         
         // Компаратор для сортировки по названию
         titleComparator = Comparator.comparing(Task::getTitle);
+        sortingStrategy = new CocktailTaskSortingStrategy();
     }
 
     private Task createTask(String title, Priority priority, LocalDateTime dueDate) {
@@ -61,7 +63,7 @@ class CocktailTaskSortingStrategyTest {
         tasks.addAll(Arrays.asList(lowTask, highTask, mediumTask, criticalTask));
         
         // Act - ВАЖНО: используем cocktailSort, а не sort!
-        List<Task> sortedTasks = CocktailTaskSortingStrategy.cocktailSort(tasks, priorityComparator);
+        List<Task> sortedTasks = sortingStrategy.sort(tasks, priorityComparator);
         
         // Assert
         assertEquals(4, sortedTasks.size());
@@ -82,7 +84,7 @@ class CocktailTaskSortingStrategyTest {
         tasks.addAll(Arrays.asList(task1, task2, task3));
         
         // Act
-        List<Task> sortedTasks = CocktailTaskSortingStrategy.cocktailSort(tasks, dueDateComparator);
+        List<Task> sortedTasks = sortingStrategy.sort(tasks, dueDateComparator);
         
         // Assert
         assertEquals("Task 2", sortedTasks.get(0).getTitle());
@@ -100,7 +102,7 @@ class CocktailTaskSortingStrategyTest {
         tasks.addAll(Arrays.asList(taskC, taskA, taskB));
         
         // Act
-        List<Task> sortedTasks = CocktailTaskSortingStrategy.cocktailSort(tasks, titleComparator);
+        List<Task> sortedTasks = sortingStrategy.sort(tasks, titleComparator);
         
         // Assert
         assertEquals("Alpha", sortedTasks.get(0).getTitle());
@@ -111,7 +113,7 @@ class CocktailTaskSortingStrategyTest {
     @Test
     void cocktailSort_ShouldHandleEmptyList() {
         // Act
-        List<Task> sortedTasks = CocktailTaskSortingStrategy.cocktailSort(tasks, priorityComparator);
+        List<Task> sortedTasks = sortingStrategy.sort(tasks, priorityComparator);
         
         // Assert
         assertTrue(sortedTasks.isEmpty());
@@ -123,7 +125,7 @@ class CocktailTaskSortingStrategyTest {
         tasks.add(createTask("Single Task", Priority.HIGH));
         
         // Act
-        List<Task> sortedTasks = CocktailTaskSortingStrategy.cocktailSort(tasks, priorityComparator);
+        List<Task> sortedTasks = sortingStrategy.sort(tasks, priorityComparator);
         
         // Assert
         assertEquals(1, sortedTasks.size());
@@ -140,7 +142,7 @@ class CocktailTaskSortingStrategyTest {
         tasks.addAll(Arrays.asList(criticalTask, highTask, mediumTask));
         
         // Act
-        List<Task> sortedTasks = CocktailTaskSortingStrategy.cocktailSort(tasks, priorityComparator);
+        List<Task> sortedTasks = sortingStrategy.sort(tasks, priorityComparator);
         
         // Assert
         assertEquals(Priority.CRITICAL, sortedTasks.get(0).getPriority());
@@ -158,7 +160,7 @@ class CocktailTaskSortingStrategyTest {
         tasks.addAll(Arrays.asList(lowTask, mediumTask, highTask));
         
         // Act
-        List<Task> sortedTasks = CocktailTaskSortingStrategy.cocktailSort(tasks, priorityComparator);
+        List<Task> sortedTasks = sortingStrategy.sort(tasks, priorityComparator);
         
         // Assert
         assertEquals(Priority.HIGH, sortedTasks.get(0).getPriority());
@@ -176,7 +178,7 @@ class CocktailTaskSortingStrategyTest {
         tasks.addAll(Arrays.asList(mediumTask, highTask2, highTask1));
         
         // Act
-        List<Task> sortedTasks = CocktailTaskSortingStrategy.cocktailSort(tasks, priorityComparator);
+        List<Task> sortedTasks = sortingStrategy.sort(tasks, priorityComparator);
         
         // Assert
         assertEquals(Priority.HIGH, sortedTasks.get(0).getPriority());
@@ -195,7 +197,7 @@ class CocktailTaskSortingStrategyTest {
         List<Task> originalCopy = new ArrayList<>(originalList);
         
         // Act
-        List<Task> sortedList = CocktailTaskSortingStrategy.cocktailSort(originalList, priorityComparator);
+        List<Task> sortedList = sortingStrategy.sort(originalList, priorityComparator);
         
         // Assert
         assertEquals(originalCopy, originalList); // Исходный список не изменился
@@ -209,7 +211,7 @@ class CocktailTaskSortingStrategyTest {
         
         // Act & Assert
         assertThrows(NullPointerException.class, () -> {
-            CocktailTaskSortingStrategy.cocktailSort(tasks, null);
+            sortingStrategy.sort(tasks, null);
         });
     }
 }
