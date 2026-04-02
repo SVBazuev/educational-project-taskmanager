@@ -54,6 +54,15 @@ public class FilterCommand implements Command {
         // Строим цепочку фильтров
         FilterChain filterChain = new FilterChain();
 
+        criteria.entrySet().stream()
+                .forEach(filterChain::create);
+
+        if (filterChain.isEmpty()) {
+            System.out.println("Не задано ни одного корректного критерия фильтрации.");
+            return;
+        }
+
+
 
         // Фильтр по статусу
 //        if (criteria.containsKey("status")) {

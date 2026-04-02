@@ -19,6 +19,10 @@ public class StatusFilter implements TaskFilter, FilterFactory {
         this.requiredStatus = requiredStatus;
     }
 
+    public StatusFilter() {
+        this.requiredStatus = null;
+    }
+
     @Override
     public boolean filter(Task task) {
         boolean statusMatches = task.getStatus() == requiredStatus;

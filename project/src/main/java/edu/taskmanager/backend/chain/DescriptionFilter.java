@@ -14,6 +14,10 @@ public class DescriptionFilter implements TaskFilter, FilterFactory {
         this.description = description;
     }
 
+    public DescriptionFilter() {
+        this.description = null;
+    }
+
     @Override
     public boolean filter(Task task) {
         boolean descriptionMatches = description.equals(task.getDescription().toLowerCase());
@@ -32,7 +36,7 @@ public class DescriptionFilter implements TaskFilter, FilterFactory {
 
     @Override
     public TaskFilter create(Map.Entry<String, String> value) throws IllegalArgumentException {
-        String description = value.getValue();
+        String description = value.getValue().toLowerCase();
         return new DescriptionFilter(description);
     }
 }
