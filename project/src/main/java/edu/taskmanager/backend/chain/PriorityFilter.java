@@ -39,7 +39,7 @@ public class PriorityFilter implements TaskFilter, FilterFactory {
     }
 
     @Override
-    public TaskFilter create(Map.Entry<String, String> value) throws IllegalArgumentException {
+    public TaskFilter createFilter(Map.Entry<String, String> value) throws IllegalArgumentException {
         Priority priority = Priority.valueOf(value.getValue().toUpperCase());
         TaskFilter filter = new PriorityFilter(priority);
         return filter;

@@ -40,7 +40,7 @@ public class StatusFilter implements TaskFilter, FilterFactory {
     }
 
     @Override
-    public TaskFilter create(Map.Entry<String, String> value) throws IllegalArgumentException {
+    public TaskFilter createFilter(Map.Entry<String, String> value) throws IllegalArgumentException {
         TaskStatus statusFilter = TaskStatus.valueOf(value.getValue().toUpperCase());
         TaskFilter filter = new StatusFilter(statusFilter);
         return filter;

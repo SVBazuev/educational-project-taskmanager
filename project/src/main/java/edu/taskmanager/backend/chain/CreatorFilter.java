@@ -49,7 +49,7 @@ public class CreatorFilter implements TaskFilter, FilterFactory {
     }
 
     @Override
-    public TaskFilter create(Map.Entry<String, String> value) throws IllegalArgumentException {
+    public TaskFilter createFilter(Map.Entry<String, String> value) throws IllegalArgumentException {
         try {
             long userid = Long.parseLong(value.getValue());
             return new ProjectFilter(userid);//filter;

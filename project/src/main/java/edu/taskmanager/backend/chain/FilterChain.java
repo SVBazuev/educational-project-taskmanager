@@ -49,7 +49,7 @@ public class FilterChain {
             return;
         }
         try {
-            TaskFilter filter = factory.create(entry);
+            TaskFilter filter = factory.createFilter(entry);
             addFilter(filter);
         } catch (IllegalArgumentException e) {
             System.err.println("Ошибка при создании фильтра для ключа '" + key + "': " + e.getMessage());

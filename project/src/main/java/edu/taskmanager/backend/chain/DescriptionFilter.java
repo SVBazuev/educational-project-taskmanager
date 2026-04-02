@@ -35,7 +35,7 @@ public class DescriptionFilter implements TaskFilter, FilterFactory {
     }
 
     @Override
-    public TaskFilter create(Map.Entry<String, String> value) throws IllegalArgumentException {
+    public TaskFilter createFilter(Map.Entry<String, String> value) throws IllegalArgumentException {
         String description = value.getValue().toLowerCase();
         return new DescriptionFilter(description);
     }
