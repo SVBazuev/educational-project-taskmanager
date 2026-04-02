@@ -33,6 +33,12 @@ public class FilterChain {
         filterFactories.put("priority", new PriorityFilter());
         filterFactories.put("status", new StatusFilter());
         filterFactories.put("description", new DescriptionFilter());
+        filterFactories.put("startdate", new DateRangeFIlter());
+        filterFactories.put("enddate", filterFactories.get("startdate"));
+        filterFactories.put("upstartdate", filterFactories.get("startdate"));
+        filterFactories.put("upenddate", filterFactories.get("startdate"));
+        filterFactories.put("duestartdate", filterFactories.get("startdate"));
+        filterFactories.put("dueenddate", filterFactories.get("startdate"));
         //filterFactories.put("tag", new TagFilter());
         //filterFactories.put("duestartdate", new DueDateFilter());
         //filterFactories.put("upstartdate", new UpdateDateFilter());
