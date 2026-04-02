@@ -5,6 +5,7 @@ import java.util.Set;
 
 public interface FilterFactory {
 
-    public TaskFilter createFilter(Map.Entry<String, String> value) throws IllegalArgumentException;
+    public TaskFilter createFilter(Map.Entry<String, String> value)
+    throws IllegalArgumentException;
 
 }

@@ -9,16 +9,18 @@ import edu.taskmanager.backend.model.Task;
 import edu.taskmanager.backend.util.DateType;
 
 public class DateRangeFilter implements TaskFilter, FilterFactory{
-    
+
     private final DateType dateType;
     private final LocalDateTime startDate;
     private final LocalDateTime endDate;
     private TaskFilter next;
-/** 
-    public DateRangeFilter(DateType dateType, LocalDateTime date) {
-        this(dateType, date, date);
+
+    public DateRangeFilter() {
+        this.dateType = null;
+        this.startDate = null;
+        this.endDate = null;
     }
-    /* */
+
     public DateRangeFilter(DateType dateType, LocalDateTime startDate, LocalDateTime endDate) {
         if (dateType == null) {
             throw new IllegalArgumentException("DateType cannot be null");
@@ -27,52 +29,52 @@ public class DateRangeFilter implements TaskFilter, FilterFactory{
         this.startDate = startDate;
         this.endDate = endDate;
     }
-    
+
     @Override
     public boolean filter(Task task) {
         LocalDateTime date = dateType.extract(task);
-        
+
         if (date == null) {
             return false;
         }
-        
+
         if (startDate != null && date.isBefore(startDate)) {
             return false;
         }
-        
+
         if (endDate != null && date.isAfter(endDate)) {
             return false;
         }
-        
+
         if (next != null) {
             return next.filter(task);
         }
-        
+
         return true;
     }
-    
+
     @Override
     public void setNext(TaskFilter next) {
         this.next = next;
     }
-    
+
     public DateType getDateType() {
         return dateType;
     }
-    
+
     public LocalDateTime getStartDate() {
         return startDate;
     }
-    
+
     public LocalDateTime getEndDate() {
         return endDate;
     }
-    
+
     @Override
     public String toString() {
-        return String.format("DateRangeFilter{%s: %s - %s}", 
-            dateType, 
-            startDate != null ? startDate : "∞", 
+        return String.format("DateRangeFilter{%s: %s - %s}",
+            dateType,
+            startDate != null ? startDate : "∞",
             endDate != null ? endDate : "∞");
     }
 
@@ -84,7 +86,7 @@ public class DateRangeFilter implements TaskFilter, FilterFactory{
         TaskFilter filter;
         // Определяем тип даты по ключу
         DateType type = DateType.fromKey(key);
-        
+
         if (type == null) {
             return null;
         }
@@ -97,5 +99,3 @@ public class DateRangeFilter implements TaskFilter, FilterFactory{
         return filter;
     }
 }
-
-   
