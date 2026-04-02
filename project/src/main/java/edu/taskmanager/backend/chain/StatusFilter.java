@@ -2,18 +2,25 @@ package edu.taskmanager.backend.chain;
 
 
 import edu.taskmanager.backend.model.Task;
+import edu.taskmanager.backend.util.Priority;
 import edu.taskmanager.backend.util.TaskStatus;
+
+import java.util.Map;
 
 
 /**
  * Фильтр, пропускающий задачи только с заданным статусом.
  */
-public class StatusFilter implements TaskFilter {
+public class StatusFilter implements TaskFilter, FilterFactory {
     private final TaskStatus requiredStatus;
     private TaskFilter next;
 
     public StatusFilter(TaskStatus requiredStatus) {
         this.requiredStatus = requiredStatus;
+    }
+
+    public StatusFilter() {
+        this.requiredStatus = null;
     }
 
     @Override
@@ -32,4 +39,10 @@ public class StatusFilter implements TaskFilter {
         this.next = next;
     }
 
+    @Override
+    public TaskFilter createFilter(Map.Entry<String, String> value) throws IllegalArgumentException {
+        TaskStatus statusFilter = TaskStatus.valueOf(value.getValue().toUpperCase());
+        TaskFilter filter = new StatusFilter(statusFilter);
+        return filter;
+    }
 }

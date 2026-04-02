@@ -38,7 +38,7 @@ public class ResultSavingDecorator implements Command {
         for(Task task : tasks){
             taskRepository.save(new Task(task));
         }
-        System.out.println("Результат добавленн в память" );
+        System.out.println("Результат добавлен в память" );
 
     }
 
