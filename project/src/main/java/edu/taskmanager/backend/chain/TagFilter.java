@@ -9,18 +9,32 @@ import edu.taskmanager.backend.model.Task;
  * Фильтр, пропускающий задачи, содержащие заданный тег.
  */
 public class TagFilter implements TaskFilter {
-    private final Tag requiredTag;
+    //private final Tag requiredTag;
     private TaskFilter next;
+    private Long id;
+    private  String name;
 
-    public TagFilter(Tag requiredTag) {
-        this.requiredTag = requiredTag;
+
+    public TagFilter() {
+    }
+
+    public TagFilter( Long  id){
+        this.id = id;
+    }
+
+    public TagFilter( String name){
+        this.name = name;
     }
 
     @Override
     public boolean filter(Task task) {
         boolean hasTag = (
             task.getTags() != null
-            && task.getTags().contains(requiredTag)
+            && task.getTags().stream()
+                    .anyMatch(tag -> tag.getId().equals(id))
+                || task.getTags() != null
+                    && task.getTags().stream()
+                    .anyMatch(tag -> tag.getName().equals(name))
         );
 
         if (!hasTag) { return false; }

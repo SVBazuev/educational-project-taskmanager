@@ -30,7 +30,7 @@ class TagFilterTest {
     @BeforeEach
     void setUp() {
         requiredTag = new Tag(1L, "urgent");
-        tagFilter = new TagFilter(requiredTag);
+        tagFilter = new TagFilter("urgent");//new TagFilter(requiredTag);
     }
 
 

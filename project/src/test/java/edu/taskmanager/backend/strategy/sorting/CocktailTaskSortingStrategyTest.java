@@ -18,180 +18,200 @@ import edu.taskmanager.backend.util.Priority;
 import edu.taskmanager.backend.util.TaskStatus;
 
 class CocktailTaskSortingStrategyTest {
-private List<Task> tasks;
-private Comparator<Task> priorityComparator;
-private Comparator<Task> dueDateComparator;
-private Comparator<Task> titleComparator;
+    private List<Task> tasks;
+    private Comparator<Task> priorityComparator;
+    private Comparator<Task> dueDateComparator;
+    private Comparator<Task> titleComparator;
+    private TaskSortingStrategy sortingStrategy;
 
-@BeforeEach
-void setUp() {
-tasks = new ArrayList<>();
+    @BeforeEach
+    void setUp() {
+        tasks = new ArrayList<>();
 
-priorityComparator = Comparator.comparing(
-(Task task) -> task.getPriority().ordinal(),
-Comparator.reverseOrder()
-);
+        // Компаратор для сортировки по приоритету (от высокого к низкому)
+        priorityComparator = Comparator.comparing(
+            (Task task) -> task.getPriority().ordinal(),
+            Comparator.reverseOrder()
+        );
 
-dueDateComparator = Comparator.comparing(Task::getDueDate);
-titleComparator = Comparator.comparing(Task::getTitle);
-}
+        // Компаратор для сортировки по сроку выполнения
+        dueDateComparator = Comparator.comparing(Task::getDueDate);
 
-private Task createTask(
-String title, Priority priority, LocalDateTime dueDate) {
-Task task = new Task(title, dueDate, null, priority, TaskStatus.TODO);
-task.setId((long) (Math.random() * 1000));
-return task;
-}
+        // Компаратор для сортировки по названию
+        titleComparator = Comparator.comparing(Task::getTitle);
+        sortingStrategy = new CocktailTaskSortingStrategy();
+    }
 
-private Task createTask(String title, Priority priority) {
-return createTask(title, priority, LocalDateTime.now().plusDays(1));
-}
+    private Task createTask(String title, Priority priority, LocalDateTime dueDate) {
+        Task task = new Task(title, dueDate, null, priority, TaskStatus.TODO);
+        task.setId((long) (Math.random() * 1000));
+        return task;
+    }
 
-@Test
-void cocktailSort_ShouldSortTasksByPriorityDescending() {
-Task lowTask = createTask("Low Priority", Priority.LOW);
-Task highTask = createTask("High Priority", Priority.HIGH);
-Task mediumTask = createTask("Medium Priority", Priority.MEDIUM);
-Task criticalTask = createTask("Critical Priority", Priority.CRITICAL);
+    private Task createTask(String title, Priority priority) {
+        return createTask(title, priority, LocalDateTime.now().plusDays(1));
+    }
 
-tasks.addAll(Arrays.asList(lowTask, highTask, mediumTask, criticalTask));
-CocktailTaskSortingStrategy strategy = new CocktailTaskSortingStrategy();
+    @Test
+    void cocktailSort_ShouldSortTasksByPriorityDescending() {
+        // Arrange
+        Task lowTask = createTask("Low Priority", Priority.LOW);
+        Task highTask = createTask("High Priority", Priority.HIGH);
+        Task mediumTask = createTask("Medium Priority", Priority.MEDIUM);
+        Task criticalTask = createTask("Critical Priority", Priority.CRITICAL);
 
-List<Task> sortedTasks = strategy.sort(tasks, priorityComparator);
+        tasks.addAll(Arrays.asList(lowTask, highTask, mediumTask, criticalTask));
 
-assertEquals(4, sortedTasks.size());
-assertEquals(Priority.CRITICAL, sortedTasks.get(0).getPriority());
-assertEquals(Priority.HIGH, sortedTasks.get(1).getPriority());
-assertEquals(Priority.MEDIUM, sortedTasks.get(2).getPriority());
-assertEquals(Priority.LOW, sortedTasks.get(3).getPriority());
-}
+        // Act - ВАЖНО: используем cocktailSort, а не sort!
+        List<Task> sortedTasks = sortingStrategy.sort(tasks, priorityComparator);
 
-@Test
-void cocktailSort_ShouldSortTasksByDueDate() {
-LocalDateTime now = LocalDateTime.now();
-Task task1 = createTask("Task 1", Priority.MEDIUM, now.plusDays(3));
-Task task2 = createTask("Task 2", Priority.HIGH, now.plusDays(1));
-Task task3 = createTask("Task 3", Priority.LOW, now.plusDays(2));
+        // Assert
+        assertEquals(4, sortedTasks.size());
+        assertEquals(Priority.CRITICAL, sortedTasks.get(0).getPriority());
+        assertEquals(Priority.HIGH, sortedTasks.get(1).getPriority());
+        assertEquals(Priority.MEDIUM, sortedTasks.get(2).getPriority());
+        assertEquals(Priority.LOW, sortedTasks.get(3).getPriority());
+    }
 
-tasks.addAll(Arrays.asList(task1, task2, task3));
-CocktailTaskSortingStrategy strategy = new CocktailTaskSortingStrategy();
+    @Test
+    void cocktailSort_ShouldSortTasksByDueDate() {
+        // Arrange
+        LocalDateTime now = LocalDateTime.now();
+        Task task1 = createTask("Task 1", Priority.MEDIUM, now.plusDays(3));
+        Task task2 = createTask("Task 2", Priority.HIGH, now.plusDays(1));
+        Task task3 = createTask("Task 3", Priority.LOW, now.plusDays(2));
 
-List<Task> sortedTasks = strategy.sort(tasks, dueDateComparator);
+        tasks.addAll(Arrays.asList(task1, task2, task3));
 
-assertEquals("Task 2", sortedTasks.get(0).getTitle());
-assertEquals("Task 3", sortedTasks.get(1).getTitle());
-assertEquals("Task 1", sortedTasks.get(2).getTitle());
-}
+        // Act
+        List<Task> sortedTasks = sortingStrategy.sort(tasks, dueDateComparator);
 
-@Test
-void cocktailSort_ShouldSortTasksByTitle() {
-Task taskA = createTask("Alpha", Priority.HIGH);
-Task taskB = createTask("Beta", Priority.MEDIUM);
-Task taskC = createTask("Gamma", Priority.LOW);
+        // Assert
+        assertEquals("Task 2", sortedTasks.get(0).getTitle());
+        assertEquals("Task 3", sortedTasks.get(1).getTitle());
+        assertEquals("Task 1", sortedTasks.get(2).getTitle());
+    }
 
-tasks.addAll(Arrays.asList(taskC, taskA, taskB));
-CocktailTaskSortingStrategy strategy = new CocktailTaskSortingStrategy();
+    @Test
+    void cocktailSort_ShouldSortTasksByTitle() {
+        // Arrange
+        Task taskA = createTask("Alpha", Priority.HIGH);
+        Task taskB = createTask("Beta", Priority.MEDIUM);
+        Task taskC = createTask("Gamma", Priority.LOW);
 
-List<Task> sortedTasks = strategy.sort(tasks, titleComparator);
+        tasks.addAll(Arrays.asList(taskC, taskA, taskB));
 
-assertEquals("Alpha", sortedTasks.get(0).getTitle());
-assertEquals("Beta", sortedTasks.get(1).getTitle());
-assertEquals("Gamma", sortedTasks.get(2).getTitle());
-}
+        // Act
+        List<Task> sortedTasks = sortingStrategy.sort(tasks, titleComparator);
 
-@Test
-void cocktailSort_ShouldHandleEmptyList() {
-CocktailTaskSortingStrategy strategy = new CocktailTaskSortingStrategy();
+        // Assert
+        assertEquals("Alpha", sortedTasks.get(0).getTitle());
+        assertEquals("Beta", sortedTasks.get(1).getTitle());
+        assertEquals("Gamma", sortedTasks.get(2).getTitle());
+    }
 
-List<Task> sortedTasks = strategy.sort(tasks, priorityComparator);
+    @Test
+    void cocktailSort_ShouldHandleEmptyList() {
+        // Act
+        List<Task> sortedTasks = sortingStrategy.sort(tasks, priorityComparator);
 
-assertTrue(sortedTasks.isEmpty());
-}
+        // Assert
+        assertTrue(sortedTasks.isEmpty());
+    }
 
-@Test
-void cocktailSort_ShouldHandleSingleElement() {
-tasks.add(createTask("Single Task", Priority.HIGH));
-CocktailTaskSortingStrategy strategy = new CocktailTaskSortingStrategy();
+    @Test
+    void cocktailSort_ShouldHandleSingleElement() {
+        // Arrange
+        tasks.add(createTask("Single Task", Priority.HIGH));
 
-List<Task> sortedTasks = strategy.sort(tasks, priorityComparator);
+        // Act
+        List<Task> sortedTasks = sortingStrategy.sort(tasks, priorityComparator);
 
-assertEquals(1, sortedTasks.size());
-assertEquals("Single Task", sortedTasks.get(0).getTitle());
-}
+        // Assert
+        assertEquals(1, sortedTasks.size());
+        assertEquals("Single Task", sortedTasks.get(0).getTitle());
+    }
 
-@Test
-void cocktailSort_ShouldHandleAlreadySortedList() {
-Task criticalTask = createTask("Critical", Priority.CRITICAL);
-Task highTask = createTask("High", Priority.HIGH);
-Task mediumTask = createTask("Medium", Priority.MEDIUM);
+    @Test
+    void cocktailSort_ShouldHandleAlreadySortedList() {
+        // Arrange
+        Task criticalTask = createTask("Critical", Priority.CRITICAL);
+        Task highTask = createTask("High", Priority.HIGH);
+        Task mediumTask = createTask("Medium", Priority.MEDIUM);
 
-tasks.addAll(Arrays.asList(criticalTask, highTask, mediumTask));
-CocktailTaskSortingStrategy strategy = new CocktailTaskSortingStrategy();
+        tasks.addAll(Arrays.asList(criticalTask, highTask, mediumTask));
 
-List<Task> sortedTasks = strategy.sort(tasks, priorityComparator);
+        // Act
+        List<Task> sortedTasks = sortingStrategy.sort(tasks, priorityComparator);
 
-assertEquals(Priority.CRITICAL, sortedTasks.get(0).getPriority());
-assertEquals(Priority.HIGH, sortedTasks.get(1).getPriority());
-assertEquals(Priority.MEDIUM, sortedTasks.get(2).getPriority());
-}
+        // Assert
+        assertEquals(Priority.CRITICAL, sortedTasks.get(0).getPriority());
+        assertEquals(Priority.HIGH, sortedTasks.get(1).getPriority());
+        assertEquals(Priority.MEDIUM, sortedTasks.get(2).getPriority());
+    }
 
-@Test
-void cocktailSort_ShouldHandleReverseSortedList() {
-Task lowTask = createTask("Low", Priority.LOW);
-Task mediumTask = createTask("Medium", Priority.MEDIUM);
-Task highTask = createTask("High", Priority.HIGH);
+    @Test
+    void cocktailSort_ShouldHandleReverseSortedList() {
+        // Arrange
+        Task lowTask = createTask("Low", Priority.LOW);
+        Task mediumTask = createTask("Medium", Priority.MEDIUM);
+        Task highTask = createTask("High", Priority.HIGH);
 
-tasks.addAll(Arrays.asList(lowTask, mediumTask, highTask));
-CocktailTaskSortingStrategy strategy = new CocktailTaskSortingStrategy();
+        tasks.addAll(Arrays.asList(lowTask, mediumTask, highTask));
 
-List<Task> sortedTasks = strategy.sort(tasks, priorityComparator);
+        // Act
+        List<Task> sortedTasks = sortingStrategy.sort(tasks, priorityComparator);
 
-assertEquals(Priority.HIGH, sortedTasks.get(0).getPriority());
-assertEquals(Priority.MEDIUM, sortedTasks.get(1).getPriority());
-assertEquals(Priority.LOW, sortedTasks.get(2).getPriority());
-}
+        // Assert
+        assertEquals(Priority.HIGH, sortedTasks.get(0).getPriority());
+        assertEquals(Priority.MEDIUM, sortedTasks.get(1).getPriority());
+        assertEquals(Priority.LOW, sortedTasks.get(2).getPriority());
+    }
 
-@Test
-void cocktailSort_ShouldHandleDuplicatePriorities() {
-Task highTask1 = createTask("High 1", Priority.HIGH);
-Task highTask2 = createTask("High 2", Priority.HIGH);
-Task mediumTask = createTask("Medium", Priority.MEDIUM);
+    @Test
+    void cocktailSort_ShouldHandleDuplicatePriorities() {
+        // Arrange
+        Task highTask1 = createTask("High 1", Priority.HIGH);
+        Task highTask2 = createTask("High 2", Priority.HIGH);
+        Task mediumTask = createTask("Medium", Priority.MEDIUM);
 
-tasks.addAll(Arrays.asList(mediumTask, highTask2, highTask1));
-CocktailTaskSortingStrategy strategy = new CocktailTaskSortingStrategy();
+        tasks.addAll(Arrays.asList(mediumTask, highTask2, highTask1));
 
-List<Task> sortedTasks = strategy.sort(tasks, priorityComparator);
+        // Act
+        List<Task> sortedTasks = sortingStrategy.sort(tasks, priorityComparator);
 
-assertEquals(Priority.HIGH, sortedTasks.get(0).getPriority());
-assertEquals(Priority.HIGH, sortedTasks.get(1).getPriority());
-assertEquals(Priority.MEDIUM, sortedTasks.get(2).getPriority());
-}
+        // Assert
+        assertEquals(Priority.HIGH, sortedTasks.get(0).getPriority());
+        assertEquals(Priority.HIGH, sortedTasks.get(1).getPriority());
+        assertEquals(Priority.MEDIUM, sortedTasks.get(2).getPriority());
+    }
 
-@Test
-void cocktailSort_ShouldNotModifyOriginalList() {
-Task task1 = createTask("Task 1", Priority.LOW);
-Task task2 = createTask("Task 2", Priority.HIGH);
-Task task3 = createTask("Task 3", Priority.MEDIUM);
+    @Test
+    void cocktailSort_ShouldNotModifyOriginalList() {
+        // Arrange
+        Task task1 = createTask("Task 1", Priority.LOW);
+        Task task2 = createTask("Task 2", Priority.HIGH);
+        Task task3 = createTask("Task 3", Priority.MEDIUM);
 
-List<Task> originalList = new ArrayList<>(Arrays.asList(task1, task2, task3));
-List<Task> originalCopy = new ArrayList<>(originalList);
-CocktailTaskSortingStrategy strategy = new CocktailTaskSortingStrategy();
+        List<Task> originalList = new ArrayList<>(Arrays.asList(task1, task2, task3));
+        List<Task> originalCopy = new ArrayList<>(originalList);
 
-List<Task> sortedList = strategy.sort(originalList, priorityComparator);
+        // Act
+        List<Task> sortedList = sortingStrategy.sort(originalList, priorityComparator);
 
-assertEquals(originalCopy, originalList);
-assertNotSame(sortedList, originalList);
-}
+        // Assert
+        assertEquals(originalCopy, originalList); // Исходный список не изменился
+        assertNotSame(sortedList, originalList);  // Возвращен новый список
+    }
 
-@Test
-void cocktailSort_ShouldThrowException_WhenComparatorIsNull() {
-tasks.add(createTask("Task 1", Priority.HIGH));
-tasks.add(createTask("Task 2", Priority.LOW));
-CocktailTaskSortingStrategy strategy = new CocktailTaskSortingStrategy();
+    @Test
+    void cocktailSort_ShouldThrowException_WhenComparatorIsNull() {
+        // Arrange
+        tasks.add(createTask("Task", Priority.HIGH));
 
-assertThrows(
-NullPointerException.class,
-() -> strategy.sort(tasks, null)
-);
-}
+        // Act & Assert
+        assertThrows(NullPointerException.class, () -> {
+            sortingStrategy.sort(tasks, null);
+        });
+    }
 }

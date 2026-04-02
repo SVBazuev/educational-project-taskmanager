@@ -1,31 +1,26 @@
 package edu.taskmanager.frontend.console.handlers;
 
-import edu.taskmanager.backend.model.*;
-import edu.taskmanager.backend.repository.ProjectRepository;
-import edu.taskmanager.backend.repository.TagRepository;
-import edu.taskmanager.backend.repository.UserRepository;
-import edu.taskmanager.backend.service.TaskService;
-import edu.taskmanager.frontend.console.Command;
 
 import java.util.List;
 
+import edu.taskmanager.backend.model.*;
+import edu.taskmanager.backend.repository.*;
+import edu.taskmanager.frontend.console.Command;
+
+
 public class ListCommand implements Command {
-    private final TaskService taskService;
+    private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
     private final TagRepository tagRepository;
     private final UserRepository userRepository;
-    private final User currentUser;
 
-    public ListCommand(TaskService taskService,
-                       ProjectRepository projectRepository,
-                       TagRepository tagRepository,
-                       UserRepository userRepository,
-                       User currentUser) {
-        this.taskService = taskService;
+    public ListCommand(
+            TaskRepository taskRepository, ProjectRepository projectRepository,
+            TagRepository tagRepository, UserRepository userRepository) {
+        this.taskRepository = taskRepository;
         this.projectRepository = projectRepository;
         this.tagRepository = tagRepository;
         this.userRepository = userRepository;
-        this.currentUser = currentUser;
     }
 
     @Override
@@ -45,16 +40,12 @@ public class ListCommand implements Command {
     }
 
     private void listTasks() {
-        try {
-            List<Task> tasks = taskService.getAllTasks(currentUser);
-            if (tasks.isEmpty()) {
-                System.out.println("Список задач пуст.");
-            } else {
-                System.out.println("Список задач:");
-                tasks.forEach(System.out::println);
-            }
-        } catch (SecurityException e) {
-            System.out.println("Ошибка доступа: " + e.getMessage());
+        List<Task> tasks = taskRepository.findAll();
+        if (tasks.isEmpty()) {
+            System.out.println("Список задач пуст.");
+        } else {
+            System.out.println("Список задач:");
+            tasks.forEach(System.out::println);
         }
     }
 

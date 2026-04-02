@@ -3,6 +3,8 @@ package edu.taskmanager.backend.chain;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 
 import edu.taskmanager.backend.model.Task;
@@ -14,6 +16,51 @@ import edu.taskmanager.backend.model.Task;
 public class FilterChain {
     private final List<TaskFilter> filters = new ArrayList<>();
     private TaskFilter firstFilter;
+    private final Map<String, FilterFactory> filterFactories = new HashMap<>();
+
+    public FilterChain() {
+        initializeFilterFactories();
+    }
+
+    /**
+     * Инициализирует маппу фильтр-фабрик.
+     * Регистрирует все доступные фабрики по ключам.
+     */
+    private void initializeFilterFactories() {
+
+        filterFactories.put("project", new ProjectFilter());
+        filterFactories.put("user", new CreatorFilter());
+        filterFactories.put("priority", new PriorityFilter());
+        filterFactories.put("status", new StatusFilter());
+        //filterFactories.put("tag", new TagFilter());
+        filterFactories.put("description", new DescriptionFilter());
+        filterFactories.put("startdate", new DateRangeFilter());
+        filterFactories.put("enddate", filterFactories.get("startdate"));
+        filterFactories.put("upstartdate", filterFactories.get("startdate"));
+        filterFactories.put("upenddate", filterFactories.get("startdate"));
+        filterFactories.put("duestartdate", filterFactories.get("startdate"));
+        filterFactories.put("dueenddate", filterFactories.get("startdate"));
+        //filterFactories.put("duestartdate", new DueDateFilter());
+        //filterFactories.put("upstartdate", new UpdateDateFilter());
+    }
+
+    /**
+     * Создает и добавляет фильтр в цепочку на основе ключа и значения.
+     * @param entry пара ключ-значение для создания фильтра
+     */
+    public void create(Map.Entry<String, String> entry) {
+        String key = entry.getKey().toLowerCase();
+        FilterFactory factory = filterFactories.get(key);
+        if (factory == null) {
+            return;
+        }
+        try {
+            TaskFilter filter = factory.createFilter(entry);
+            addFilter(filter);
+        } catch (IllegalArgumentException e) {
+            System.err.println("Ошибка при создании фильтра для ключа '" + key + "': " + e.getMessage());
+        }
+    }
 
     /**
      * Добавляет фильтр в конец цепочки.

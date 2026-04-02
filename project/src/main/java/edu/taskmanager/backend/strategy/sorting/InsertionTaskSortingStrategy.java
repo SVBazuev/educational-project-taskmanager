@@ -1,28 +1,38 @@
 package edu.taskmanager.backend.strategy.sorting;
 
-import edu.taskmanager.backend.model.Task;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import edu.taskmanager.backend.model.Task;
+
+/**
+ * Сортировка задач по дате выполнения (от ближайшей к самой далёкой).
+ */
+
 public class InsertionTaskSortingStrategy implements TaskSortingStrategy {
 
-    @Override
+    /**
+     * Сортировка вставками (Insertion Sort).
+     */
+
     public List<Task> sort(List<Task> tasks, Comparator<Task> comparator) {
-        if (tasks == null) {
-            return new ArrayList<>();
-        }
-        List<Task> sorted = new ArrayList<>(tasks);
-        for (int i = 1; i < sorted.size(); i++) {
-            Task key = sorted.get(i);
+
+        List<Task> sortedTasks = new ArrayList<>(tasks);
+
+        for (int i = 1; i < sortedTasks.size(); i++) {
+            Task key = sortedTasks.get(i);
             int j = i - 1;
-            while (j >= 0 && comparator.compare(sorted.get(j), key) > 0) {
-                sorted.set(j + 1, sorted.get(j));
+
+            // Сдвигаем элементы, которые больше key, вправо
+            while (j >= 0 && comparator.compare(sortedTasks.get(j), key) > 0) {
+                sortedTasks.set(j + 1, sortedTasks.get(j));
                 j--;
             }
-            sorted.set(j + 1, key);
+
+            // Вставляем key на правильную позицию
+            sortedTasks.set(j + 1, key);
         }
-        return sorted;
+        return sortedTasks;
     }
 }

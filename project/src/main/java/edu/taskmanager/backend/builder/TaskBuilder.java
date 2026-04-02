@@ -129,6 +129,10 @@ public class TaskBuilder {
             );
         }
 
+        if(description == null){
+            this.setDescription("");
+        }
+
         // Создаём задачу
         Task task = new Task();
         task.setTitle(title);

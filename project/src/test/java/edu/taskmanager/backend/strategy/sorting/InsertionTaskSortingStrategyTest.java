@@ -21,17 +21,21 @@ class InsertionTaskSortingStrategyTest {
     private List<Task> tasks;
     private User testUser;
     private Project testProject;
+    private TaskSortingStrategy sortingStrategy;
 
     @BeforeEach
     void setUp() {
+        // Создаем тестового пользователя
         testUser = new User();
         testUser.setId(1L);
         testUser.setUsername("testuser");
 
+        // Создаем тестовый проект
         testProject = new Project();
         testProject.setId(1L);
         testProject.setName("Test Project");
 
+        // Создаем тестовые задачи
         tasks = new ArrayList<>();
 
         Task task1 = new Task();
@@ -75,15 +79,17 @@ class InsertionTaskSortingStrategyTest {
         task4.setDueDate(LocalDateTime.now().plusDays(1));
 
         tasks.addAll(Arrays.asList(task1, task2, task3, task4));
+        sortingStrategy = new InsertionTaskSortingStrategy();
     }
 
     @Test
     void insertionSort_ShouldSortByPriorityAscending() {
+        // Создаем компаратор для сортировки по приоритету (от низкого к высокому)
         Comparator<Task> priorityComparator = Comparator.comparing(Task::getPriority);
-        InsertionTaskSortingStrategy strategy = new InsertionTaskSortingStrategy();
 
-        List<Task> sortedTasks = strategy.sort(tasks, priorityComparator);
+        List<Task> sortedTasks = sortingStrategy.sort(tasks, priorityComparator);
 
+        // Проверяем порядок сортировки
         assertEquals(4, sortedTasks.size());
         assertEquals(Priority.LOW, sortedTasks.get(0).getPriority());
         assertEquals(Priority.MEDIUM, sortedTasks.get(1).getPriority());
@@ -93,11 +99,12 @@ class InsertionTaskSortingStrategyTest {
 
     @Test
     void insertionSort_ShouldSortByDueDate() {
+        // Создаем компаратор для сортировки по дате выполнения
         Comparator<Task> dueDateComparator = Comparator.comparing(Task::getDueDate);
-        InsertionTaskSortingStrategy strategy = new InsertionTaskSortingStrategy();
 
-        List<Task> sortedTasks = strategy.sort(tasks, dueDateComparator);
+        List<Task> sortedTasks = sortingStrategy.sort(tasks, dueDateComparator);
 
+        // Проверяем, что задачи отсортированы от самой близкой даты к самой далекой
         assertEquals("Task D", sortedTasks.get(0).getTitle());
         assertEquals("Task B", sortedTasks.get(1).getTitle());
         assertEquals("Task C", sortedTasks.get(2).getTitle());
@@ -106,11 +113,12 @@ class InsertionTaskSortingStrategyTest {
 
     @Test
     void insertionSort_ShouldSortByTitleDescending() {
+        // Создаем компаратор для сортировки по заголовку в обратном порядке
         Comparator<Task> titleComparator = (t1, t2) -> t2.getTitle().compareTo(t1.getTitle());
-        InsertionTaskSortingStrategy strategy = new InsertionTaskSortingStrategy();
 
-        List<Task> sortedTasks = strategy.sort(tasks, titleComparator);
+        List<Task> sortedTasks = sortingStrategy.sort(tasks, titleComparator);
 
+        // Проверяем обратный алфавитный порядок
         assertEquals("Task D", sortedTasks.get(0).getTitle());
         assertEquals("Task C", sortedTasks.get(1).getTitle());
         assertEquals("Task B", sortedTasks.get(2).getTitle());
@@ -119,11 +127,12 @@ class InsertionTaskSortingStrategyTest {
 
     @Test
     void insertionSort_ShouldSortByPriorityAndThenByTitle() {
+        // Создаем компаратор для сортировки сначала по приоритету, затем по заголовку
         Comparator<Task> priorityThenTitleComparator = Comparator
-            .comparing(Task::getPriority)
-            .thenComparing(Task::getTitle);
-        InsertionTaskSortingStrategy strategy = new InsertionTaskSortingStrategy();
+                .comparing(Task::getPriority)
+                .thenComparing(Task::getTitle);
 
+        // Добавляем задачи с одинаковым приоритетом для тестирования вторичной сортировки
         Task task5 = new Task();
         task5.setId(5L);
         task5.setTitle("Task E");
@@ -143,10 +152,12 @@ class InsertionTaskSortingStrategyTest {
         tasks.add(task6);
         tasks.add(task5);
 
-        List<Task> sortedTasks = strategy.sort(tasks, priorityThenTitleComparator);
+        List<Task> sortedTasks = sortingStrategy.sort(tasks, priorityThenTitleComparator);
 
+        // Проверяем, что задачи с одинаковым приоритетом отсортированы по заголовку
         assertEquals(6, sortedTasks.size());
 
+        // Первые три задачи должны быть с приоритетом LOW, отсортированные по заголовку
         assertEquals(Priority.LOW, sortedTasks.get(0).getPriority());
         assertEquals("Task A", sortedTasks.get(0).getTitle());
 
@@ -156,6 +167,7 @@ class InsertionTaskSortingStrategyTest {
         assertEquals(Priority.LOW, sortedTasks.get(2).getPriority());
         assertEquals("Task F", sortedTasks.get(2).getTitle());
 
+        // Затем MEDIUM, HIGH, CRITICAL
         assertEquals(Priority.MEDIUM, sortedTasks.get(3).getPriority());
         assertEquals(Priority.HIGH, sortedTasks.get(4).getPriority());
         assertEquals(Priority.CRITICAL, sortedTasks.get(5).getPriority());
@@ -163,6 +175,7 @@ class InsertionTaskSortingStrategyTest {
 
     @Test
     void insertionSort_ShouldHandleListWithDuplicatePriorities() {
+        // Создаем список с повторяющимися приоритетами
         List<Task> duplicateTasks = new ArrayList<>();
 
         Task taskLow1 = new Task();
@@ -188,10 +201,10 @@ class InsertionTaskSortingStrategyTest {
         duplicateTasks.add(taskLow1);
 
         Comparator<Task> priorityComparator = Comparator.comparing(Task::getPriority);
-        InsertionTaskSortingStrategy strategy = new InsertionTaskSortingStrategy();
 
-        List<Task> sortedTasks = strategy.sort(duplicateTasks, priorityComparator);
+        List<Task> sortedTasks = sortingStrategy.sort(duplicateTasks, priorityComparator);
 
+        // Сначала LOW (две задачи), потом HIGH
         assertEquals(Priority.LOW, sortedTasks.get(0).getPriority());
         assertEquals(Priority.LOW, sortedTasks.get(1).getPriority());
         assertEquals(Priority.HIGH, sortedTasks.get(2).getPriority());
@@ -199,35 +212,39 @@ class InsertionTaskSortingStrategyTest {
 
     @Test
     void insertionSort_ShouldHandleEmptyList() {
+        // Пустой список
         List<Task> emptyList = new ArrayList<>();
         Comparator<Task> comparator = Comparator.comparing(Task::getTitle);
-        InsertionTaskSortingStrategy strategy = new InsertionTaskSortingStrategy();
 
-        List<Task> sortedTasks = strategy.sort(emptyList, comparator);
+        List<Task> sortedTasks = sortingStrategy.sort(emptyList, comparator);
 
+        // Результат должен быть пустым
         assertTrue(sortedTasks.isEmpty());
     }
 
     @Test
     void insertionSort_ShouldHandleSingleElement() {
+        // Список из одной задачи
         List<Task> singleTaskList = Arrays.asList(tasks.get(0));
         Comparator<Task> comparator = Comparator.comparing(Task::getTitle);
-        InsertionTaskSortingStrategy strategy = new InsertionTaskSortingStrategy();
 
-        List<Task> sortedTasks = strategy.sort(singleTaskList, comparator);
+        List<Task> sortedTasks = sortingStrategy.sort(singleTaskList, comparator);
 
+        // Размер не изменился, задача та же
         assertEquals(1, sortedTasks.size());
         assertEquals("Task A", sortedTasks.get(0).getTitle());
     }
 
     @Test
     void insertionSort_ShouldNotModifyOriginalList() {
+        // Сохраняем копию исходного списка
         List<Task> originalCopy = new ArrayList<>(tasks);
         Comparator<Task> comparator = Comparator.comparing(Task::getTitle);
-        InsertionTaskSortingStrategy strategy = new InsertionTaskSortingStrategy();
 
-        strategy.sort(tasks, comparator);
+        // Выполняем сортировку
+        sortingStrategy.sort(tasks, comparator);
 
+        // Исходный список должен остаться без изменений
         assertEquals(originalCopy.size(), tasks.size());
         for (int i = 0; i < originalCopy.size(); i++) {
             assertEquals(originalCopy.get(i).getId(), tasks.get(i).getId());
@@ -236,17 +253,20 @@ class InsertionTaskSortingStrategyTest {
 
     @Test
     void insertionSort_ShouldThrowExceptionWhenComparatorIsNull() {
-        InsertionTaskSortingStrategy strategy = new InsertionTaskSortingStrategy();
-        assertThrows(NullPointerException.class, () -> strategy.sort(tasks, null));
+        // Проверяем выброс исключения при null компараторе
+        assertThrows(NullPointerException.class, () -> {
+            sortingStrategy.sort(tasks, null);
+        });
     }
 
     @Test
     void insertionSort_ShouldSortByCreatedAt() {
+        // Создаем компаратор для сортировки по дате создания
         Comparator<Task> createdAtComparator = Comparator.comparing(Task::getCreatedAt);
-        InsertionTaskSortingStrategy strategy = new InsertionTaskSortingStrategy();
 
-        List<Task> sortedTasks = strategy.sort(tasks, createdAtComparator);
+        List<Task> sortedTasks = sortingStrategy.sort(tasks, createdAtComparator);
 
+        // Проверяем сортировку от старых к новым
         assertEquals("Task A", sortedTasks.get(0).getTitle());
         assertEquals("Task B", sortedTasks.get(1).getTitle());
         assertEquals("Task C", sortedTasks.get(2).getTitle());

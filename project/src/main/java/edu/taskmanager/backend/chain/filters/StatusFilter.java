@@ -1,11 +1,10 @@
-package edu.taskmanager.backend.chain;
+package edu.taskmanager.backend.chain.filters;
 
 
+import edu.taskmanager.backend.chain.FilterFactory;
+import edu.taskmanager.backend.chain.TaskFilter;
 import edu.taskmanager.backend.model.Task;
-import edu.taskmanager.backend.util.Priority;
 import edu.taskmanager.backend.util.TaskStatus;
-
-import java.util.Map;
 
 
 /**
@@ -15,12 +14,12 @@ public class StatusFilter implements TaskFilter, FilterFactory {
     private final TaskStatus requiredStatus;
     private TaskFilter next;
 
-    public StatusFilter(TaskStatus requiredStatus) {
-        this.requiredStatus = requiredStatus;
-    }
-
     public StatusFilter() {
         this.requiredStatus = null;
+    }
+
+    public StatusFilter(TaskStatus requiredStatus) {
+        this.requiredStatus = requiredStatus;
     }
 
     @Override
@@ -39,10 +38,4 @@ public class StatusFilter implements TaskFilter, FilterFactory {
         this.next = next;
     }
 
-    @Override
-    public TaskFilter createFilter(Map.Entry<String, String> value) throws IllegalArgumentException {
-        TaskStatus statusFilter = TaskStatus.valueOf(value.getValue().toUpperCase());
-        TaskFilter filter = new StatusFilter(statusFilter);
-        return filter;
-    }
 }
