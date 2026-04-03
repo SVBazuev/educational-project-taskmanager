@@ -1,35 +1,41 @@
 package edu.taskmanager.backend.chain.filters;
 
 
-import java.util.Map;
-
 import edu.taskmanager.backend.chain.FilterFactory;
 import edu.taskmanager.backend.chain.TaskFilter;
 import edu.taskmanager.backend.model.Task;
-import edu.taskmanager.backend.model.User;
-import edu.taskmanager.backend.util.Priority;
+
+import java.util.Map;
 
 
 /**
  * Фильтр, пропускающий задачи, принадлежащие заданному пользователю.
  */
 public class CreatorFilter implements TaskFilter, FilterFactory {
-    private final User requiredUser;
+    //private final User requiredUser;
     private TaskFilter next;
+    private Long id;
+    private  String name;
+
 
     public CreatorFilter() {
-        this.requiredUser = null;
     }
 
-    public CreatorFilter(User requiredUser) {
-        this.requiredUser = requiredUser;
+    public CreatorFilter( Long  id){
+        this.id = id;
+    }
+
+    public CreatorFilter( String name){
+        this.name = name;
     }
 
     @Override
     public boolean filter(Task task) {
         boolean belongsToUser = (
             task.getCreator() != null
-            && task.getCreator().equals(requiredUser)
+            && (task.getCreator().getId().equals(id)
+                || task.getCreator().getUsername().equals(name)
+            )
         );
 
         if (!belongsToUser) { return false; }
@@ -45,10 +51,13 @@ public class CreatorFilter implements TaskFilter, FilterFactory {
     }
 
     @Override
-    public TaskFilter create(Map.Entry<String, String> criteria)
+    public TaskFilter createFilter(Map.Entry<String, String> entry)
     throws IllegalArgumentException {
-        Priority priority = Priority.valueOf(criteria.getValue().toUpperCase());
-        TaskFilter filter = new PriorityFilter(priority);
-        return filter;
+        try {
+            long userid = Long.parseLong(entry.getValue());
+            return new CreatorFilter(userid);//filter;
+        } catch (NumberFormatException e) {
+            return new CreatorFilter(entry.getValue());
+        }
     }
 }

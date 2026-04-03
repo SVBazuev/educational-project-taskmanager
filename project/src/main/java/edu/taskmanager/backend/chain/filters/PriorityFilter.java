@@ -1,12 +1,12 @@
 package edu.taskmanager.backend.chain.filters;
 
 
-import java.util.Map;
-
 import edu.taskmanager.backend.chain.FilterFactory;
 import edu.taskmanager.backend.chain.TaskFilter;
 import edu.taskmanager.backend.model.Task;
 import edu.taskmanager.backend.util.Priority;
+
+import java.util.Map;
 
 
 /**
@@ -41,12 +41,10 @@ public class PriorityFilter implements TaskFilter, FilterFactory {
     }
 
     @Override
-    public TaskFilter create(Map.Entry<String, String> criteria)
-    throws IllegalArgumentException  {
-        Priority priority = Priority.valueOf(
-            criteria.getValue().toUpperCase()
-        );
-
-        return new PriorityFilter(priority);
+    public TaskFilter createFilter(Map.Entry<String, String> value)
+    throws IllegalArgumentException {
+        Priority priority = Priority.valueOf(value.getValue().toUpperCase());
+        TaskFilter filter = new PriorityFilter(priority);
+        return filter;
     }
 }

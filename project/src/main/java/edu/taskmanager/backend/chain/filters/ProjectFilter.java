@@ -5,7 +5,6 @@ import java.util.Map;
 
 import edu.taskmanager.backend.chain.FilterFactory;
 import edu.taskmanager.backend.chain.TaskFilter;
-import edu.taskmanager.backend.model.Project;
 import edu.taskmanager.backend.model.Task;
 
 
@@ -13,39 +12,29 @@ import edu.taskmanager.backend.model.Task;
  * Фильтр, пропускающий задачи, принадлежащие заданному проекту.
  */
 public class ProjectFilter implements TaskFilter, FilterFactory {
-    private final Long projectId;
-    private final String projectName;
     private TaskFilter next;
+    private Long  id;
+    private  String name;
+
 
     public ProjectFilter() {
-        this.projectId = null;
-        this.projectName = null;
     }
 
-    public ProjectFilter(Long projectId) {
-        this.projectId = projectId;
-        this.projectName = null;
+    public ProjectFilter(Long  id){
+        this.id = id;
     }
 
-    public ProjectFilter(String projectName) {
-        this.projectId = null;
-        this.projectName = projectName;
+    public ProjectFilter(String name){
+        this.name = name;
     }
 
     @Override
     public boolean filter(Task task) {
-        boolean belongsToProject;
-        if (projectId == null) {
-            belongsToProject = (
-                task.getProject() != null
-                && task.getProject().getName().equals(projectName)
-            );
-        } else {
-            belongsToProject = (
-                task.getProject() != null
-                && task.getProject().getId() == projectId
-            );
-        }
+        boolean belongsToProject = (
+            task.getProject() != null
+            && (task.getProject().getId().equals(id)
+                || task.getProject().getName().equals(name))
+        );
 
         if (!belongsToProject) { return false; }
 
@@ -60,13 +49,12 @@ public class ProjectFilter implements TaskFilter, FilterFactory {
     }
 
     @Override
-    public TaskFilter create(Map.Entry<String, String> criteria)
-    throws IllegalArgumentException  {
-        if (criteria.getValue().)
-        Priority priority = Priority.valueOf(
-            criteria.getValue().toUpperCase()
-        );
-
-        return new PriorityFilter(priority);
+    public TaskFilter createFilter(Map.Entry<String, String> entry) throws IllegalArgumentException {
+        try {
+            long projectId = Long.parseLong(entry.getValue());
+            return new ProjectFilter(projectId);//filter;
+        } catch (NumberFormatException e) {
+            return new ProjectFilter(entry.getValue());
+        }
     }
 }

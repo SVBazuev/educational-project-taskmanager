@@ -1,29 +1,28 @@
 package edu.taskmanager.backend.chain.filters;
 
 
-import java.util.Map;
-import java.util.regex.Pattern;
-
 import edu.taskmanager.backend.chain.FilterFactory;
 import edu.taskmanager.backend.chain.TaskFilter;
 import edu.taskmanager.backend.model.Task;
 
+import java.util.Map;
+
 
 public class DescriptionFilter implements TaskFilter, FilterFactory {
-    private final String regex;
+    private final String description;
     private TaskFilter next;
 
-    public DescriptionFilter() {
-        this.regex = null;
+    public DescriptionFilter(String description) {
+        this.description = description;
     }
 
-    public DescriptionFilter(String regex) {
-        this.regex = regex;
+    public DescriptionFilter() {
+        this.description = null;
     }
 
     @Override
     public boolean filter(Task task) {
-        boolean descriptionMatches = Pattern.matches(regex, task.getDescription());
+        boolean descriptionMatches = description.equals(task.getDescription().toLowerCase());
 
         if (!descriptionMatches) { return false; }
 
@@ -38,8 +37,8 @@ public class DescriptionFilter implements TaskFilter, FilterFactory {
     }
 
     @Override
-    public TaskFilter create(Map.Entry<String, String> criteria)
-    throws IllegalArgumentException  {
-        return new DescriptionFilter(criteria.getValue());
+    public TaskFilter createFilter(Map.Entry<String, String> value) throws IllegalArgumentException {
+        String description = value.getValue().toLowerCase();
+        return new DescriptionFilter(description);
     }
 }

@@ -63,7 +63,7 @@ public class ConsoleApplication {
         Command list = new ListCommand(taskRepo, projectRepo, tagRepo, userRepo);
         Command get = new GetCommand(taskRepo, projectRepo, tagRepo, userRepo);
         Command delete = new DeleteCommand(taskRepo, projectRepo, tagRepo, userRepo);
-        Command filter = new FilterCommand(taskRepo, tagRepo, projectRepo, userRepo);
+        Command filter = new FilterCommand(taskRepo);
         Command sorting = new SortingCommand(taskRepo);
         Command help = new HelpCommand(registry);
         Command exit = new ExitCommand(() -> running = false, dataSaver, "saved/dev_tasks_.json");

@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
+import edu.taskmanager.backend.chain.filters.*;
 import edu.taskmanager.backend.model.Task;
 
 
@@ -32,7 +33,7 @@ public class FilterChain {
         filterFactories.put("user", new CreatorFilter());
         filterFactories.put("priority", new PriorityFilter());
         filterFactories.put("status", new StatusFilter());
-        //filterFactories.put("tag", new TagFilter());
+        filterFactories.put("tag", new TagFilter());
         filterFactories.put("description", new DescriptionFilter());
         filterFactories.put("startdate", new DateRangeFilter());
         filterFactories.put("enddate", filterFactories.get("startdate"));
@@ -40,8 +41,6 @@ public class FilterChain {
         filterFactories.put("upenddate", filterFactories.get("startdate"));
         filterFactories.put("duestartdate", filterFactories.get("startdate"));
         filterFactories.put("dueenddate", filterFactories.get("startdate"));
-        //filterFactories.put("duestartdate", new DueDateFilter());
-        //filterFactories.put("upstartdate", new UpdateDateFilter());
     }
 
     /**

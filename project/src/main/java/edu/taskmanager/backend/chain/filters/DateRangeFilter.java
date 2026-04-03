@@ -1,10 +1,11 @@
-package edu.taskmanager.backend.chain;
+package edu.taskmanager.backend.chain.filters;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.Map;
 
+import edu.taskmanager.backend.chain.FilterFactory;
+import edu.taskmanager.backend.chain.TaskFilter;
 import edu.taskmanager.backend.model.Task;
 import edu.taskmanager.backend.util.DateType;
 
@@ -21,7 +22,8 @@ public class DateRangeFilter implements TaskFilter, FilterFactory{
         this.endDate = null;
     }
 
-    public DateRangeFilter(DateType dateType, LocalDateTime startDate, LocalDateTime endDate) {
+    public DateRangeFilter(
+    DateType dateType, LocalDateTime startDate, LocalDateTime endDate) {
         if (dateType == null) {
             throw new IllegalArgumentException("DateType cannot be null");
         }
