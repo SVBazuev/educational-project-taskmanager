@@ -4,6 +4,7 @@ import edu.taskmanager.backend.model.Task;
 import edu.taskmanager.backend.repository.TaskRepository;
 import edu.taskmanager.frontend.console.Command;
 import edu.taskmanager.frontend.console.handlers.FilterCommand;
+import edu.taskmanager.frontend.console.handlers.GenerateCommand;
 import edu.taskmanager.frontend.console.handlers.SortingCommand;
 
 import java.util.List;
@@ -27,6 +28,9 @@ public class ResultSavingDecorator implements Command {
             List<Task> sortedTasks = command.getLastResult();
             saveResult(sortedTasks);
         } else if (wrapped instanceof FilterCommand command){
+            List<Task> sortedTasks = command.getLastResult();
+            saveResult(sortedTasks);
+        } else if (wrapped instanceof GenerateCommand command){
             List<Task> sortedTasks = command.getLastResult();
             saveResult(sortedTasks);
         }

@@ -2,6 +2,7 @@ package edu.taskmanager.frontend.console;
 
 
 import edu.taskmanager.backend.repository.*;
+import edu.taskmanager.frontend.console.handlers.GenerateCommand;
 import edu.taskmanager.frontend.console.decorator.LoggingCommandDecorator;
 import edu.taskmanager.frontend.console.decorator.ResultSavingDecorator;
 import edu.taskmanager.frontend.console.decorator.TimingCommandDecorator;
@@ -66,7 +67,9 @@ public class ConsoleApplication {
         Command filter = new FilterCommand(taskRepo);
         Command sorting = new SortingCommand(taskRepo);
         Command help = new HelpCommand(registry);
+        Command generate = new GenerateCommand(taskRepo);
         Command exit = new ExitCommand(() -> running = false, dataSaver, "saved/dev_tasks_.json");
+
 
         // Регистрация (можем обернуть нужные команды в декораторы)
         registry.register("create", new LoggingCommandDecorator(new TimingCommandDecorator(create)));
@@ -76,6 +79,7 @@ public class ConsoleApplication {
         registry.register("filter", new ResultSavingDecorator(filter, taskRepo));
         registry.register("sorting", new ResultSavingDecorator(sorting, taskRepo));
         registry.register("help", help);
+        registry.register("generate", new ResultSavingDecorator(generate, taskRepo));
         registry.register("exit", exit);
     }
 
