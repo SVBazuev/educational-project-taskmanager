@@ -2,6 +2,7 @@ package edu.taskmanager.frontend.console;
 
 
 import edu.taskmanager.backend.repository.*;
+import edu.taskmanager.frontend.console.decorator.MultithreadingCommandDecorator;
 import edu.taskmanager.frontend.console.handlers.GenerateCommand;
 import edu.taskmanager.frontend.console.decorator.LoggingCommandDecorator;
 import edu.taskmanager.frontend.console.decorator.ResultSavingDecorator;
@@ -76,10 +77,22 @@ public class ConsoleApplication {
         registry.register("list", list);
         registry.register("get", get);
         registry.register("delete", delete);
-        registry.register("filter", new ResultSavingDecorator(filter, taskRepo));
-        registry.register("sorting", new ResultSavingDecorator(sorting, taskRepo));
+        registry.register("filter",
+                new MultithreadingCommandDecorator(
+                        new ResultSavingDecorator(filter, taskRepo)
+                )
+        );
+        registry.register("sorting",
+                new MultithreadingCommandDecorator(
+                        new ResultSavingDecorator(sorting, taskRepo)
+                )
+        );
         registry.register("help", help);
-        registry.register("generate", new ResultSavingDecorator(generate, taskRepo));
+        registry.register("generate",
+                new MultithreadingCommandDecorator(
+                        new ResultSavingDecorator(generate, taskRepo)
+                )
+        );
         registry.register("exit", exit);
     }
 
