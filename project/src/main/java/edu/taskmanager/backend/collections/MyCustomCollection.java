@@ -52,7 +52,12 @@ public class MyCustomCollection<T> implements Iterable<T> {
             this.add(list.get(i));
         }
     }
-
+    public void addAll(Task[] tasks) {
+        for (Task task : tasks) {
+            this.add(task);
+        }
+    }
+    
     public void set(int index, T value) {
         checkIndex(index);
         array[index] = value;
@@ -83,128 +88,7 @@ public class MyCustomCollection<T> implements Iterable<T> {
         if (index < 0 || index >= size) throw new IndexOutOfBoundsException("Индекс вне диапазона");
     }
 
-    // ============ НОВЫЕ МЕТОДЫ ДЛЯ РАБОТЫ С TASK И ENUM ============
     
-    /**
-     * Фильтрация задач по статусу
-     */
-    public MyCustomCollection<Task> filterByStatus(TaskStatus status) {
-        MyCustomCollection<Task> result = new MyCustomCollection<>(10);
-        for (int i = 0; i < size; i++) {
-            Task task = (Task) array[i];
-            if (task != null && task.getStatus() == status) {
-                result.add(task);
-            }
-        }
-        return result;
-    }
-    
-    /**
-     * Фильтрация задач по приоритету
-     */
-    public MyCustomCollection<Task> filterByPriority(Priority priority) {
-        MyCustomCollection<Task> result = new MyCustomCollection<>(10);
-        for (int i = 0; i < size; i++) {
-            Task task = (Task) array[i];
-            if (task != null && task.getPriority() == priority) {
-                result.add(task);
-            }
-        }
-        return result;
-    }
-    
-    /**
-     * Фильтрация задач по диапазону дат (по заданному типу даты)
-     */
-    public MyCustomCollection<Task> filterByDateRange(DateType dateType, LocalDateTime start, LocalDateTime end) {
-        MyCustomCollection<Task> result = new MyCustomCollection<>(10);
-        for (int i = 0; i < size; i++) {
-            Task task = (Task) array[i];
-            if (task != null) {
-                LocalDateTime date = dateType.extract(task);
-                if (date != null) {
-                    boolean afterStart = start == null || !date.isBefore(start);
-                    boolean beforeEnd = end == null || !date.isAfter(end);
-                    if (afterStart && beforeEnd) {
-                        result.add(task);
-                    }
-                }
-            }
-        }
-        return result;
-    }
-    
-    /**
-     * Общая фильтрация с произвольным условием
-     */
-    public MyCustomCollection<T> filter(Predicate<T> predicate) {
-        MyCustomCollection<T> result = new MyCustomCollection<>(10);
-        for (int i = 0; i < size; i++) {
-            T element = array[i];
-            if (element != null && predicate.test(element)) {
-                result.add(element);
-            }
-        }
-        return result;
-    }
-    
-    /**
-     * Поиск задач, у которых срок выполнения истекает в ближайшие N дней
-     */
-    public MyCustomCollection<Task> findTasksDueSoon(int days) {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime deadline = now.plusDays(days);
-        
-        MyCustomCollection<Task> result = new MyCustomCollection<>(10);
-        for (int i = 0; i < size; i++) {
-            Task task = (Task) array[i];
-            if (task != null && task.getDueDate() != null) {
-                LocalDateTime dueDate = task.getDueDate();
-                if (!dueDate.isBefore(now) && !dueDate.isAfter(deadline)) {
-                    result.add(task);
-                }
-            }
-        }
-        return result;
-    }
-    
-    /**
-     * Получение статистики по статусам задач
-     */
-    public java.util.Map<TaskStatus, Long> getStatusStatistics() {
-        java.util.Map<TaskStatus, Long> stats = new java.util.HashMap<>();
-        for (TaskStatus status : TaskStatus.values()) {
-            stats.put(status, 0L);
-        }
-        
-        for (int i = 0; i < size; i++) {
-            Task task = (Task) array[i];
-            if (task != null) {
-                TaskStatus status = task.getStatus();
-                stats.put(status, stats.get(status) + 1);
-            }
-        }
-        return stats;
-    }
-    
-    /**
-     * Получение статистики по приоритетам задач
-     */
-    public java.util.Map<Priority, Long> getPriorityStatistics() {
-        java.util.Map<Priority, Long> stats = new java.util.HashMap<>();
-        for (Priority priority : Priority.values()) {
-            stats.put(priority, 0L);
-        }
-        
-        for (int i = 0; i < size; i++) {
-            Task task = (Task) array[i];
-            if (task != null) {
-                Priority priority = task.getPriority();
-                stats.put(priority, stats.get(priority) + 1);
-            }
-        }
-        return stats;
-    }
 
     // ============ СУЩЕСТВУЮЩИЕ МЕТОДЫ  ============
     
