@@ -52,11 +52,11 @@ public class MyCustomCollection<T> implements Iterable<T> {
             this.add(list.get(i));
         }
     }
-    public void addAll(Task[] tasks) {
-        for (Task task : tasks) {
-            this.add(task);
-        }
+    public void addAll(T[] items) {
+    for (T item : items) {
+        this.add(item);
     }
+}
     
     public void set(int index, T value) {
         checkIndex(index);
