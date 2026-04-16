@@ -27,12 +27,12 @@ public class MyCustomCollection<T> implements Iterable<T> {
         ensureCapacity();
         array[size++] = value;
     }
-    public void add(int index, Task value) { //добавить элемент по индексу со смещением
-        checkIndexForAdd(index);
-        ensureCapacity();
-        System.arraycopy(array, index, array, index + 1, size - index);
-        array[index] = value;
-        size++;
+    public void add(int index, T value) {
+    checkIndex(index); // Проверка индекса
+    ensureCapacity(); // Увеличение ёмкости массива при необходимости
+    System.arraycopy(array, index, array, index + 1, size - index); // Смещение элементов
+    array[index] = value; // Вставка нового элемента
+    size++; // Увеличение размера
     }
     public T get(int index) { //получить элемент
         checkIndex(index);
