@@ -1,6 +1,7 @@
 package edu.taskmanager.backend.collections;
 
 import edu.taskmanager.backend.model.Task;
+import edu.taskmanager.backend.model.User;
 import edu.taskmanager.backend.util.TaskStatus;
 import edu.taskmanager.backend.util.Priority;
 import edu.taskmanager.backend.util.DateType;
@@ -125,6 +126,30 @@ public class MyCustomCollection<T> implements Iterable<T> {
                 true
         );
     }
+
+// public long getOccurrenceCounter(Predicate<T> condition) {
+//     return this.parallelStream()
+//                .filter(condition)
+//                .count();
+// }
+// // Создание коллекции
+// MyCustomCollection<Task> tasks = new MyCustomCollection<>(10);
+
+// Task task1 = new Task("Task 1", LocalDateTime.now(), new User(), Priority.HIGH, TaskStatus.IN_PROGRESS);
+// Task task2 = new Task("Task 2", LocalDateTime.now(), new User(), Priority.LOW, TaskStatus.NOT_STARTED);
+// Task task3 = new Task("Task 1", LocalDateTime.now(), new User(), Priority.HIGH, TaskStatus.IN_PROGRESS);
+
+// tasks.add(task1);
+// tasks.add(task2);
+// tasks.add(task3);
+
+// // Подсчет задач с приоритетом HIGH
+// long highPriorityCount = tasks.getOccurrenceCounter(task -> task.getPriority() == Priority.HIGH);
+// System.out.println(highPriorityCount); // Вывод: 2
+
+// // Подсчет задач с названием "Task 1"
+// long titleCount = tasks.getOccurrenceCounter(task -> "Task 1".equals(task.getTitle()));
+// System.out.println(titleCount); // Вывод: 2
 
     public long getOccurrenceCounter(T target) {
         return this.parallelStream()
