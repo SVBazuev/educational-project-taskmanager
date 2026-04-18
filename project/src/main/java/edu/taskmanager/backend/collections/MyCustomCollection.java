@@ -5,6 +5,7 @@ import edu.taskmanager.backend.model.User;
 import edu.taskmanager.backend.util.TaskStatus;
 import edu.taskmanager.backend.util.Priority;
 import edu.taskmanager.backend.util.DateType;
+import edu.taskmanager.backend.chain.FilterChain;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -127,85 +128,45 @@ public class MyCustomCollection<T> implements Iterable<T> {
         );
     }
 
-// public long getOccurrenceCounter(Predicate<T> condition) {
-//     return this.parallelStream()
-//                .filter(condition)
-//                .count();
-// }
-// // Создание коллекции
-// MyCustomCollection<Task> tasks = new MyCustomCollection<>(10);
-
-// Task task1 = new Task("Task 1", LocalDateTime.now(), new User(), Priority.HIGH, TaskStatus.IN_PROGRESS);
-// Task task2 = new Task("Task 2", LocalDateTime.now(), new User(), Priority.LOW, TaskStatus.NOT_STARTED);
-// Task task3 = new Task("Task 1", LocalDateTime.now(), new User(), Priority.HIGH, TaskStatus.IN_PROGRESS);
-
-// tasks.add(task1);
-// tasks.add(task2);
-// tasks.add(task3);
-
-// // Подсчет задач с приоритетом HIGH
-// long highPriorityCount = tasks.getOccurrenceCounter(task -> task.getPriority() == Priority.HIGH);
-// System.out.println(highPriorityCount); // Вывод: 2
-
-// // Подсчет задач с названием "Task 1"
-// long titleCount = tasks.getOccurrenceCounter(task -> "Task 1".equals(task.getTitle()));
-// System.out.println(titleCount); // Вывод: 2
-
-    public long getOccurrenceCounter(T target) {
+/**
+     * Метод для подсчета элементов, удовлетворяющих предикату.
+     * @param condition предикат для фильтрации
+     * @return количество элементов, удовлетворяющих условию
+     */
+    public long getOccurrenceCounter(Predicate<T> condition) {
         return this.parallelStream()
-                .filter(i -> i != null && i.equals(target))
-                .count();
+                   .filter(condition)
+                   .count();
     }
 
-    public long getOccurrenceCounterMultiThreaded(T target) {
-        return this.parallelStream()
-                .filter(i -> i != null && i.equals(target))
-                .count();
+    /**
+     * Метод для подсчета элементов, удовлетворяющих фильтрам из цепочки.
+     * @param filterChain цепочка фильтров
+     * @return количество элементов, прошедших все фильтры
+     */
+    public long getFilteredCount(FilterChain filterChain) {
+        if (filterChain.isEmpty()) {
+            return size; // Если цепочка фильтров пуста, возвращаем размер коллекции
+        }
+        return filterChain.apply(this.stream().filter(e -> e instanceof Task).map(e -> (Task) e).toList()).size();
     }
 
-    public long getOccurrenceCounterManualThreads(T target, int numberOfThreads) {
-        if (size == 0) return 0;
-        if (numberOfThreads <= 0) {
-            numberOfThreads = Runtime.getRuntime().availableProcessors();
-        }
-        numberOfThreads = Math.min(numberOfThreads, size);
-
-        long[] results = new long[numberOfThreads];
-        Thread[] threads = new Thread[numberOfThreads];
-        int segmentSize = (size + numberOfThreads - 1) / numberOfThreads;
-
-        for (int t = 0; t < numberOfThreads; t++) {
-            final int threadIndex = t;
-            final int start = t * segmentSize;
-            final int end = Math.min(start + segmentSize, size);
-
-            threads[t] = new Thread(() -> {
-                long count = 0;
-                for (int i = start; i < end; i++) {
-                    T element = array[i];
-                    if (element != null && element.equals(target)) {
-                        count++;
-                    }
-                }
-                results[threadIndex] = count;
-            });
-            threads[t].start();
-        }
-
-        for (Thread thread : threads) {
-            try {
-                thread.join();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                System.err.println("Поток был прерван: " + e.getMessage());
+    /**
+     * Метод для получения коллекции элементов, удовлетворяющих фильтрам из цепочки.
+     * @param filterChain цепочка фильтров
+     * @return коллекция элементов, прошедших все фильтры
+     */
+    public MyCustomCollection<T> getFilteredCollection(FilterChain filterChain) {
+        MyCustomCollection<T> filteredCollection = new MyCustomCollection<>(size);
+        if (filterChain.isEmpty()) {
+            for (T item : this) {
+                filteredCollection.add(item);
             }
+            return filteredCollection;
         }
-
-        long total = 0;
-        for (long result : results) {
-            total += result;
-        }
-        return total;
+        filterChain.apply(this.stream().filter(e -> e instanceof Task).map(e -> (Task) e).toList())
+                .forEach(task -> filteredCollection.add((T) task));
+        return filteredCollection;
     }
 
     @Override
