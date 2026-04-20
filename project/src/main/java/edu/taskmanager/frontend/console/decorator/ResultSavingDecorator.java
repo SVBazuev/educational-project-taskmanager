@@ -1,21 +1,21 @@
 package edu.taskmanager.frontend.console.decorator;
 
 import edu.taskmanager.backend.model.Task;
-import edu.taskmanager.backend.repository.TaskRepository;
+import edu.taskmanager.backend.repository.Repository;
+import edu.taskmanager.backend.service.ServisRepository;
 import edu.taskmanager.frontend.console.Command;
 import edu.taskmanager.frontend.console.handlers.FilterCommand;
 import edu.taskmanager.frontend.console.handlers.GenerateCommand;
 import edu.taskmanager.frontend.console.handlers.SortingCommand;
-
 import java.util.List;
 
 public class ResultSavingDecorator implements Command {
     private final Command wrapped;
-    private TaskRepository taskRepository;
+    private ServisRepository servisRepository;
 
 
-    public ResultSavingDecorator(Command wrapped,TaskRepository taskRepository) {
-        this.taskRepository=taskRepository;
+    public ResultSavingDecorator(Command wrapped,ServisRepository servisRepository) {
+        this.servisRepository=servisRepository;
         this.wrapped = wrapped;
     }
 
@@ -40,7 +40,7 @@ public class ResultSavingDecorator implements Command {
     private void saveResult(List<Task> tasks){
 
         for(Task task : tasks){
-            taskRepository.save(new Task(task));
+            servisRepository.taskRepo().save(new Task(task));
         }
         System.out.println("Результат добавлен в память" );
 

@@ -6,17 +6,17 @@ import java.util.*;
 
 import edu.taskmanager.backend.chain.*;
 import edu.taskmanager.backend.model.Task;
-import edu.taskmanager.backend.repository.TaskRepository;
+import edu.taskmanager.backend.service.ServisRepository;
 import edu.taskmanager.frontend.console.Command;
 import static edu.taskmanager.frontend.console.parser.ArgumentParser.parseArguments;
 
 
 public class FilterCommand implements Command {
-    private final TaskRepository taskRepository;
     private List<Task> lastResult;
+    private  final ServisRepository servisRepository;
 
-    public FilterCommand(TaskRepository taskRepository) {
-        this.taskRepository = taskRepository;
+    public FilterCommand(ServisRepository servisRepository) {
+        this.servisRepository = servisRepository;
         this.lastResult = new ArrayList<>();
     }
 
@@ -32,20 +32,8 @@ public class FilterCommand implements Command {
         // Парсим аргументы в карту критериев
         Map<String, String> criteria = parseArguments(args);
 
-        // Строим цепочку фильтров
-        FilterChain filterChain = new FilterChain();
-
-        criteria.entrySet().stream()
-                .forEach(filterChain::create);
-
-        if (filterChain.isEmpty()) {
-            System.out.println("Не задано ни одного корректного критерия фильтрации.");
-            return;
-        }
-
         // Получаем все задачи и фильтруем
-        List<Task> allTasks = taskRepository.findAll();
-        lastResult = filterChain.apply(allTasks);
+        lastResult = servisRepository.findBy(criteria);
 
         // Вывод
         if (lastResult.isEmpty()) {

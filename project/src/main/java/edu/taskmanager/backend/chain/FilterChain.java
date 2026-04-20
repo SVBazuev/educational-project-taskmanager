@@ -47,7 +47,7 @@ public class FilterChain {
      * Создает и добавляет фильтр в цепочку на основе ключа и значения.
      * @param entry пара ключ-значение для создания фильтра
      */
-    public void create(Map.Entry<String, String> entry) {
+    public void createChain(Map.Entry<String, String> entry) {
         String key = entry.getKey().toLowerCase();
         FilterFactory factory = filterFactories.get(key);
         if (factory == null) {

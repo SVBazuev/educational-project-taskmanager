@@ -11,10 +11,8 @@ import edu.taskmanager.backend.model.Project;
 import edu.taskmanager.backend.model.Tag;
 import edu.taskmanager.backend.model.Task;
 import edu.taskmanager.backend.model.User;
-import edu.taskmanager.backend.repository.ProjectRepository;
-import edu.taskmanager.backend.repository.TagRepository;
-import edu.taskmanager.backend.repository.TaskRepository;
-import edu.taskmanager.backend.repository.UserRepository;
+import edu.taskmanager.backend.repository.*;
+import edu.taskmanager.backend.service.ServisRepository;
 import edu.taskmanager.backend.util.Priority;
 import edu.taskmanager.backend.util.TaskStatus;
 import edu.taskmanager.frontend.console.Command;
@@ -22,18 +20,10 @@ import edu.taskmanager.frontend.console.parser.ArgumentParser;
 import static edu.taskmanager.frontend.console.parser.ArgumentParser.parseArguments;
 
 public class CreateCommand implements Command {
-    private final TaskRepository taskRepository;
-    private final ProjectRepository projectRepository;
-    private final TagRepository tagRepository;
-    private final UserRepository userRepository;
+    private final ServisRepository servisRepository;
 
-    public CreateCommand(
-            TaskRepository taskRepository, ProjectRepository projectRepository,
-            TagRepository tagRepository, UserRepository userRepository) {
-        this.taskRepository = taskRepository;
-        this.projectRepository = projectRepository;
-        this.tagRepository = tagRepository;
-        this.userRepository = userRepository;
+    public CreateCommand(ServisRepository servisRepository) {
+        this.servisRepository = servisRepository;
     }
 
     @Override
@@ -57,6 +47,7 @@ public class CreateCommand implements Command {
             default -> System.out.println("Неизвестный тип: " + type);
         }
     }
+    //create&task&type=download&title=
 
     private void createTask(Map<String, String> criteria) {
         if (criteria.isEmpty() || !criteria.containsKey("title")) {
@@ -94,7 +85,7 @@ public class CreateCommand implements Command {
                 .setStatus(TaskStatus.TODO)
                 .build();
 
-        Task saved = taskRepository.save(task);
+        Task saved = (Task) servisRepository.taskRepo().save(task);
         System.out.println("Создана задача: " + saved);
     }
 
@@ -112,7 +103,7 @@ public class CreateCommand implements Command {
                 .setDescription(description)
                 .build();
 
-        Project saved = projectRepository.save(project);
+        Project saved = (Project) servisRepository.projectRepo().save(project);
         System.out.println("Создан проект: " + saved);
     }
 
@@ -124,7 +115,7 @@ public class CreateCommand implements Command {
 
         String name = criteria.get("name");
         Tag tag = new Tag(name);
-        Tag saved = tagRepository.save(tag);
+        Tag saved = (Tag) servisRepository.tagRepo().save(tag);
         System.out.println("Создан тег: " + saved);
     }
 
@@ -148,7 +139,7 @@ public class CreateCommand implements Command {
         }
 
         User user = new User(username, password, role);
-        User saved = userRepository.save(user);
+        User saved = (User) servisRepository.userRepo().save(user);
         System.out.println("Создан пользователь: " + saved);
     }
 

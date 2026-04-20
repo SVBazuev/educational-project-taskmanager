@@ -1,7 +1,12 @@
 package edu.taskmanager.frontend.console;
 
 
+import edu.taskmanager.backend.model.Project;
+import edu.taskmanager.backend.model.Tag;
+import edu.taskmanager.backend.model.Task;
+import edu.taskmanager.backend.model.User;
 import edu.taskmanager.backend.repository.*;
+import edu.taskmanager.backend.service.ServisRepository;
 import edu.taskmanager.frontend.console.handlers.GenerateCommand;
 import edu.taskmanager.frontend.console.decorator.LoggingCommandDecorator;
 import edu.taskmanager.frontend.console.decorator.ResultSavingDecorator;
@@ -50,24 +55,21 @@ public class ConsoleApplication {
 
     private void initializeCommands() {
         // Инициализация репозиториев (в реальном проекте можно использовать dependency injection)
-        TaskRepository taskRepo = new InMemoryTaskRepository();
-        ProjectRepository projectRepo = new InMemoryProjectRepository();
-        TagRepository tagRepo = new InMemoryTagRepository();
-        UserRepository userRepo = new InMemoryUserRepository();
-        DataSaver dataSaver = new DataSaver(taskRepo, projectRepo, userRepo, tagRepo);
+        ServisRepository servisRepository = new ServisRepository();
+        DataSaver dataSaver = new DataSaver(servisRepository);
 
         // Загрузчик данных в репозитории
-        new DataLoader(taskRepo, projectRepo, tagRepo, userRepo).load("dev_tasks_.json");
+        new DataLoader(servisRepository).load("dev_tasks_.json");
 
         // Создание команд
-        Command create = new CreateCommand(taskRepo, projectRepo, tagRepo, userRepo);
-        Command list = new ListCommand(taskRepo, projectRepo, tagRepo, userRepo);
-        Command get = new GetCommand(taskRepo, projectRepo, tagRepo, userRepo);
-        Command delete = new DeleteCommand(taskRepo, projectRepo, tagRepo, userRepo);
-        Command filter = new FilterCommand(taskRepo);
-        Command sorting = new SortingCommand(taskRepo);
+        Command create = new CreateCommand(servisRepository);
+        Command list = new ListCommand(servisRepository);
+        Command get = new GetCommand(servisRepository);
+        Command delete = new DeleteCommand(servisRepository);
+        Command filter = new FilterCommand(servisRepository);
+        Command sorting = new SortingCommand(servisRepository);
         Command help = new HelpCommand(registry);
-        Command generate = new GenerateCommand(taskRepo);
+        Command generate = new GenerateCommand(servisRepository);
         Command exit = new ExitCommand(() -> running = false, dataSaver, "saved/dev_tasks_.json");
 
 
@@ -76,10 +78,10 @@ public class ConsoleApplication {
         registry.register("list", list);
         registry.register("get", get);
         registry.register("delete", delete);
-        registry.register("filter", new ResultSavingDecorator(filter, taskRepo));
-        registry.register("sorting", new ResultSavingDecorator(sorting, taskRepo));
+        registry.register("filter", new ResultSavingDecorator(filter, servisRepository));
+        registry.register("sorting", new ResultSavingDecorator(sorting, servisRepository));
         registry.register("help", help);
-        registry.register("generate", new ResultSavingDecorator(generate, taskRepo));
+        registry.register("generate", new ResultSavingDecorator(generate, servisRepository));
         registry.register("exit", exit);
     }
 

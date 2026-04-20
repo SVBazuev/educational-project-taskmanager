@@ -6,22 +6,15 @@ import java.util.Optional;
 
 import edu.taskmanager.backend.model.*;
 import edu.taskmanager.backend.repository.*;
+import edu.taskmanager.backend.service.ServisRepository;
 import edu.taskmanager.frontend.console.Command;
 
 
 public class GetCommand implements Command {
-    private final TaskRepository taskRepository;
-    private final ProjectRepository projectRepository;
-    private final TagRepository tagRepository;
-    private final UserRepository userRepository;
+    private final ServisRepository servisRepository;
 
-    public GetCommand(
-            TaskRepository taskRepository, ProjectRepository projectRepository,
-            TagRepository tagRepository, UserRepository userRepository) {
-        this.taskRepository = taskRepository;
-        this.projectRepository = projectRepository;
-        this.tagRepository = tagRepository;
-        this.userRepository = userRepository;
+    public GetCommand(ServisRepository servisRepository) {
+        this.servisRepository = servisRepository;
     }
 
     @Override
@@ -49,7 +42,7 @@ public class GetCommand implements Command {
     }
 
     private void getTask(long id) {
-        Optional<Task> opt = taskRepository.findById(id);
+        Optional<Task> opt = servisRepository.taskRepo().findById(id);
         if (opt.isPresent()) {
             System.out.println(opt.get());
         } else {
@@ -58,7 +51,7 @@ public class GetCommand implements Command {
     }
 
     private void getProject(long id) {
-        Optional<Project> opt = projectRepository.findById(id);
+        Optional<Project> opt = servisRepository.projectRepo().findById(id);
         if (opt.isPresent()) {
             System.out.println(opt.get());
         } else {
@@ -67,7 +60,7 @@ public class GetCommand implements Command {
     }
 
     private void getTag(long id) {
-        Optional<Tag> opt = tagRepository.findById(id);
+        Optional<Tag> opt = servisRepository.tagRepo().findById(id);
         if (opt.isPresent()) {
             System.out.println(opt.get());
         } else {
@@ -76,7 +69,7 @@ public class GetCommand implements Command {
     }
 
     private void getUser(long id) {
-        Optional<User> opt = userRepository.findById(id);
+        Optional<User> opt = servisRepository.userRepo().findById(id);
         if (opt.isPresent()) {
             System.out.println(opt.get());
         } else {

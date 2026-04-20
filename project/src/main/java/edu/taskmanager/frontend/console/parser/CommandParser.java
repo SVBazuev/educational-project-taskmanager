@@ -16,6 +16,9 @@ public class CommandParser {
         for (int i = 1; i < parts.length; i++) {
             args.add(parts[i].trim());
         }
+        ParsedCommand command = new ParsedCommand(commandName, args);
+
+        System.out.println(command.args());
         return new ParsedCommand(commandName, args);
     }
 }

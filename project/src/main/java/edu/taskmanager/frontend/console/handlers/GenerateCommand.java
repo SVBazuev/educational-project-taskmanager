@@ -4,7 +4,8 @@ import edu.taskmanager.backend.model.Project;
 import edu.taskmanager.backend.model.Tag;
 import edu.taskmanager.backend.model.Task;
 import edu.taskmanager.backend.model.User;
-import edu.taskmanager.backend.repository.TaskRepository;
+import edu.taskmanager.backend.repository.*;
+import edu.taskmanager.backend.service.ServisRepository;
 import edu.taskmanager.backend.util.Priority;
 import edu.taskmanager.backend.util.TaskStatus;
 import edu.taskmanager.frontend.console.Command;
@@ -15,12 +16,12 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 public class GenerateCommand implements Command {
-    TaskRepository taskRepository;
+    private final ServisRepository servisRepository;
     private List<Task> lastResult;
     private static final ThreadLocalRandom random = ThreadLocalRandom.current();
 
-    public GenerateCommand(TaskRepository taskRepository){
-        this.taskRepository=taskRepository;
+    public GenerateCommand(ServisRepository servisRepository){
+        this.servisRepository=servisRepository;
         this.lastResult = new ArrayList<>();
     }
 
@@ -208,10 +209,6 @@ public class GenerateCommand implements Command {
         List<Task> tasks = GenerateCommand.generateTasks(count);
 
         lastResult = tasks;
-
-        //for(Task task : tasks){
-        //    taskRepository.save(new Task(task));
-        //}
 
         System.out.println("Создано задач: " + tasks.size());
     }

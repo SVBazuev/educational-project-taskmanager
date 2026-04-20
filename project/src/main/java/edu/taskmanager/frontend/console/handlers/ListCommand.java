@@ -5,22 +5,15 @@ import java.util.List;
 
 import edu.taskmanager.backend.model.*;
 import edu.taskmanager.backend.repository.*;
+import edu.taskmanager.backend.service.ServisRepository;
 import edu.taskmanager.frontend.console.Command;
 
 
 public class ListCommand implements Command {
-    private final TaskRepository taskRepository;
-    private final ProjectRepository projectRepository;
-    private final TagRepository tagRepository;
-    private final UserRepository userRepository;
+    private final ServisRepository servisRepository;
 
-    public ListCommand(
-            TaskRepository taskRepository, ProjectRepository projectRepository,
-            TagRepository tagRepository, UserRepository userRepository) {
-        this.taskRepository = taskRepository;
-        this.projectRepository = projectRepository;
-        this.tagRepository = tagRepository;
-        this.userRepository = userRepository;
+    public ListCommand(ServisRepository servisRepository) {
+        this.servisRepository = servisRepository;
     }
 
     @Override
@@ -40,7 +33,7 @@ public class ListCommand implements Command {
     }
 
     private void listTasks() {
-        List<Task> tasks = taskRepository.findAll();
+        List<Task> tasks = servisRepository.taskRepo().findAll();
         if (tasks.isEmpty()) {
             System.out.println("Список задач пуст.");
         } else {
@@ -50,7 +43,7 @@ public class ListCommand implements Command {
     }
 
     private void listProjects() {
-        List<Project> projects = projectRepository.findAll();
+        List<Project> projects = servisRepository.projectRepo().findAll();
         if (projects.isEmpty()) {
             System.out.println("Список проектов пуст.");
         } else {
@@ -60,7 +53,7 @@ public class ListCommand implements Command {
     }
 
     private void listTags() {
-        List<Tag> tags = tagRepository.findAll();
+        List<Tag> tags = servisRepository.tagRepo().findAll();
         if (tags.isEmpty()) {
             System.out.println("Список тегов пуст.");
         } else {
@@ -70,7 +63,7 @@ public class ListCommand implements Command {
     }
 
     private void listUsers() {
-        List<User> users = userRepository.findAll();
+        List<User> users = servisRepository.userRepo().findAll();
         if (users.isEmpty()) {
             System.out.println("Список пользователей пуст.");
         } else {
