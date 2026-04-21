@@ -168,7 +168,35 @@ public class MyCustomCollection<T> implements Iterable<T> {
                 .forEach(task -> filteredCollection.add((T) task));
         return filteredCollection;
     }
+/*
+    // Создание коллекции задач
+MyCustomCollection<Task> tasks = new MyCustomCollection<>(10);
 
+Task task1 = new Task("Task 1", LocalDateTime.now(), new User(), Priority.HIGH, TaskStatus.IN_PROGRESS);
+Task task2 = new Task("Task 2", LocalDateTime.now(), new User(), Priority.LOW, TaskStatus.NOT_STARTED);
+Task task3 = new Task("Task 3", LocalDateTime.now(), new User(), Priority.HIGH, TaskStatus.COMPLETED);
+
+tasks.add(task1);
+tasks.add(task2);
+tasks.add(task3);
+
+// Использование метода getOccurrenceCounter для подсчета задач с приоритетом HIGH
+long highPriorityCount = tasks.getOccurrenceCounter(task -> task.getPriority() == Priority.HIGH);
+System.out.println("Количество задач с высоким приоритетом: " + highPriorityCount);
+
+// Создание цепочки фильтров
+FilterChain filterChain = new FilterChain();
+filterChain.create(Map.entry("priority", "HIGH"));
+filterChain.create(Map.entry("status", "IN_PROGRESS"));
+
+// Подсчет задач, прошедших фильтры
+long filteredCount = tasks.getFilteredCount(filterChain);
+System.out.println("Количество задач с высоким приоритетом и статусом IN_PROGRESS: " + filteredCount);
+
+// Получение отфильтрованной коллекции
+MyCustomCollection<Task> filteredTasks = tasks.getFilteredCollection(filterChain);
+System.out.println("Отфильтрованные задачи: " + filteredTasks);
+*/
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
