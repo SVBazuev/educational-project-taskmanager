@@ -1,8 +1,9 @@
-package edu.taskmanager.backend.chain;
+package edu.taskmanager.backend.chain.filters;
 
 
+import edu.taskmanager.backend.chain.FilterFactory;
+import edu.taskmanager.backend.chain.TaskFilter;
 import edu.taskmanager.backend.model.Task;
-import edu.taskmanager.backend.util.Priority;
 import edu.taskmanager.backend.util.TaskStatus;
 
 import java.util.Map;

@@ -1,8 +1,9 @@
-package edu.taskmanager.backend.chain;
+package edu.taskmanager.backend.chain.filters;
 
 
+import edu.taskmanager.backend.chain.FilterFactory;
+import edu.taskmanager.backend.chain.TaskFilter;
 import edu.taskmanager.backend.model.Task;
-import edu.taskmanager.backend.model.User;
 
 import java.util.Map;
 
@@ -32,8 +33,9 @@ public class CreatorFilter implements TaskFilter, FilterFactory {
     public boolean filter(Task task) {
         boolean belongsToUser = (
             task.getCreator() != null
-            && task.getCreator().getId().equals(id)
-                || task.getCreator() != null && task.getCreator().getUsername().equals(name)
+            && (task.getCreator().getId().equals(id)
+                || task.getCreator().getUsername().equals(name)
+            )
         );
 
         if (!belongsToUser) { return false; }
@@ -49,12 +51,13 @@ public class CreatorFilter implements TaskFilter, FilterFactory {
     }
 
     @Override
-    public TaskFilter createFilter(Map.Entry<String, String> value) throws IllegalArgumentException {
+    public TaskFilter createFilter(Map.Entry<String, String> entry)
+    throws IllegalArgumentException {
         try {
-            long userid = Long.parseLong(value.getValue());
-            return new ProjectFilter(userid);//filter;
+            long userid = Long.parseLong(entry.getValue());
+            return new CreatorFilter(userid);//filter;
         } catch (NumberFormatException e) {
-            return new ProjectFilter(value.getValue());
+            return new CreatorFilter(entry.getValue());
         }
     }
 }

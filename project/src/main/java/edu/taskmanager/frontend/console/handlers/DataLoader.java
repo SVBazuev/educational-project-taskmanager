@@ -7,29 +7,18 @@ import edu.taskmanager.backend.model.Project;
 import edu.taskmanager.backend.model.Tag;
 import edu.taskmanager.backend.model.Task;
 import edu.taskmanager.backend.model.User;
-import edu.taskmanager.backend.repository.ProjectRepository;
-import edu.taskmanager.backend.repository.TagRepository;
-import edu.taskmanager.backend.repository.TaskRepository;
-import edu.taskmanager.backend.repository.UserRepository;
+import edu.taskmanager.backend.repository.*;
+import edu.taskmanager.backend.service.ServisRepository;
 import edu.taskmanager.frontend.console.util.AppData;
-
 import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class DataLoader {
-    private final TaskRepository taskRepository;
-    private final ProjectRepository projectRepository;
-    private final TagRepository tagRepository;
-    private final UserRepository userRepository;
+    private final ServisRepository servisRepository;
 
-    public DataLoader(
-            TaskRepository taskRepository, ProjectRepository projectRepository,
-            TagRepository tagRepository, UserRepository userRepository) {
-        this.taskRepository = taskRepository;
-        this.projectRepository = projectRepository;
-        this.tagRepository = tagRepository;
-        this.userRepository = userRepository;
+    public DataLoader(ServisRepository servisRepository) {
+        this.servisRepository = servisRepository;
     }
 
     public void load(String resourcePath) {
@@ -58,20 +47,22 @@ public class DataLoader {
                     collectFromTask(task, projectMap, tagMap, userMap);
                 }
 
-                projectMap.values().forEach(projectRepository::save);
-                tagMap.values().forEach(tagRepository::save);
-                userMap.values().forEach(userRepository::save);
+                projectMap.values().forEach(servisRepository.projectRepo()::save);
+                tagMap.values().forEach(servisRepository.tagRepo()::save);
+                userMap.values().forEach(servisRepository.userRepo()::save);
                 for (Task task : data.getTasks()) {
                     saveTaskRecursively(task);
                 }
 
                 // Проставляем задачи в проекты (в JSON tasks у project всегда пустой)
-                for (Task task : taskRepository.findAll()) {
+                for (Task task : ((Repository<Task, Long>) servisRepository.taskRepo()).findAll()) {
                     if (task.getProject() != null && task.getProject().getId() != null) {
-                        projectRepository.findById(task.getProject().getId()).ifPresent(project -> {
-                            if (!project.getTasks().contains(task)) {
-                                project.getTasks().add(task);
-                            }
+                        ((Repository<Project, Long>) servisRepository.projectRepo())
+                            .findById(task.getProject().getId())
+                            .ifPresent(project -> {
+                                if (!project.getTasks().contains(task)) {
+                                    project.getTasks().add(task);
+                                }
                         });
                     }
                 }
@@ -85,7 +76,7 @@ public class DataLoader {
     }
 
     private void saveTaskRecursively(Task task) {
-        taskRepository.save(task);
+        servisRepository.taskRepo().save(task);
         if (task.getSubtasks() != null) {
             for (Task subtask : task.getSubtasks()) {
                 if (subtask.getParentId() == null && task.getId() != null) {

@@ -1,5 +1,6 @@
 package edu.taskmanager.backend.chain;
 
+import edu.taskmanager.backend.chain.filters.DescriptionFilter;
 import edu.taskmanager.backend.model.*;
 import edu.taskmanager.backend.util.Priority;
 import edu.taskmanager.backend.util.TaskStatus;

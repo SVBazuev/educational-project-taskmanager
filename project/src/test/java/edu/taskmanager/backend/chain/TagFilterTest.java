@@ -1,5 +1,6 @@
 package edu.taskmanager.backend.chain;
 
+import edu.taskmanager.backend.chain.filters.TagFilter;
 import edu.taskmanager.backend.model.Tag;
 import edu.taskmanager.backend.model.Task;
 import edu.taskmanager.backend.util.Priority;

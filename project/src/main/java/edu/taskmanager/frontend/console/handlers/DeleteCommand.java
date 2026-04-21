@@ -5,25 +5,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.taskmanager.backend.model.Project;
+import edu.taskmanager.backend.model.Tag;
+import edu.taskmanager.backend.model.Task;
+import edu.taskmanager.backend.model.User;
 import edu.taskmanager.backend.repository.*;
+import edu.taskmanager.backend.service.ServisRepository;
 import edu.taskmanager.frontend.console.Command;
 
 import static edu.taskmanager.frontend.console.parser.ArgumentParser.parseArguments;
 
 
 public class DeleteCommand implements Command {
-    private final TaskRepository taskRepository;
-    private final ProjectRepository projectRepository;
-    private final TagRepository tagRepository;
-    private final UserRepository userRepository;
+    private final ServisRepository servisRepository;
 
-    public DeleteCommand(
-            TaskRepository taskRepository, ProjectRepository projectRepository,
-            TagRepository tagRepository, UserRepository userRepository) {
-        this.taskRepository = taskRepository;
-        this.projectRepository = projectRepository;
-        this.tagRepository = tagRepository;
-        this.userRepository = userRepository;
+    public DeleteCommand(ServisRepository servisRepository) {
+        this.servisRepository = servisRepository;
     }
 
     @Override
@@ -37,6 +34,8 @@ public class DeleteCommand implements Command {
 
         // Парсим аргументы в карту критериев
         Map<String, String> criteria = parseArguments(args);
+
+        //servisRepository.deletById(type, criteria);
 
         switch (type) {
             case "task" -> deleteTask(criteria);
@@ -54,8 +53,8 @@ public class DeleteCommand implements Command {
         }
         try {
             long id = Long.parseLong(criteria.get("id"));
-            if (taskRepository.findById(id).isPresent()) {
-                taskRepository.deleteById(id);
+            if (servisRepository.taskRepo().findById(id).isPresent()) {
+                servisRepository.taskRepo().deleteById(id);
                 System.out.println("Задача с ID " + id + " удалена.");
             } else {
                 System.out.println("Задача с ID " + id + " не найдена.");
@@ -72,8 +71,8 @@ public class DeleteCommand implements Command {
         }
         try {
             long id = Long.parseLong(criteria.get("id"));
-            if (projectRepository.findById(id).isPresent()) {
-                projectRepository.deleteById(id);
+            if (servisRepository.projectRepo().findById(id).isPresent()) {
+                servisRepository.projectRepo().deleteById(id);
                 System.out.println("Проект с ID" + id + " удален.");
             } else {
                 System.out.println("Проект с ID" + id + " не найден");
@@ -90,8 +89,8 @@ public class DeleteCommand implements Command {
         }
         try {
             long id = Long.parseLong(criteria.get("id"));
-            if (tagRepository.findById(id).isPresent()) {
-                tagRepository.deleteById(id);
+            if (servisRepository.tagRepo().findById(id).isPresent()) {
+                servisRepository.tagRepo().deleteById(id);
                 System.out.println("Тег с ID " + id + " удален.");
             } else {
                 System.out.println("Тег с ID " + id + " не найден");
@@ -108,8 +107,8 @@ public class DeleteCommand implements Command {
         }
         try {
             long id = Long.parseLong(criteria.get("id"));
-            if (userRepository.findById(id).isPresent()) {
-                userRepository.deleteById(id);
+            if (servisRepository.userRepo().findById(id).isPresent()) {
+                servisRepository.userRepo().deleteById(id);
                 System.out.println("Пользователь с ID " + id + " удален.");
             } else {
                 System.out.println("Пользователь с ID" + id + " не найден");

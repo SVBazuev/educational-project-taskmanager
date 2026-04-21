@@ -1,14 +1,17 @@
-package edu.taskmanager.backend.chain;
+package edu.taskmanager.backend.chain.filters;
 
 
-import edu.taskmanager.backend.model.Tag;
+import java.util.Map;
+
+import edu.taskmanager.backend.chain.FilterFactory;
+import edu.taskmanager.backend.chain.TaskFilter;
 import edu.taskmanager.backend.model.Task;
 
 
 /**
  * Фильтр, пропускающий задачи, содержащие заданный тег.
  */
-public class TagFilter implements TaskFilter {
+public class TagFilter implements TaskFilter, FilterFactory {
     //private final Tag requiredTag;
     private TaskFilter next;
     private Long id;
@@ -47,5 +50,16 @@ public class TagFilter implements TaskFilter {
     @Override
     public void setNext(TaskFilter next) {
         this.next = next;
+    }
+
+    @Override
+    public TaskFilter createFilter(Map.Entry<String,String> entry)
+    throws IllegalArgumentException {
+        try {
+            long tagId = Long.parseLong(entry.getValue());
+            return new TagFilter(tagId);
+        } catch (NumberFormatException e) {
+            return new TagFilter(entry.getValue());
+        }
     }
 }

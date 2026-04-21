@@ -1732,5 +1732,20 @@
     "createdAt" : "2026-03-10T10:00:00",
     "updatedAt" : "2026-03-10T10:00:00",
     "parentId" : null
+  }, {
+    "id" : 52,
+    "title" : "new",
+    "description" : "",
+    "dueDate" : "2026-04-21T17:35:48.3378234",
+    "creator" : null,
+    "priority" : "MEDIUM",
+    "status" : "TODO",
+    "project" : null,
+    "tags" : [ ],
+    "subtasks" : [ ],
+    "contractors" : [ ],
+    "createdAt" : "2026-04-20T17:35:48.3433321",
+    "updatedAt" : null,
+    "parentId" : null
   } ]
 }

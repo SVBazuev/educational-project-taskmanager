@@ -213,6 +213,7 @@ README.html
 /project/target/generated-sources/
 /project/target/maven-status/
 /project/target/maven-status/maven-compiler-plugin/
+AboutCourse.md
 documentation.md
 update_documentation.md
 docs.md

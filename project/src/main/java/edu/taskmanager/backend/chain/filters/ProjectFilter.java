@@ -1,13 +1,11 @@
-package edu.taskmanager.backend.chain;
+package edu.taskmanager.backend.chain.filters;
 
-
-import edu.taskmanager.backend.model.Project;
-import edu.taskmanager.backend.model.Task;
-import edu.taskmanager.backend.repository.ProjectRepository;
-import edu.taskmanager.backend.repository.UserRepository;
 
 import java.util.Map;
-import java.util.Optional;
+
+import edu.taskmanager.backend.chain.FilterFactory;
+import edu.taskmanager.backend.chain.TaskFilter;
+import edu.taskmanager.backend.model.Task;
 
 
 /**

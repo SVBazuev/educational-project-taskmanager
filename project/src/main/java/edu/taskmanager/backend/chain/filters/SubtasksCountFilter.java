@@ -1,7 +1,8 @@
-package edu.taskmanager.backend.chain;
+package edu.taskmanager.backend.chain.filters;
 
 import java.util.List;
 
+import edu.taskmanager.backend.chain.TaskFilter;
 import edu.taskmanager.backend.model.Task;
 
 /**

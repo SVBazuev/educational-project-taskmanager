@@ -1,6 +1,8 @@
-package edu.taskmanager.backend.chain;
+package edu.taskmanager.backend.chain.filters;
 
 
+import edu.taskmanager.backend.chain.FilterFactory;
+import edu.taskmanager.backend.chain.TaskFilter;
 import edu.taskmanager.backend.model.Task;
 import edu.taskmanager.backend.util.Priority;
 
@@ -14,12 +16,12 @@ public class PriorityFilter implements TaskFilter, FilterFactory {
     private final Priority requiredPriority;
     private TaskFilter next;
 
-    public PriorityFilter(Priority requiredPriority) {
-        this.requiredPriority = requiredPriority;
-    }
-
     public PriorityFilter() {
         this.requiredPriority = null;
+    }
+
+    public PriorityFilter(Priority requiredPriority) {
+        this.requiredPriority = requiredPriority;
     }
 
     @Override
@@ -39,7 +41,8 @@ public class PriorityFilter implements TaskFilter, FilterFactory {
     }
 
     @Override
-    public TaskFilter createFilter(Map.Entry<String, String> value) throws IllegalArgumentException {
+    public TaskFilter createFilter(Map.Entry<String, String> value)
+    throws IllegalArgumentException {
         Priority priority = Priority.valueOf(value.getValue().toUpperCase());
         TaskFilter filter = new PriorityFilter(priority);
         return filter;

@@ -1,54 +1,78 @@
 package edu.taskmanager.backend.repository;
 
+
+import java.util.Map;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 import edu.taskmanager.backend.model.Task;
 
+
 /**
- * Интерфейс репозитория для хранения и извлечения задач.
- * Определяет базовые CRUD операции.
+ * Реализация репозитория в оперативной памяти
+ * с использованием потокобезопасных коллекций.
+ * Хранит задачи в ConcurrentHashMap, где ключ — идентификатор задачи.
+ * Для генерации идентификаторов используется AtomicLong.
  */
-public interface TaskRepository {
+public class TaskRepository implements Repository<Task,Long> {
 
     /**
-     * Сохраняет задачу в хранилище.
-     * Если у задачи нет id (null), генерирует новый уникальный идентификатор.
-     * Если id задан, обновляет существующую задачу.
-     *
-     * @param task задача для сохранения
-     * @return сохранённая задача с установленным id (если создавалась новая)
+     * Хранилище задач: id -> Task
      */
-    Task save(Task task);
+    private Map<Long, Task> storage = new ConcurrentHashMap<>();
 
     /**
-     * Находит задачу по идентификатору.
-     *
-     * @param id идентификатор задачи
-     * @return Optional с задачей, если она найдена, иначе пустой Optional
+     * Генератор уникальных идентификаторов для новых задач.
+     * Начинается с 1.
      */
-    Optional<Task> findById(Long id);
+    private final AtomicLong idGenerator = new AtomicLong(1);
 
-    /**
-     * Возвращает список всех задач.
-     *
-     * @return список всех задач (может быть пустым)
-     */
-    List<Task> findAll();
+    @Override
+    public Task save(Task task) {
+        // Если задача новая (id == null), генерируем id и сохраняем
+        if (task.getId() == null) {
+            long newId = idGenerator.getAndIncrement();
+            // Создаём копию задачи с установленным id, чтобы не изменять исходный объект
+            Task taskWithId = task.withId(newId); // предполагаем наличие метода withId
+            storage.put(newId, taskWithId);
+            return copyOf(taskWithId);
+        } else {
+            Task copy = task.withId(task.getId());
+            storage.put(task.getId(), copy);
+            // Обязательно обновить атомик последним ID
+            idGenerator.updateAndGet(current -> Math.max(current, task.getId() + 1));
+            return copyOf(copy);
+        }
+    }
 
-    /**
-     * Удаляет задачу по идентификатору.
-     *
-     * @param id идентификатор задачи
-     */
-    void deleteById(Long id);
+    @Override
+    public Optional<Task> findById(Long id) {
+        Task t = storage.get(id);
+        return t != null ? Optional.of(copyOf(t)) : Optional.empty();
+    }
 
-    /**
-     * Находит подзадачи для заданной родительской задачи.
-     * Необходимо для реализации ленивой загрузки подзадач (паттерн Proxy).
-     *
-     * @param parentId идентификатор родительской задачи
-     * @return список подзадач (может быть пустым)
-     */
-    List<Task> findSubtasksByParentId(Long parentId);
+    @Override
+    public List<Task> findAll() {
+        return storage.values().stream()
+                .map(this::copyOf)
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        storage.remove(id);
+    }
+
+    public List<Task> findSubtasksByParentId(Long parentId) {
+        return storage.values().stream()
+                .filter(task -> parentId.equals(task.getParentId()))
+                .map(this::copyOf)
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    private Task copyOf(Task t) {
+        return t.withId(t.getId());
+    }
 }

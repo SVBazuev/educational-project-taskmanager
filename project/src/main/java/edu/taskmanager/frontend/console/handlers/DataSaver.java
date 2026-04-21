@@ -1,29 +1,29 @@
 package edu.taskmanager.frontend.console.handlers;
 
 import edu.taskmanager.backend.adapter.export.JsonTaskExporter;
+import edu.taskmanager.backend.model.Project;
+import edu.taskmanager.backend.model.Tag;
 import edu.taskmanager.backend.model.Task;
-import edu.taskmanager.backend.repository.ProjectRepository;
-import edu.taskmanager.backend.repository.TagRepository;
-import edu.taskmanager.backend.repository.TaskRepository;
-import edu.taskmanager.backend.repository.UserRepository;
+import edu.taskmanager.backend.model.User;
+import edu.taskmanager.backend.repository.*;
+import edu.taskmanager.backend.service.ServisRepository;
 import edu.taskmanager.frontend.console.util.AppData;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class DataSaver {
-    private final TaskRepository taskRepository;
+    private final ServisRepository servisRepository;
 
-    public DataSaver(TaskRepository taskRepository, ProjectRepository projectRepository,
-                     UserRepository userRepository, TagRepository tagRepository) {
-        this.taskRepository = taskRepository;
+    public DataSaver(ServisRepository servisRepository) {
+        this.servisRepository = servisRepository;
     }
 
     public void save(String resourcePath) {
         String outputPath = resolveOutputPath(resourcePath);
 
         // Только корневые задачи — подзадачи уже вложены внутри через поле subtasks
-        List<Task> rootTasks = taskRepository.findAll().stream()
+        List<Task> rootTasks = servisRepository.findAllTasks().stream()
                 .filter(task -> task.getParentId() == null)
                 .collect(Collectors.toList());
 
